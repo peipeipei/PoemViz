@@ -1,34 +1,44 @@
 <!DOCTYPE html>
 <html>
-<body>
-
+<head>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
+    
     <link rel="stylesheet" type="text/css" href="index.css">  
     <script src="index.js"> </script>
     
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.10.1/jquery.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
-    
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap-theme.min.css">
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+</head>
+<body>
     
-    <div class="poem" contenteditable="true">
-    <p> When, in disgrace with fortune and men's eyes,</p>
-    <p>I all alone beweep my outcast state, </p>
-    <p>And trouble deaf heaven with my bootless cries,</p>
-    <p>And look upon myself, and curse my fate, </p>
-    <p>Wishing me like to one more rich in hope, </p>
-    <p>Featur'd like him, like him with friends possess'd,</p>
-    <p>Desiring this man's art and that man's scope, </p>
-    <p>With what I most enjoy contented least; </p>
-    <p>Yet in these thoughts myself almost despising,</p>
-    <p>Haply I think on thee, and then my state, </p>
-    <p>Like to the lark at break of day arising </p>
-    <p>From sullen earth, sings hymns at heaven's gate;</p>
-    <p>For thy sweet love remember'd such wealth brings </p>
-    <p>That then I scorn to change my state with kings. </p>
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" id="rhymeHighlight">Highlight</button>
+        <button type="button" class="btn btn-default">Syllables</button>
     </div>
     
+    
+    
+    <div class="poem" contenteditable="true">
+    <p class="poemLine"> When, in disgrace with fortune and men's eyes,</p>
+    <p class="poemLine">I all alone beweep my outcast state, </p>
+    <p class="poemLine">And trouble deaf heaven with my bootless cries,</p>
+    <p class="poemLine">And look upon myself, and curse my fate, </p>
+    <p class="poemLine">Wishing me like to one more rich in hope, </p>
+    <p class="poemLine">Featur'd like him, like him with friends possess'd,</p>
+    <p class="poemLine">Desiring this man's art and that man's scope, </p>
+    <p class="poemLine">With what I most enjoy contented least; </p>
+    <p class="poemLine">Yet in these thoughts myself almost despising,</p>
+    <p class="poemLine">Haply I think on thee, and then my state, </p>
+    <p class="poemLine">Like to the lark at break of day arising </p>
+    <p class="poemLine">From sullen earth, sings hymns at heaven's gate;</p>
+    <p class="poemLine">For thy sweet love remember'd such wealth brings </p>
+    <p class="poemLine">That then I scorn to change my state with kings. </p>
+    </div>
+    
+    <div class="btn-group">
+        <button type="button" class="btn btn-default" id='rhymeHighlight'>Highlight</button>
+    </div>
     
 </body>
 </html>
