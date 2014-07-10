@@ -1,10 +1,8 @@
-body{
-    padding: 2%;   
-}
+
 
 .poem{
     padding-left: 20px;
-    padding-top: 20px;
+    padding-top: 80px;
 }
 
 .rhymeCheck{
@@ -12,6 +10,40 @@ body{
 }
 
 .poemLine span{
-    margin-left:10px;
+    margin-left:1px;
+    margin-right:1px;
     padding:2px;
 }
+
+.colorSquare{
+    width:25px;
+    height:25px;
+    margin:5px;
+    border-style:solid;
+    border-width:0px;
+    display:inline-block;
+}
+
+.highlightColors{
+    display:none;
+}
+
+.toolbar{
+    background-color:LightGray;
+    padding: none;
+    height: 50px;
+    position: fixed;
+    width: 100%;
+}
+
+.btn{
+    border: 1px solid gray;
+    margin:5px;
+}
+
+.verticalLine span{
+    margin-left:0.5px;
+    margin-right:0.5px;
+}
+
+
