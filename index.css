@@ -7,4 +7,11 @@ body{
     padding-top: 20px;
 }
 
+.rhymeCheck{
+    margin-right:10px;
+}
 
+.poemLine span{
+    margin-left:10px;
+    padding:2px;
+}
