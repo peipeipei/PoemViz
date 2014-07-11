@@ -15,17 +15,19 @@
 <body>
 
     <div class="toolbar">
-        <div class="btn-group" id="toggle">
-            <span><button type="button" class="btn btn-default syllablesOption" data-active=false>Start Syllables</button></span>
-            <span><button type="button" class="btn btn-default syllablesCount">Count Syllables</button></span>
-        </div>
+        PLACEHOLDER FOR TOOLBAR??
+        <!--<div class="btn-group" id="toggle">-->
+        <!--    <span><button type="button" class="btn btn-default syllablesOption" data-active=false>Start Syllables</button></span>-->
+        <!--    <span><button type="button" class="btn btn-default syllablesCount">Count Syllables</button></span>-->
+        <!--    <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>-->
+        <!--</div>-->
     </div>
     
     <div class='container'>
         <div class='row'>
             <div class="poem col-md-7" contenteditable="true">
-                <p class="poemLine"><span>When, in disgrace with fortune and men's eyes,</span></p>
-                <p class="poemLine"><span>I all alone beweep my outcast state, </span></p>
+                <p class="poemLine"><span>When, in disgrace with fortune and men's eyes, </span></p>
+                <p class="poemLine"><span>I all alone beweep my outcast state,</span></p>
                 <p class="poemLine"><span>And trouble deaf heaven with my bootless cries,</span></p>
                 <p class="poemLine"><span>And look upon myself, and curse my fate, </span></p>
                 <p class="poemLine"><span>Wishing me like to one more rich in hope, </span></p>
@@ -48,16 +50,22 @@
                         <option value='word'>Word</option>
                     </select>
                     <div class='highlighting'>
-                        <span class='highlightColors'>Colors:</span>
+                        <span class='highlightColors'>Colors:<div class='colorSquare eraseHighlight' data-color='transparent'></div></span>
                         <button class='addColor'>
                             +
                         </button>
                     </div>
+                    <input type="checkbox" data-layer='rhyme' class='visibility' checked>
                 </div>
 
                 <div id='syllableLayer' class='layer' data-name='syllable'>
                     <div class='layerName'>Syllables</div>
                     <div class='info'> ONLY CLICK FOR SYLLABLE BREAKS INSIDE OF WORDS, SAVE YOURSELF SOME WORK</div>
+                    <input type="checkbox" data-layer='syllable' class='visibility' checked>
+                    <div class="btn-group" id="toggle">
+                        <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
+                        <span><button type="button" class="btn btn-default syllablesGrid">Grid</button></span>
+                    </div>
                 </div>
             </div>
         </div>

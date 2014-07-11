@@ -41,6 +41,10 @@
     opacity:0.5;
 }
 
+.eraseHighlight{
+    background-color:white;
+}
+
 #layers{
     margin-top:80px;
     

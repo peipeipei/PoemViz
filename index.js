@@ -27,7 +27,7 @@ $(document).ready(function(){
                 if (i == elements.length - 1){
                     //make linebreak space wide enough to prepend breaks to
                     //only works if no spaces at end of line already!
-                    var linebreak = $('<span class=space> </span>');
+                    var linebreak = $('<span class=space > </span>');
                     linebreak.css('padding-left', '1px');
                     $(line).append(linebreak);
                  }
@@ -39,42 +39,54 @@ $(document).ready(function(){
     }
     
     makeSpans();
-    
-    function updateSpans() {
+    //attempt to only update edited text
+   /* function updateSpans() {
         $('.letter, .space').each(function(){
             if ($(this).text().length > 1){
             var elements = $(this).text().split(' ');
-            console.log(elements);
             $(this).text('');
             var line = $(this).closest('.line');
             for (var i = 0; i < elements.length; i++) {
-                if (i===0){
-                      var letter = $(this).closest('.letter');
+                if (($(this).hasClass('space')) && i == elements.length - 1){
+                      console.log(elements);
+                      var word = $(this).first('.word');
                       var elems = elements[i].split('');
-                      for (var k = elems.length; k > 0 ; k--) {
-                      letter.after('<span class=letter>' + elems[i] + '</span>');
+                      console.log(elems);
+                      for (var k = elems.length-1; k >= 0; k--) {
+                      word.next('.word').prepend('<span class=letter>' + elems[k] + '</span>');
+                      }
+                      if (elems[0] !== " "){
+                          word.next('.word').prepend('<span class=space>'+ ' ' +'</span>');
+                      }
+                }
+                else{
+                if (i===0 && ($(this).hasClass('letter'))){
+                     var letter = $(this).closest('.letter');
+                      var elems = elements[i].split('');
+                      for (var k = elems.length - 1; k >= 0 ; k--) {
+                      letter.after('<span class=letter>' + elems[k] + '</span>');
                       }
                       word = $(this).closest('.word');
-                      console.log(word);
                 }
                 else{
-                if (false){
-                }
-                else{
-                   word.after('<span class=space>'+ ' ' +'</span>');
+                   space = $('<span class=space>'+ ' ' +'</span>');
+                   word = $(this).prev('.word');
+                   word.after(space);}
+                   word = $(this).prev('.word');
                    newWord = $('<span class=word>');
-                   $(word).first('.space').after(newWord);
+                   space.after(newWord);
                    word = newWord;
                    elems = elements[i].split('');
+                   console.log(elems);
                    for (var j = 0; j < elems.length; j++) {
-                       word.append('<span class=letter>' + elems[i] + '</span>');
-                   }
+                       word.append('<span class=letter>' + elems[j] + '</span>');
+                   
                  }
               }
             }
             }
         })
-    }
+    }*/
     
     function initialCount(){
         $('.poemLine').each(function(){
@@ -127,6 +139,8 @@ $(document).ready(function(){
        
    })*/
    
+   
+   
     for (i=0;i<2;i++){
        var colorSquare=$('<div class="colorSquare"></div>');
        colorSquare.data('color', colors[i]);
@@ -160,14 +174,17 @@ $(document).ready(function(){
     
 
     $('.line').on('click', function(){
+        console.log(this);
         if(selectedLayer=='rhyme' && highlightElement=='line'){
             $(this).css('background-color',highlightColor);
+            $(this).data('rhyme-color', highlightColor);
         }
     })
     
     $('.word').on('click', function(){
         if(selectedLayer=='rhyme' && highlightElement=='word'){
             $(this).css('background-color',highlightColor);
+            $(this).data('rhyme-color', highlightColor);
         }
     })
     
@@ -245,6 +262,30 @@ function startSyllables(){
         }
     });
     
+    $('.visibility').on('change',function(){
+        var visible=$(this).is(':checked');
+        if($(this).data('layer')=='syllable'){
+            if (visible){
+                $('.syllableMarker').show();
+            }else{
+                $('.syllableMarker').hide();
+            }
+        }
+        if($(this).data('layer')=='rhyme'){
+            if (visible){
+                $('.line').each(function(index, line){
+                    $(line).css('background-color', $(line).data('rhyme-color'));
+                });
+                $('.word').each(function(index, word){
+                    $(word).css('background-color', $(word).data('rhyme-color'));
+                });
+            }else{
+                $('.line').css('background-color','transparent');
+                $('.word').css('background-color','transparent');
+            }
+        }
+    })
+    
     function stopSyllables(){
         $('.letter, .space').unbind('mouseover');
         $('.letter, .space').unbind('click');
@@ -257,9 +298,19 @@ function startSyllables(){
         console.log('click');
         $('.poemLine').each(function(){
             console.log($(this).find('.syllableMarker').length)
-        })
+        });
         
-    })  
+    });  
+    
+    $('.syllablesGrid').on('click' , function(){
+        $('.word').each(function(){
+            console.log(this);
+            $(this).css('border-color', 'grey');
+            $(this).css('border-width', '1px');
+            $(this).css('border-style', 'solid');
+        });
+    });
+    
    
    function throttle(f, delay){
     var timer = null;
@@ -276,8 +327,13 @@ function startSyllables(){
    //waits 5 sec after last key press to remake spans in time for 
    //possible highlighting or syllable work
    $('.poem').keyup(throttle(function() {
-       updateSpans();
+       //updateSpans();
+       makeSpans();
    }));
+   
+   $('.syllablesClear').on('click',function(){
+       $('.syllableMarker').remove();
+   });
    
   });
  
