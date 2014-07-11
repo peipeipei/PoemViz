@@ -14,16 +14,16 @@
 }
 
 .colorSquare{
-    width:25px;
-    height:25px;
-    margin:5px;
+    width:20px;
+    height:20px;
+    margin:5px 5px 0px 5px;
     border-style:solid;
     border-width:0px;
     display:inline-block;
 }
 
 .highlightColors{
-    display:none;
+    display:inline-block;
 }
 
 .layer{
@@ -31,6 +31,8 @@
     border-style:solid;
     padding:10px;
     margin:10px;
+    background-color:#dddddd;
+    opacity:0.5;
 }
 
 #layers{
@@ -54,6 +56,15 @@
 
  .syllableMarker {
     margin: 0px;
+}
+.layerName{
+    font-size:12pt;
+    font-weight:bold;
+}
+
+.addColor{
+    height:20px;
+    width:20px;
 }
 
 

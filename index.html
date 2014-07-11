@@ -19,7 +19,6 @@
             <span><button type="button" class="btn btn-default syllablesOption">Mark Syllables</button></span>
             <span><button type="button" class="btn btn-default syllablesCount">Count Syllables</button></span>
             <span><button type="button" class="btn btn-default rhymeHighlight"> Start Highlighting</button></span>
-            <span class='highlightColors'></span>
         </div>
     </div>
     
@@ -42,16 +41,23 @@
                 <p class="poemLine"><span>That then I scorn to change my state with kings. </span></p>
             </div>
             <div class='col-md-5' id='layers'>
-                <div id='rhymeLayer' class='layer'>
+                <div id='rhymeLayer' class='layer' data-name='rhyme'>
+                    <div class='layerName'>Rhyme</div>
                     Highlight:
-                    <select id='colorSelect'>
+                    <select id='rhymeSelect'>
                         <option value='line'>Line</option>
                         <option value='word'>Word</option>
                     </select>
-                    <span class='highlightColors'></span>
+                    <div class='highlighting'>
+                        <span class='highlightColors'>Colors:</span>
+                        <button class='addColor'>
+                            +
+                        </button>
+                    </div>
                 </div>
-                <div id='syllableLayer' class='layer'>
-                    
+
+                <div id='syllableLayer' class='layer' data-name='syllable'>
+                    <div class='layerName'>Syllables</div>
                 </div>
             </div>
         </div>
