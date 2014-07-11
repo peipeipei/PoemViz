@@ -10,9 +10,7 @@
 }
 
 .poemLine span{
-    margin-left:1px;
-    margin-right:1px;
-    padding:2px;
+    margin-left:0.5px;
 }
 
 .colorSquare{
@@ -28,12 +26,25 @@
     display:none;
 }
 
+.layer{
+    border-width:1px;
+    border-style:solid;
+    padding:10px;
+    margin:10px;
+}
+
+#layers{
+    margin-top:80px;
+    
+}
+
 .toolbar{
     background-color:LightGray;
     padding: none;
     height: 50px;
     position: fixed;
     width: 100%;
+    z-index:10;
 }
 
 .btn{
@@ -41,9 +52,8 @@
     margin:5px;
 }
 
-.verticalLine span{
-    margin-left:0.5px;
-    margin-right:0.5px;
+ .syllableMarker {
+    margin: 0px;
 }
 
 
