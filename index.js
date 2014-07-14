@@ -93,6 +93,14 @@ $(document).ready(function(){
         $('.letter, .space').unbind('click');
         $('.syllablesOption').text('Start Syllables');
         $('.syllablesOption').data('active', false);
+        $('.letter').on('click', function(){
+        console.log(this);
+        if(selectedLayer=='rhyme' && highlightElement=='letter'){
+            console.log('alskdfjasdklfj');
+            $(this).css('background-color',highlightColor);
+            $(this).data('rhyme-color', highlightColor);
+        }
+    });
     }
     
     // Second attempt to only make spans with updated text
@@ -353,6 +361,10 @@ function syllableSetup() {
             $('.syllablesGrid').text('Grid');
         }
     });
+    
+    $('.syllablesClear').on('click',function(){
+       $('.syllableMarker').remove();
+   });
 }
 
    
@@ -459,9 +471,7 @@ syllableSetup();
    
    
    
-   $('.syllablesClear').on('click',function(){
-       $('.syllableMarker').remove();
-   });
+   
 
     
 });
