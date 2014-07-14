@@ -1,7 +1,9 @@
+table
+{
+table-layout:fixed;
+}
 
-
-.poem{
-    padding-left: 20px;
+#leftSide{
     padding-top: 80px;
 }
 
@@ -12,11 +14,9 @@
 .poemLine span{
     margin-left:0.5px;
 }
-.poemLine{
-    border-style:solid;
-    border-width:0px;
-    border-bottom-width:1px;
-    border-bottom-color: #ddd;
+
+td{
+    text-align:center;
 }
 
 .colorSquare{
@@ -39,6 +39,7 @@
     margin:10px;
     background-color:#dddddd;
     opacity:0.5;
+    position:relative;
 }
 
 .eraseHighlight{
@@ -59,9 +60,22 @@
     z-index:10;
 }
 
+.visibilitySpan{
+    position:absolute;
+    top:10px;
+    right:10px;
+    color:gray;
+    font-style:italic;
+}
+
 .btn{
     border: 1px solid gray;
     margin:5px;
+}
+
+.dropdown-toggle{
+    color: black;
+    border: 1px solid black;
 }
 
  .syllableMarker {
@@ -80,4 +94,12 @@
 
 .lineCount{
     text-align: right;
+    height: 100%;
 }
+
+.line{
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    border-bottom-color: #ddd;
+}
+
