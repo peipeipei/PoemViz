@@ -25,47 +25,82 @@
     
     <div class='container'>
         <div class='row'>
-            <div class="poem col-md-7" contenteditable="true">
-                <p class="poemLine"><span>When, in disgrace with fortune and men's eyes, </span></p>
-                <p class="poemLine"><span>I all alone beweep my outcast state,</span></p>
-                <p class="poemLine"><span>And trouble deaf heaven with my bootless cries,</span></p>
-                <p class="poemLine"><span>And look upon myself, and curse my fate, </span></p>
-                <p class="poemLine"><span>Wishing me like to one more rich in hope, </span></p>
-                <p class="poemLine"><span>Featur'd like him, like him with friends possess'd,</span></p>
-                <p class="poemLine"><span>Desiring this man's art and that man's scope, </span></p>
-                <p class="poemLine"><span>With what I most enjoy contented least; </span></p>
-                <p class="poemLine"><span>Yet in these thoughts myself almost despising,</span></p>
-                <p class="poemLine"><span>Haply I think on thee, and then my state, </span></p>
-                <p class="poemLine"><span>Like to the lark at break of day arising </span></p>
-                <p class="poemLine"><span>From sullen earth, sings hymns at heaven's gate;</span></p>
-                <p class="poemLine"><span>For thy sweet love remember'd such wealth brings </span></p>
-                <p class="poemLine"><span>That then I scorn to change my state with kings. </span></p>
+            <div class='col-md-7 left' id='leftSide'>
+                <div class="poem" contenteditable="true">
+                    <p class="poemLine"><span>When, in disgrace with fortune and men's eyes,</span></p>
+                    <p class="poemLine"><span>I all alone beweep my outcast state,</span></p>
+                    <p class="poemLine"><span>And trouble deaf heaven with my bootless cries,</span></p>
+                    <p class="poemLine"><span>And look upon myself, and curse my fate,</span></p>
+                    <p class="poemLine"><span>Wishing me like to one more rich in hope,</span></p>
+                    <p class="poemLine"><span>Featur'd like him, like him with friends possess'd,</span></p>
+                    <p class="poemLine"><span>Desiring this man's art and that man's scope,</span></p>
+                    <p class="poemLine"><span>With what I most enjoy contented least;</span></p>
+                    <p class="poemLine"><span>Yet in these thoughts myself almost despising,</span></p>
+                    <p class="poemLine"><span>Haply I think on thee, and then my state,</span></p>
+                    <p class="poemLine"><span>Like to the lark at break of day arising</span></p>
+                    <p class="poemLine"><span>From sullen earth, sings hymns at heaven's gate;</span></p>
+                    <p class="poemLine"><span>For thy sweet love remember'd such wealth brings</span></p>
+                    <p class="poemLine"><span>That then I scorn to change my state with kings.</span></p>
+                    <p class="poemLine"><span>When, in disgrace with fortune and men's eyes,</span></p>
+                    <p class="poemLine"><span>I all alone beweep my outcast state,</span></p>
+                    <p class="poemLine"><span>And trouble deaf heaven with my bootless cries,</span></p>
+                    <p class="poemLine"><span>And look upon myself, and curse my fate,</span></p>
+                    <p class="poemLine"><span>Wishing me like to one more rich in hope,</span></p>
+                    <p class="poemLine"><span>Featur'd like him, like him with friends possess'd,</span></p>
+                    <p class="poemLine"><span>Desiring this man's art and that man's scope,</span></p>
+                    <p class="poemLine"><span>With what I most enjoy contented least;</span></p>
+                    <p class="poemLine"><span>Yet in these thoughts myself almost despising,</span></p>
+                    <p class="poemLine"><span>Haply I think on thee, and then my state,</span></p>
+                    <p class="poemLine"><span>Like to the lark at break of day arising</span></p>
+                    <p class="poemLine"><span>From sullen earth, sings hymns at heaven's gate;</span></p>
+                    <p class="poemLine"><span>For thy sweet love remember'd such wealth brings</span></p>
+                    <p class="poemLine"><span>That then I scorn to change my state with kings.</span></p>
+                </div>
             </div>
-            <div class='col-md-5' id='layers'>
-                <div id='rhymeLayer' class='layer' data-name='rhyme'>
+            <div class='col-md-5 right' id='layers'>
+            <div class = 'existingLayers'>
+                <div class='layer' data-name='rhyme' id="color0">
                     <div class='layerName'>Rhyme</div>
                     Highlight:
-                    <select id='rhymeSelect'>
+                    <select class='rhymeSelect'>
                         <option value='line'>Line</option>
                         <option value='word'>Word</option>
+                        <option value='letter'>Letter</option>
                     </select>
                     <div class='highlighting'>
-                        <span class='highlightColors'>Colors:<div class='colorSquare eraseHighlight' data-color='transparent'></div></span>
+                        <span class='highlightColors'>Erase:<div class='colorSquare eraseHighlight' data-color='transparent'></div> Colors:</span>
                         <button class='addColor'>
                             +
                         </button>
                     </div>
-                    <input type="checkbox" data-layer='rhyme' class='visibility' checked>
+                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>
                 </div>
 
-                <div id='syllableLayer' class='layer' data-name='syllable'>
+                <div class='layer' data-name='syllable' id='syllable0'>
                     <div class='layerName'>Syllables</div>
                     <div class='info'> ONLY CLICK FOR SYLLABLE BREAKS INSIDE OF WORDS, SAVE YOURSELF SOME WORK</div>
-                    <input type="checkbox" data-layer='syllable' class='visibility' checked>
+                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
                     <div class="btn-group" id="toggle">
                         <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
-                        <span><button type="button" class="btn btn-default syllablesGrid">Grid</button></span>
+                        <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
                     </div>
+                </div>
+                </div>
+                
+                <div class="dropdown btn-group">
+                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                        Add Layer
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
+                        <li><a class = "newColorLayer" href="#">Rhyme</a></li>
+                        <li><a class = "newBarsLayer" href="#">Syllable</a></li>
+                        <li><a class = "newColorLayer" href="#">Tone</a></li>
+                        <li><a class = "newColorLayer" href="#">Consonance/Assonance</a></li>
+                        <li><a class = "newBoldLayer" href="#">Other Bolding</a></li>
+                        <li><a class = "newColorLayer" href="#">Other Coloring</a></li>
+                        <li><a class = "newBarsLayer" href="#">Other Vertical Bars</a></li>
+                    </ul>
                 </div>
             </div>
         </div>

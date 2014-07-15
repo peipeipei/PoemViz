@@ -1,83 +1,106 @@
-
-
-.poem{
-    padding-left: 20px;
-    padding-top: 80px;
+#leftSide{
+   padding-top: 80px;
 }
 
 .rhymeCheck{
-    margin-right:10px;
+   margin-right:10px;
 }
 
 .poemLine span{
-    margin-left:0.5px;
+   margin-left:0.5px;
 }
-.poemLine{
-    border-style:solid;
-    border-width:0px;
-    border-bottom-width:1px;
-    border-bottom-color: #ddd;
+
+td{
+   text-align:center;
 }
 
 .colorSquare{
-    width:20px;
-    height:20px;
-    margin:5px 5px 0px 5px;
-    border-style:solid;
-    border-width:0px;
-    display:inline-block;
+   width:20px;
+   height:20px;
+   margin:5px 5px 0px 5px;
+   border-style:solid;
+   border-width:0px;
+   display:inline-block;
 }
 
 .highlightColors{
-    display:inline-block;
+   display:inline-block;
 }
 
 .layer{
-    border-width:1px;
-    border-style:solid;
-    padding:10px;
-    margin:10px;
-    background-color:#dddddd;
-    opacity:0.5;
+   border-width:1px;
+   border-style:solid;
+   padding:10px;
+   margin:10px;
+   background-color:#dddddd;
+   opacity:0.5;
+   position:relative;
 }
 
 .eraseHighlight{
-    background-color:white;
+   background-color:white;
 }
 
 #layers{
-    margin-top:80px;
-    
+   margin-top:80px;
+   
 }
 
 .toolbar{
-    background-color:LightGray;
-    padding: none;
-    height: 50px;
-    position: fixed;
-    width: 100%;
-    z-index:10;
+   background-color:LightGray;
+   padding: none;
+   height: 50px;
+   position: fixed;
+   width: 100%;
+   z-index:10;
+}
+
+.visibilitySpan{
+   position:absolute;
+   top:10px;
+   right:10px;
+   color:gray;
+   font-style:italic;
 }
 
 .btn{
-    border: 1px solid gray;
-    margin:5px;
+   border: 1px solid gray;
+   margin:5px;
 }
 
- .syllableMarker {
-    margin: 0px;
+.dropdown-toggle{
+   color: black;
+   border: 1px solid black;
+}
+
+.syllableMarker {
+   margin: 0px;
 }
 .layerName{
-    font-size:12pt;
-    font-weight:bold;
+   font-size:12pt;
+   font-weight:bold;
 }
 
 .addColor{
-    height:20px;
-    width:20px;
-    padding:0px;
+   height:20px;
+   width:20px;
+   padding:0px;
 }
 
 .lineCount{
-    text-align: right;
+   text-align: right;
+   height: 100%;
+}
+
+.line{
+   border-bottom-style:solid;
+   border-bottom-width:1px;
+   border-bottom-color: #ddd;
+}
+
+.right, .left{
+   overflow:auto;
+   position: absolute;
+   bottom: 10px;
+   top:0px
 }
