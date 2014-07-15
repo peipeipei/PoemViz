@@ -15,7 +15,7 @@
 <body>
 
     <div class="toolbar">
-        PLACEHOLDER FOR TOOLBAR??
+        <!--PLACEHOLDER FOR TOOLBAR??-->
         <!--<div class="btn-group" id="toggle">-->
         <!--    <span><button type="button" class="btn btn-default syllablesOption" data-active=false>Start Syllables</button></span>-->
         <!--    <span><button type="button" class="btn btn-default syllablesCount">Count Syllables</button></span>-->
@@ -25,8 +25,8 @@
     
     <div class='container'>
         <div class='row'>
-            <div class='col-md-7 left' id='leftSide'>
-                <div class="poem" contenteditable="true">
+            <div class='col-md-8 left' id='leftSide'>
+                <div class="poem">
                     <p class="poemLine"><span>When, in disgrace with fortune and men's eyes,</span></p>
                     <p class="poemLine"><span>I all alone beweep my outcast state,</span></p>
                     <p class="poemLine"><span>And trouble deaf heaven with my bootless cries,</span></p>
@@ -41,6 +41,7 @@
                     <p class="poemLine"><span>From sullen earth, sings hymns at heaven's gate;</span></p>
                     <p class="poemLine"><span>For thy sweet love remember'd such wealth brings</span></p>
                     <p class="poemLine"><span>That then I scorn to change my state with kings.</span></p>
+                <!--    
                     <p class="poemLine"><span>When, in disgrace with fortune and men's eyes,</span></p>
                     <p class="poemLine"><span>I all alone beweep my outcast state,</span></p>
                     <p class="poemLine"><span>And trouble deaf heaven with my bootless cries,</span></p>
@@ -55,10 +56,23 @@
                     <p class="poemLine"><span>From sullen earth, sings hymns at heaven's gate;</span></p>
                     <p class="poemLine"><span>For thy sweet love remember'd such wealth brings</span></p>
                     <p class="poemLine"><span>That then I scorn to change my state with kings.</span></p>
+                -->
                 </div>
             </div>
-            <div class='col-md-5 right' id='layers'>
+            <div class='col-md-4 right' id='layers'>
             <div class = 'existingLayers'>
+                <div class="layer" data-name="typing" id="typing0">
+                    <div class="layerName">Text</div>
+                    <button class="copyPoem">Editable Text</button>
+                    Style:
+                    <select class='rhymeSelect'>
+                        <option value='none'>None</option>
+                        <option value='bold'>Bold</option>
+                        <option value='itatlics'>Italicize</option>
+                        <option value='strike'>Strike Through</option>
+                    </select>  
+                </div>
+            
                 <div class='layer' data-name='rhyme' id="color0">
                     <div class='layerName'>Rhyme</div>
                     Highlight:
