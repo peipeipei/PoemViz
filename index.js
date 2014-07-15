@@ -289,6 +289,7 @@ function colorSetup(id){
        }
    })
    
+
    $('.word').on('click', function(){
        if(selectedType=='rhyme' && highlightElement=='word'){
            $(this).css('background-color',highlightColor);
@@ -308,6 +309,7 @@ function colorSetup(id){
     generalSetup();
     colorSetup('color');
 
+
    
    function addSyllable(object, color, ifghost){
    if (ifghost){
@@ -321,6 +323,7 @@ function colorSetup(id){
    verticalLine.data('layer', selectedLayer);
    object.prepend(verticalLine);
 }
+
 
 function startSyllables(){
    $('.letter, .space').unbind('click');
@@ -434,10 +437,6 @@ function syllableSetup() {
       });
   });
 }
-
-  
-   
-   
 
 
 syllableSetup();   
