@@ -1,15 +1,18 @@
-var colors=['#EE7575','#F373B9','#DE7DFF','#AD8BFE', "#7BA7E1",'#66EEEE','#4AE371', '#66FF22', '#FFFF44', '#FFAC62'];
-var darkColors=['#000000','#000066','#006600','#003333','#660000','#330033'];
+var colors=['#f99','#F9F','#D9F','#A9F', "#9CF",'#9FF', '#9FA','#CF9', '#FF9', '#FC9'];
+var darkColors=['#000','#063','#009','#506','#602'];
 var highlightColor='';
+var boldColor='';
 var highlighting=true;
 var selectedType='';
 var selectedLayer='';
 var highlightElement='line';
+var boldElement='boldLine';
 var counter = 1;
 var sCounter=1;
 var clickedLayer = $('#color0');
 var target = $('.rhymeSelect');
 var boldCounter = 1;
+var boldColor = 'black';
 
 $(document).ready(function(){
     //make each alphanumeric character/space/word/line a span with seperate class
@@ -105,8 +108,23 @@ $(document).ready(function(){
             var num = $(clickedLayer).attr('id').slice(-1);
             $(this).css('background-color',highlightColor);
             $(this).data('rhyme-color', highlightColor);
-            $(this).data('colorer'+num, [highlightColor,true]);
-            console.log($(this).data('colorer'+num));
+            $(this).data('colorer'+num, []);
+            $(this).data('colorer'+num).push(highlightColor);
+            $(this).data('colorer'+num).push(true);
+        }
+        if(selectedType=='bold' && boldElement=='boldLetter'){
+            var num = $(clickedLayer).attr('id').slice(-1);
+            if(boldColor != 'transparent'){
+                $(this).css('color',boldColor);
+                $(this).css('font-weight','bold');
+            }
+            else{
+                $(this).css('color','black');
+                $(this).css('font-weight','normal');
+            }
+            $(this).data('bolder'+num, []);
+            $(this).data('bolder'+num).push(boldColor);
+            $(this).data('bolder'+num).push(true);
         }
     });
     }
@@ -166,6 +184,7 @@ function generalSetup(){
           if(this == clickedLayer){
               $(this).css('opacity', 1.0);
                selectedType=$(this).data('name');
+               console.log(selectedType);
                selectedLayer=$(this).attr('id');
                 highlightElement=$(clickedLayer).find('.rhymeSelect').val();
           }else{
@@ -180,6 +199,8 @@ function generalSetup(){
    });
    
    $('.visibility').on('change',function(){
+       console.log('fun');
+       console.log($(this).data('layer'));
         var idFull = $(this).closest('.layer');
         var id = idFull.attr('id').slice(-1);
         var visible=$(this).is(':checked');
@@ -243,21 +264,24 @@ function generalSetup(){
                     });
                  }
                 }
-          /*  if($(this).data('layer')=='bold'){
-                    if (visible){
-                    $('.line, .word').each(function(){
+            if ($(this).data('layer') =='bold'){
+                 if (visible){
+                    $('.line, .word, .letter').each(function(){
                              if(typeof $(this).data('bolder'+id) === 'undefined'){}
                              else{
                              var whichColor = $(this).data('bolder'+id)[0];
-                             $(this).removeData('bolder'+id);
-                             $(this).data('bolder'+id, [])
-                             $(this).data('bolder'+id).push(whichColor);
-                             $(this).data('bolder'+id).push(true);
-                             $(this).css('background-color', $(this).data('bolder'+id)[0]);
+                             if (whichColor != 'transparent' || whichColor != ""){
+                                 $(this).removeData('bolder'+id);
+                                 $(this).data('bolder'+id, [])
+                                 $(this).data('bolder'+id).push(whichColor);
+                                 $(this).data('bolder'+id).push(true);
+                                 $(this).css("color", whichColor+"");
+                                 $(this).css("font-weight", "bold");
+                             }
                              }
                     });
                 }else {
-                        $('.line, .word').each(function(){
+                        $('.line, .word, .letter').each(function(){
                              var bflag = true;
                              if(typeof $(this).data('bolder'+id) === 'undefined'){}
                              else{
@@ -271,18 +295,18 @@ function generalSetup(){
                                  if(typeof $(this).data('bolder'+i) !== 'undefined'){
                                      if ($(this).data('bolder'+i)[1] === true && $(this).data('bolder'+i)[0] !== ""){
                                           $(this).css('color', $(this).data('bolder'+i)[0]);
-                                          //something about bold font
+                                          $(this).css('font-weight', 'bold');
                                             bflag = false;
                                              break;}
                                  }
                                  }
                                  if (bflag){
-                                     //something about regular font
-                                     $(this).css('background-color', 'transparent');
+                                     $(this).css('font-weight', 'normal');
+                                     $(this).css('color', 'black');
                                  }
                         });
                      }
-                    } */
+                    } 
                     
 
     });
@@ -309,7 +333,7 @@ function generalSetup(){
         rightlightColors.append(colorSquare);
         $('.colorSquare').on('click',chooseColor);
         if(ccount==colors.length-1){
-            $('.addColor').css('display','none');
+            $(addColor).css('display','none');
         }
     })
 
@@ -326,7 +350,7 @@ function generalSetup(){
     }
     
 
-/*    $('.letter').on('click', function(){
+/*   $('.letter').on('click', function(){
         if(selectedType=='rhyme' && highlightElement=='letter'){
             var num = $(clickedLayer).attr('id').slice(-1);
             $(this).css('background-color',highlightColor);
@@ -350,6 +374,21 @@ function generalSetup(){
             console.log($(this).data('colorer'+num));
             console.log('colorer'+num);
         }
+        if(selectedType=='bold' && boldElement=='boldLine'){
+            var num = $(clickedLayer).attr('id').slice(-1);
+            if(boldColor != 'transparent'){
+                $(this).css('color',boldColor);
+                $(this).css('font-weight','bold');
+            }
+            else{
+                $(this).css('color','black');
+                $(this).css('font-weight','normal');
+            }
+            $(this).data('bolder'+num, []);
+            $(this).data('bolder'+num).push(boldColor);
+            $(this).data('bolder'+num).push(true);
+            console.log($(this).data('bolder'+num));
+        }
     })
     
     $('.word').on('click', function(){
@@ -370,6 +409,70 @@ function generalSetup(){
     })
     
 }
+function boldSetup(id){  
+    for (i=0;i<2;i++){
+       var colorSquare=$('<div class="colorSquare"></div>');
+       colorSquare.data('color', darkColors[i]);
+       colorSquare.css('background-color', darkColors[i]);
+       var highlight = $('#' +'bold'+ id).find('.boldColors');
+      $(highlight).append(colorSquare);
+    }
+    
+    $('.colorSquare').on('click',chooseBoldColor);
+    
+   var addColor = $('#' +'bold'+ id).find('.addColor');
+    $(addColor).on('click',function(){
+        var colorSquare=$('<div class="colorSquare"></div>');
+        var rightlightColors=$($(this).parent()).find('.boldColors');
+        var ccount=rightlightColors.find('.colorSquare').length-1;
+        colorSquare.data('color', darkColors[ccount]);
+        colorSquare.css('background-color', darkColors[ccount]);
+        rightlightColors.append(colorSquare);
+        $('.colorSquare').on('click',chooseBoldColor);
+        if(ccount>=darkColors.length-1){
+            $(addColor).css('display','none');
+        }
+    })
+
+
+    
+    //('.colorSquare').on('click',
+    function chooseBoldColor(){
+        boldColor=$(this).data('color');
+        console.log('boldC' + boldColor)
+        $('.colorSquare').each(function(){
+            $(this).css('border-width', '0px');
+        })
+        $(this).css('border-width', '2px');
+        $(this).css('border-color', 'black');
+
+    }
+
+    
+    $('.word').on('click', function(){
+        if(selectedType=='bold' && boldElement=='boldWord'){
+            var num = $(clickedLayer).attr('id').slice(-1);
+            $(this).css('color',boldColor);
+            if(boldColor != 'transparent'){
+                $(this).css('color',boldColor);
+                $(this).css('font-weight','bold');
+            }
+            else{
+                $(this).css('color','black');
+                $(this).css('font-weight','normal');
+            }
+            $(this).data('bolder'+num, [])
+            $(this).data('bolder'+num).push(boldColor);
+            $(this).data('bolder'+num).push(true);
+            console.log($(this).data('bolder'+num));
+        }
+    })
+    
+    $('.boldSelect').on('change',function(){
+      boldElement=$(this).val();
+    })
+    
+}
      generalSetup();
      colorSetup('0');
 
@@ -382,7 +485,7 @@ function generalSetup(){
         var verticalLine = $('<span class = syllableMarker>|</span>');}
     verticalLine.css('font-weight', 'bold');
     verticalLine.css('color', color);
-    verticalLine.css('font-size', '1.3em');
+    verticalLine.css('font-size', '1em');
     verticalLine.data('layer', selectedLayer);
     object.prepend(verticalLine);
 }
@@ -570,21 +673,20 @@ syllableSetup();
                     "<div contenteditable='true' class='layerName'>"+ "Click Here to Enter Layer Name" + "</div>"+
                     "Bold:"+
                     "<select class='boldSelect'>"+
-                        "<option value='boldline'>Line</option>" +
-                        "<option value='boldword'>Word</option>"+
-                        "<option value='boldletter'>Letter</option>"+
+                        "<option value='boldLine'>Line</option>" +
+                        "<option value='boldWord'>Word</option>"+
+                        "<option value='boldLetter'>Letter</option>"+
                     "</select>"+
-                    "<div class='highlighting'>"+
-                        "<span class='highlightColors'>Erase:<div class='colorSquare eraseHighlight' data-color='transparent'></div> Colors:</span>"+
+                    "<div class='bolding'>"+
+                        "<span class='boldColors'>Erase:<div class='colorSquare eraseBold' data-color='transparent'></div> Colors:</span>"+
                         "<button class='addColor'>"+
                            "+" +
                        "</button>"+
                     "</div>"+
-                    "<span class='visibilitySpan'>Visibility:<input type='checkbox' data-layer='rhyme' class='visibility' checked></span>" +
+                    "<span class='visibilitySpan'>Visibility:<input type='checkbox' data-layer='bold' class='visibility' checked></span>" +
                 "</div>");
-      syllableSetup(); 
       generalSetup();         
-      colorSetup(boldcounter);
+      boldSetup(boldCounter);
       boldCounter++;
     })
     
@@ -610,11 +712,48 @@ syllableSetup();
        //makeSpans();
    }));
    
-   $('.copyPoem').on('click',function(){
+//   $('.copyPoem').on('click',function(){
+       
+//         var newPoem = $("<span class='newPoem'>");
+//         $('.line').each(function(){
+//             var lineText = '<p class="newLine"><span>';
+//             var elements = $(this).text().split('');
+//             for (var i = 0; i < elements.length; i++) {
+//                 if (elements[i-1] === ' ' || i === 0){
+//                     var word = $('<span class="newWord">');
+//                     $(lineText).append(word);
+//                 }
+//                 if (elements[i] === ' '){
+//                     $(lineText).append('<span class="newSpace">' + elements[i] + '</span>');
+//                 } 
+//                 else{
+//                   $(word).append('<span class="newLetter">' + elements[i] + '</span>');
+//                 }
+//                 if (i == elements.length - 1){
+//                     //make linebreak space wide enough to prepend breaks to
+//                     //only works if no spaces at end of line already!
+//                     var linebreak = $('<span class="newSpace"> </span>');
+//                     linebreak.css('padding-left', '1px');
+//                     $(lineText).append(linebreak);
+//                  }
+//             }
+//             $(lineText).append('</span></p>');
+//             $(newPoem).append($(lineText));
+//         });
+//         $(newPoem).append("</span>");
+//         $('#leftSide').append($(newPoem));
+//     });
+    
+    // $('.newPoem').on('click', function(){
+        
+    // });
+    
+    
+     $('.copyPoem').on('click',function(){
         var newPoem = $("<span class='newPoem' contenteditable='true'>");
         $('.line').each(function(){
             var lineText = $(this).text();
-            $(newPoem).append('<p class="newLine"><span>' + lineText + '</span></p>');
+            $(newPoem).append('<p class="newLine col-md-11"><span>' + lineText + '</span></p>');
         });
         $(newPoem).append("</span>");
 //        var filledSpan = $(newPoem).children('span');
