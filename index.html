@@ -3,24 +3,22 @@
 <head>
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/3.4.8/d3.min.js"></script>
-    
-    <link rel="stylesheet" type="text/css" href="index.css">  
     <script src="index.js"> </script>
     
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="index.css">  
+    
     
 </head>
 
 <body>
 
     <div class="toolbar">
-        <!--PLACEHOLDER FOR TOOLBAR??-->
-        <!--<div class="btn-group" id="toggle">-->
-        <!--    <span><button type="button" class="btn btn-default syllablesOption" data-active=false>Start Syllables</button></span>-->
-        <!--    <span><button type="button" class="btn btn-default syllablesCount">Count Syllables</button></span>-->
-        <!--    <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>-->
-        <!--</div>-->
+        <div class="btn-group" id="toggle">
+            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
+            <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
+        </div>
     </div>
     
     <div class='container'>
@@ -63,7 +61,7 @@
             <div class = 'existingLayers'>
                 <div class="layer" data-name="typing" id="typing0">
                     <div class="layerName">Text</div>
-                    <button class="copyPoem">Editable Text</button>
+                    <button class="copyPoem" id="trigger-overlay">Editable Text</button>
                     Style:
                     <select class='rhymeSelect'>
                         <option value='none'>None</option>
@@ -92,7 +90,7 @@
 
                 <div class='layer' data-name='syllable' id='syllable0'>
                     <div class='layerName'>Syllables</div>
-                    <div class='info'> ONLY CLICK FOR SYLLABLE BREAKS INSIDE OF WORDS, SAVE YOURSELF SOME WORK</div>
+                    <div class='info'> <!--ONLY CLICK FOR SYLLABLE BREAKS INSIDE OF WORDS, SAVE YOURSELF SOME WORK-->Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
                     <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
                     <div class="btn-group" id="toggle">
                         <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
@@ -110,7 +108,7 @@
                         <li><a class = "newColorLayer" href="#">Rhyme</a></li>
                         <li><a class = "newBarsLayer" href="#">Syllable</a></li>
                         <li><a class = "newColorLayer" href="#">Tone</a></li>
-                        <li><a class = "newColorLayer" href="#">Consonance/Assonance</a></li>
+                        <li><a class = "newBoldLayer" href="#">Consonance/Assonance</a></li>
                         <li><a class = "newBoldLayer" href="#">Other Bolding</a></li>
                         <li><a class = "newColorLayer" href="#">Other Coloring</a></li>
                         <li><a class = "newBarsLayer" href="#">Other Vertical Bars</a></li>
@@ -121,6 +119,5 @@
     </div>
 </body>
 </html>
-
 
 

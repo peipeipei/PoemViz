@@ -17,7 +17,6 @@ var boldColor = 'black';
 $(document).ready(function(){
     //make each alphanumeric character/space/word/line a span with seperate class
     function makeSpans() {
-        var count = 0;
         $('.poemLine').each(function(){
             var elements = $(this).text().split('');
             $(this).text('');
@@ -25,14 +24,16 @@ $(document).ready(function(){
             $(this).append(line);
             for (var i = 0; i < elements.length; i++) {
                 if (elements[i-1] === ' ' || i === 0){
+                    var syllable=$('<span class=syllable>')
                     var word = $('<span class=word>');
+                    $(word).append(syllable);
                     $(line).append(word);
                 }
                 if (elements[i] === ' '){
                     $(line).append('<span class=space>' + elements[i] + '</span>');
                 } 
                 else{
-                   $(word).append('<span class=letter>' + elements[i] + '</span>');
+                   $(syllable).append('<span class=letter>' + elements[i] + '</span>');
                 }
                 if (i == elements.length - 1){
                     //make linebreak space wide enough to prepend breaks to
@@ -101,13 +102,11 @@ $(document).ready(function(){
     function stopSyllables(){
         $('.letter, .space').unbind('mouseover');
         $('.letter, .space').unbind('click');
-        $('.syllablesOption').text('Start Syllables');
-        $('.syllablesOption').data('active', false);
+        
         $('.letter').on('click', function(){
         if(selectedType=='rhyme' && highlightElement=='letter'){
             var num = $(clickedLayer).attr('id').slice(-1);
             $(this).css('background-color',highlightColor);
-            $(this).data('rhyme-color', highlightColor);
             $(this).data('colorer'+num, []);
             $(this).data('colorer'+num).push(highlightColor);
             $(this).data('colorer'+num).push(true);
@@ -205,26 +204,22 @@ function generalSetup(){
         var id = idFull.attr('id').slice(-1);
         var visible=$(this).is(':checked');
         if($(this).data('layer')=='syllable'){
-            var markers=$('.syllableMarker');
-            markers.each(function(){
-                var lineSpan = $(this).parent().parent().parent().parent()[0];
-                var countSpan = $(lineSpan).children('.lineCount')[0];
-                var count = $(countSpan).text();
-                if ($(this).data('layer')==selectedLayer){
-                    if(visible){
-                        if ($(this).css('display')=='none'){
-                            $(this).show();
-                            count++;
-                        }
-                    }else{
-                        if ($(this).css('display')!='none'){
-                       $(this).hide();
-                       count--;
-                        }
-                    }
-               }
-               $(countSpan).text(count);
-            });
+            if(visible){
+                $('.syllable').css('border-color', '#eee');
+                $('.syllable').css('min-width', '65px');
+                $('.letter, .space').each(function(){
+                if ($(this).data('syllable') == 'true'){
+                    $(this).css('border-left', '3px solid red');
+                }
+                });
+            }
+            else{
+                $('.syllable').css('border-color', 'white');
+                $('.syllable').css('min-width', '0px');
+                $('.letter, .space').each(function(){
+                    $(this).css('border-left', 'none');
+                });
+            }
         }
         if($(this).data('layer')=='rhyme'){
             if (visible){
@@ -241,26 +236,27 @@ function generalSetup(){
                 });
             }else {
                     $('.line, .word, .letter').each(function(){
-                         var flag = true;
-                         if(typeof $(this).data('colorer'+id) === 'undefined'){}
-                         else{
-                         var whichColor = $(this).data('colorer'+id)[0];
-                         $(this).removeData('colorer'+id);
-                         $(this).data('colorer'+id, [])
-                         $(this).data('colorer'+id).push(whichColor);
-                         $(this).data('colorer'+id).push(false);}
-                         console.log($(this).data('colorer'+id));
-                         for (var i = 0; i < counter; i++){
-                             if(typeof $(this).data('colorer'+i) !== 'undefined'){
-                                 if ($(this).data('colorer'+i)[1] === true && $(this).data('colorer'+i)[0] !== ""){
-                                      $(this).css('background-color', $(this).data('colorer'+i)[0]);
-                                        flag = false;
-                                         break;}
-                             }
-                             }
-                             if (flag){
-                                 $(this).css('background-color', 'transparent');
-                             }
+                        var flag = true;
+                        if(typeof $(this).data('colorer'+id) === 'undefined'){}
+                        else{
+                        var whichColor = $(this).data('colorer'+id)[0];
+                        $(this).removeData('colorer'+id);
+                        $(this).data('colorer'+id, [])
+                        $(this).data('colorer'+id).push(whichColor);
+                        $(this).data('colorer'+id).push(false);}
+                        console.log($(this).data('colorer'+id));
+                        for (var i = 0; i < counter; i++){
+                            if(typeof $(this).data('colorer'+i) !== 'undefined'){
+                                if ($(this).data('colorer'+i)[1] === true && $(this).data('colorer'+i)[0] !== ""){
+                                    $(this).css('background-color', $(this).data('colorer'+i)[0]);
+                                    flag = false;
+                                    break;
+                                }
+                            }
+                        }
+                        if (flag){
+                             $(this).css('background-color', 'transparent');
+                        }
                     });
                  }
                 }
@@ -275,7 +271,7 @@ function generalSetup(){
                                  $(this).data('bolder'+id, [])
                                  $(this).data('bolder'+id).push(whichColor);
                                  $(this).data('bolder'+id).push(true);
-                                 $(this).css("color", whichColor+"");
+                                 $(this).css("color", whichColor);
                                  $(this).css("font-weight", "bold");
                              }
                              }
@@ -354,7 +350,6 @@ function generalSetup(){
         if(selectedType=='rhyme' && highlightElement=='letter'){
             var num = $(clickedLayer).attr('id').slice(-1);
             $(this).css('background-color',highlightColor);
-            $(this).data('rhyme-color', highlightColor);
             $(this).data('colorer'+num, []);
             $(this).data('colorer'+num).push(highlightColor);
             $(this).data('colorer'+num).push(true);
@@ -362,53 +357,84 @@ function generalSetup(){
             console.log('colorer'+num);
         }
     })*/
-
-    $('.line').on('click', function(){
-        if(selectedType=='rhyme' && highlightElement=='line'){
-            var num = $(clickedLayer).attr('id').slice(-1);
-            $(this).css('background-color',highlightColor);
-            $(this).data('rhyme-color', highlightColor);
-            $(this).data('colorer'+num, []);
-            $(this).data('colorer'+num).push(highlightColor);
-            $(this).data('colorer'+num).push(true);
-            console.log($(this).data('colorer'+num));
-            console.log('colorer'+num);
-        }
-        if(selectedType=='bold' && boldElement=='boldLine'){
-            var num = $(clickedLayer).attr('id').slice(-1);
-            if(boldColor != 'transparent'){
-                $(this).css('color',boldColor);
-                $(this).css('font-weight','bold');
-            }
-            else{
-                $(this).css('color','black');
-                $(this).css('font-weight','normal');
-            }
-            $(this).data('bolder'+num, []);
-            $(this).data('bolder'+num).push(boldColor);
-            $(this).data('bolder'+num).push(true);
-            console.log($(this).data('bolder'+num));
-        }
-    })
-    
-    $('.word').on('click', function(){
-        if(selectedType=='rhyme' && highlightElement=='word'){
-            var num = $(clickedLayer).attr('id').slice(-1);
-            $(this).css('background-color',highlightColor);
-            $(this).data('rhyme-color', highlightColor);
-            $(this).data('colorer'+num, [])
-            $(this).data('colorer'+num).push(highlightColor);
-            $(this).data('colorer'+num).push(true);
-            console.log($(this).data('colorer'+num));
-            console.log('colorer'+num);
-        }
-    })
     
     $('.rhymeSelect').on('change',function(){
       highlightElement=$(this).val();
     })
     
 }
+
+$('.line').on('click', function(){
+    if(selectedType=='rhyme' && highlightElement=='line'){
+        var num = $(clickedLayer).attr('id').slice(-1);
+        if (typeof $(this).data('colorer'+num) === 'undefined'){
+            $(this).css('background-color',highlightColor);
+            $(this).data('colorer'+num, []);
+            $(this).data('colorer'+num).push(highlightColor);
+            $(this).data('colorer'+num).push(true);
+        }else{
+            $(this).removeData('colorer'+num);
+            var flag=true;
+            for (var i = 0; i < counter; i++){
+                if(typeof $(this).data('colorer'+i) !== 'undefined'){
+                    if ($(this).data('colorer'+i)[1] === true){
+                        $(this).css('background-color', $(this).data('colorer'+i)[0]);
+                        flag = false;
+                        break;
+                    }
+                }
+            }
+            if (flag){
+                 $(this).css('background-color', 'transparent');
+            }
+            $(this).css('background-color','transparent');
+        }
+    }
+    if(selectedType=='bold' && boldElement=='boldLine'){
+        var num = $(clickedLayer).attr('id').slice(-1);
+        if(boldColor != 'transparent'){
+            $(this).css('color',boldColor);
+            $(this).css('font-weight','bold');
+        }
+        else{
+            $(this).css('color','black');
+            $(this).css('font-weight','normal');
+        }
+        $(this).data('bolder'+num, []);
+        $(this).data('bolder'+num).push(boldColor);
+        $(this).data('bolder'+num).push(true);
+        console.log($(this).data('bolder'+num));
+    }
+})
+
+$('.word').on('click', function(){
+    if(selectedType=='rhyme' && highlightElement=='word'){
+        var num = $(clickedLayer).attr('id').slice(-1);
+        $(this).css('background-color',highlightColor);
+        $(this).data('colorer'+num, [])
+        $(this).data('colorer'+num).push(highlightColor);
+        $(this).data('colorer'+num).push(true);
+        console.log($(this).data('colorer'+num));
+        console.log('colorer'+num);
+    }
+    if(selectedType=='bold' && boldElement=='boldWord'){
+        var num = $(clickedLayer).attr('id').slice(-1);
+        $(this).css('color',boldColor);
+        if(boldColor != 'transparent'){
+            $(this).css('color',boldColor);
+            $(this).css('font-weight','bold');
+        }
+        else{
+            $(this).css('color','black');
+            $(this).css('font-weight','normal');
+        }
+        $(this).data('bolder'+num, [])
+        $(this).data('bolder'+num).push(boldColor);
+        $(this).data('bolder'+num).push(true);
+        console.log($(this).data('bolder'+num));
+    }
+})
+
 function boldSetup(id){  
     for (i=0;i<2;i++){
        var colorSquare=$('<div class="colorSquare"></div>');
@@ -444,29 +470,10 @@ function boldSetup(id){
             $(this).css('border-width', '0px');
         })
         $(this).css('border-width', '2px');
-        $(this).css('border-color', 'black');
+        $(this).css('border-color', 'white');
 
     }
 
-    
-    $('.word').on('click', function(){
-        if(selectedType=='bold' && boldElement=='boldWord'){
-            var num = $(clickedLayer).attr('id').slice(-1);
-            $(this).css('color',boldColor);
-            if(boldColor != 'transparent'){
-                $(this).css('color',boldColor);
-                $(this).css('font-weight','bold');
-            }
-            else{
-                $(this).css('color','black');
-                $(this).css('font-weight','normal');
-            }
-            $(this).data('bolder'+num, [])
-            $(this).data('bolder'+num).push(boldColor);
-            $(this).data('bolder'+num).push(true);
-            console.log($(this).data('bolder'+num));
-        }
-    })
     
     $('.boldSelect').on('change',function(){
       boldElement=$(this).val();
@@ -494,63 +501,98 @@ function startSyllables(){
     $('.letter, .space').unbind('click');
     $( ".letter, .space" )
          .mouseover(function() {
-          //addSyllable($(this).prev(), 'lightgray', true);
-          if ($(this).children('.syllableMarker').length === 0 && $(this).children('.ghostMarker').length === 0){
-          addSyllable($(this), 'lightgray', true);
-          }
+           if ($(this).css('border-left-color') == 'rgb(255, 0, 0)'){}
+           else{
+           $(this).css('border-left', '3px solid gray');}
          })
          .mouseout(function() {
-         // $(this).prev().children('.ghostMarker').remove();
-           $(this).children('.ghostMarker').remove();
+          if ($(this).css('border-left-color') =='rgb(255, 0, 0)'){}
+          else{ 
+          $(this).css('border-left', 'none');}
          });
       
     $('.letter, .space').click(function (e) { //Default mouse Position
-        //var sel = window.getSelection();
-        //var range = sel.getRangeAt(0);
-        //console.log(range.commonAncestorContainer.parentElement);
-        var lineSpan = $(this).parent().parent().parent()[0];
-        var countSpan = $(lineSpan).children('.lineCount')[0];
-        var count = $(countSpan).text();
-        if ($(this).attr('class') == 'syllableMarker'){
-            $(this).remove();  
+        if ($(this).css('border-left-color') == 'rgb(255, 0, 0)'){
+            $(this).css('border-left', 'none');
+            $(this).data('syllable', 'false')
         }
         else{
-            if ($(this).children('.syllableMarker').length > 0)
-            {
-                $(this).children('.syllableMarker').remove();
-                count--;
-                $(countSpan).text(count);
-                
-            }
-            else{
-               if ($(this).attr('class') == 'ghostMarker'){
-                   $(this).remove();
-               }
-               if ($(this).children('.ghostMarker').length > 0)
-               {
-                $(this).children('.ghostMarker').remove(); 
-               }
-            addSyllable($(this), 'red', false);
-            count++;
-            $(countSpan).text(count);
-            }
+            $(this).css('border-left', '3px solid red');
+            $(this).data('syllable', 'true');
+            /*var oldSyl=$(this).parent();
+            var syLs=oldSyl.find('.letter');
+            var clicked=this;
+            var newSyl='<span class=syllable>';
+            syLs.each(function(){
+                if(clicked==this){
+                    newSyl+='</span><span class=syllable><span class=letter>'+$(this).html()+'</span>';
+                }else{
+                    newSyl +='<span class=letter>'+$(this).html()+'</span>';
+                }
+            })
+            newSyl+='</span>'
+            $(oldSyl).replaceWith(newSyl);*/
         }
-     })
-         $('.syllablesOption').data('active', true);
-         $('.syllablesOption').text('Stop Syllables');
+    })
 }
 
-function syllableSetup() {   
-    
-    $('.syllablesOption').on('click',function(){
-        if($('.syllablesOption').data('active')===false){
-            startSyllables();
+$('.wordOption').on('click',function(){
+        if($('.wordOption').data('active')){
+            $('.poem').css('color', 'rgba(0,0,0,1)');
+            $('.wordOption').text('Turn Text Off');
+            $('.wordOption').data('active', false);
         }else{
-            stopSyllables();
+            $('.poem').css('color', 'rgba(0,0,0,0)');
+            $('.wordOption').text('Turn Text On');
+            $('.wordOption').data('active', true);
         }
-    });
-    
-    
+});
+            
+$('.puncOption').on('click',function(){
+        if($('.puncOption').data('active')){
+            //go back to original, use stored input data?
+            $('.puncOption').text('Lines by Punctuation');
+            $('.puncOption').data('active', false);
+        }else{
+            $('.puncOption').text('Lines by Linebreaks');
+            $('.puncOption').data('active', true);
+            var text = $('.poem').text().split(",");
+            console.log(text);
+            $('.poem .poemLine').remove();
+            for (var t = 0; t < text.length; t++) {
+                var line = $('<p class="poemLine">');
+                var inside = $('<span class="line col-md-11">');
+                $('.poem').append(line);
+                $(line).append(inside);
+                var elements = text[t];
+                for (var i = 0; i < elements.length; i++) {
+                if (elements[i-1] === ' ' || i === 0){
+                    var syllable=$('<span class=syllable>')
+                    var word = $('<span class=word>');
+                    $(word).append(syllable);
+                    $(inside).append(word);
+                }
+                if (elements[i] === ' '){
+                    $(inside).append('<span class=space>' + elements[i] + '</span>');
+                } 
+                else{
+                   $(syllable).append('<span class=letter>' + elements[i] + '</span>');
+                }
+                if (i == elements.length - 1){
+                    //make linebreak space wide enough to prepend breaks to
+                    //only works if no spaces at end of line already!
+                    var linebreak = $('<span class=space > </span>');
+                    linebreak.css('padding-left', '1px');
+                    $(inside).append(linebreak);
+                 }
+            }
+            var lineCount = $('<span class=lineCount style="color:blue; font-weight:bold">');
+            $(inside).append(lineCount);
+        }
+        }
+});
+
+function syllableSetup() {   
   
     $('.syllablesCount').on('click', function(){
         console.log('click');
@@ -582,7 +624,7 @@ function syllableSetup() {
             
             var grid=$(result);
             $('.poem').hide();
-            $('#leftSide').append(grid);
+            $('.left').append(grid);
             $('.syllablesGrid').data('gridded',true);
             $('.syllablesGrid').text('Ungrid');
         }else{
@@ -594,6 +636,17 @@ function syllableSetup() {
     });
     
     $('.syllablesClear').on('click',function(){
+        $('.letter, .space').each(function(){
+           if ($(this).css('border-left-color') == 'black'){}
+           else{
+               if ($(this).css('border-left-color', 'red')){
+                $(this).css('border-left', 'none');
+                $(this).data('syllable', 'false');   
+               }
+           }
+        });
+        console.log('yo');
+       /* var visible=$(this).parent().parent().parent().find('.visibility').is(':checked');
        var markers=$('.syllableMarker');
        markers.each(function(){
             var lineSpan = $(this).parent().parent().parent().parent()[0];
@@ -601,10 +654,12 @@ function syllableSetup() {
             var count = $(countSpan).text();
             if ($(this).data('layer')==selectedLayer){
                 $(this).remove();
-                count--;
+                if(visible){
+                    count--;
+                }
             }
             $(countSpan).text(count);
-       });
+       });*/
    });
 }
 
@@ -655,7 +710,7 @@ syllableSetup();
         }
         $(".existingLayers").append("<div class='layer' data-name='syllable'  id='syllable"+sCounter+ "' "+" </div>"+
                     openDiv+ "</div>"+
-                    "<div class='info'> ONLY CLICK FOR SYLLABLE BREAKS INSIDE OF WORDS, SAVE YOURSELF SOME WORK</div>"+
+                    "<div class='info'> Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>"+
                     "<span class='visibilitySpan'>Visibility: <input type='checkbox' data-layer='syllable' class='visibility' checked></span>"+
                     "<div class='btn-group' id='toggle'>"+
                         "<span><button type='button' class='btn btn-default syllablesClear'>Clear All Syllable Marks</button></span>"+
@@ -669,8 +724,15 @@ syllableSetup();
     });
     
     $('.newBoldLayer').on('click',function(){
+        var name = $(this).text();
+        if (name == "Other Bolding"){
+            var openDiv = "<div contenteditable='true' class='layerName'>"+ "Click Here to Enter Layer Name" ;
+        }
+        else{
+            var openDiv = "<div class='layerName'>"+ name ;
+        }
         $(".existingLayers").append("<div class='layer' data-name='bold' id='bold"+boldCounter+ "' "+" </div>"+
-                    "<div contenteditable='true' class='layerName'>"+ "Click Here to Enter Layer Name" + "</div>"+
+                    openDiv + "</div>"+
                     "Bold:"+
                     "<select class='boldSelect'>"+
                         "<option value='boldLine'>Line</option>" +
@@ -712,55 +774,47 @@ syllableSetup();
        //makeSpans();
    }));
    
-//   $('.copyPoem').on('click',function(){
-       
-//         var newPoem = $("<span class='newPoem'>");
-//         $('.line').each(function(){
-//             var lineText = '<p class="newLine"><span>';
-//             var elements = $(this).text().split('');
-//             for (var i = 0; i < elements.length; i++) {
-//                 if (elements[i-1] === ' ' || i === 0){
-//                     var word = $('<span class="newWord">');
-//                     $(lineText).append(word);
-//                 }
-//                 if (elements[i] === ' '){
-//                     $(lineText).append('<span class="newSpace">' + elements[i] + '</span>');
-//                 } 
-//                 else{
-//                   $(word).append('<span class="newLetter">' + elements[i] + '</span>');
-//                 }
-//                 if (i == elements.length - 1){
-//                     //make linebreak space wide enough to prepend breaks to
-//                     //only works if no spaces at end of line already!
-//                     var linebreak = $('<span class="newSpace"> </span>');
-//                     linebreak.css('padding-left', '1px');
-//                     $(lineText).append(linebreak);
-//                  }
-//             }
-//             $(lineText).append('</span></p>');
-//             $(newPoem).append($(lineText));
-//         });
-//         $(newPoem).append("</span>");
-//         $('#leftSide').append($(newPoem));
-//     });
     
-    // $('.newPoem').on('click', function(){
-        
+    var newPoem = $("<div class='overlay close overlay-hugeinc'>");
+    $(newPoem).append("<but ton type='button' class='overlay-close' id='overlay-closed'>Close</button>");
+    $(newPoem).append("<span class='newPoem'>");
+    $(newPoem).append("<textarea class='editPoem' id='editPoem'>");
+    $(newPoem).append("</textarea></span></div>");
+    // $('.line').each(function(){
+    //     var lineText = $(this).text();
+    //     $(newPoem).append('<p class="newLine col-md-11"><span>' + lineText + '</span></p>');
     // });
+    // $(newPoem).append("</span></div>");
     
     
-     $('.copyPoem').on('click',function(){
-        var newPoem = $("<span class='newPoem' contenteditable='true'>");
-        $('.line').each(function(){
-            var lineText = $(this).text();
-            $(newPoem).append('<p class="newLine col-md-11"><span>' + lineText + '</span></p>');
-        });
-        $(newPoem).append("</span>");
+    
 //        var filledSpan = $(newPoem).children('span');
 //        $(filledSpan).each(function(){
 //            console.log($(this).text());
 //        });
-        $('#leftSide').append($(newPoem));
+    $('body').append($(newPoem));
+    
+    
+    $('.copyPoem').on('click',function(){
+        if( $('.overlay').hasClass('close') ) {
+            $('.overlay').removeClass('close' );
+            $('.overlay').addClass('open');
+            
+            var obj = document.getElementById('editPoem');
+            console.log(obj);
+            $('.line').each(function(){
+                var lineText = $(this).text();
+                obj.value += lineText;
+                obj.value += "\r\n";
+            });
+        }
     });
-   
-});
+    
+    $('#overlay-closed').click(function(){
+        if( $('.overlay').hasClass('open') ) {
+            $('.overlay').removeClass('open');
+            $('.overlay').addClass('close');
+        }
+    });
+    
+})
