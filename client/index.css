@@ -1,0 +1,171 @@
+
+.left{
+    padding-top: 80px;
+    padding-left:0px;
+}
+
+
+.rhymeCheck{
+    margin-right:10px;
+}
+
+.poemLine span{
+    margin-left:0.5px;
+}
+
+td{
+    text-align:center;
+}
+
+.colorSquare{
+    width:18px;
+    height:18px;
+    margin:3px 3px 0px 3px;
+    border-style:solid;
+    border-width:0px;
+    display:inline-block;
+}
+
+.highlightColors, .boldColors{
+    display:inline-block;
+}
+
+.layer{
+    border-width:1px;
+    border-style:solid;
+    padding:10px;
+    margin:10px 0px;
+    background-color:#dddddd;
+    opacity:0.5;
+    position:relative;
+}
+
+.eraseHighlight, .eraseBold{
+    background-color:white;
+}
+
+#layers{
+    margin-top:80px;
+    
+}
+
+.toolbar{
+    background-color:LightGray;
+    padding: none;
+    height: 50px;
+    position: fixed;
+    width: 100%;
+    z-index:10;
+}
+
+.visibilitySpan{
+    position:absolute;
+    top:10px;
+    right:10px;
+    color:gray;
+    font-style:italic;
+}
+
+.btn{
+    border: 1px solid gray;
+    margin:5px;
+}
+
+.dropdown-toggle{
+    color: black;
+    border: 1px solid black;
+}
+
+ .syllableMarker {
+    margin: 0px;
+}
+.layerName{
+    font-size:12pt;
+    font-weight:bold;
+}
+
+.addColor{
+    height:20px;
+    width:20px;
+    padding:0px;
+}
+
+.lineCount{
+    text-align: right;
+    height: 100%;
+}
+
+.line{
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    border-bottom-color: #ddd;
+    padding-left:0px;
+    padding-right:0px;
+}
+
+
+
+
+
+/*Tryna do an overlay derp*/
+.overlay{
+    position: fixed;
+	width: 100%;
+	height: 100%;
+	top: 50px;
+	left: 0;
+	background: rgba(200,200,200,0.9);
+}
+
+/* Overlay closing cross */
+/*.overlay .overlay-close {*/
+#overlay-closed{
+	/*width: 80px;*/
+	/*height: 80px;*/
+	position: absolute;
+	right: 20px;
+	top: 20px;
+	overflow: hidden;
+	border: none;
+	/*background: url(cross.png) no-repeat center center;*/
+	/*text-indent: 200%;*/
+	/*color: transparent;*/
+	outline: none;
+	z-index: 100;
+}
+
+/*Effects */
+/*.overlay-hugeinc {*/
+/*	opacity: 0;*/
+/*	visibility: hidden;*/
+/*	-webkit-transition: opacity 0.5s, visibility 0s 0.5s;*/
+/*	transition: opacity 0.5s, visibility 0s 0.5s;*/
+/*}*/
+
+.overlay-hugeinc.open {
+	opacity: 1;
+	visibility: visible;
+	-webkit-transition: opacity 0.5s;
+	-moz-transition: opacity 0.5s;
+	-o-transition: opacity 0.5s;
+	transition: opacity 0.5s;
+}
+
+.overlay-hugeinc.close {
+	opacity: 0;
+	visibility: hidden;
+	-webkit-transition: opacity 0.5s;
+	-moz-transition: opacity 0.5s;
+	-o-transition: opacity 0.5s;
+	transition: opacity 0.5s, visibility 0.5s;
+}
+
+.editPoem{
+    top:20px;
+    min-width: 80%;
+    min-height: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
