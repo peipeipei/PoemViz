@@ -50,6 +50,79 @@ $(document).ready(function(){
     }
     
     makeSpans();
+    function ghostMarker() {
+           if ($(this).css('border-left-color') == 'rgb(255, 0, 0)'){}
+           else{
+           $(this).css('border-left', '3px solid gray');} }
+    function noghostMarker() {
+           if ($(this).css('border-left-color') =='rgb(255, 0, 0)'){}
+          else{ 
+          $(this).css('border-left', 'none');} }
+    function clickSyllable() {
+        var lineSpan = $(this).closest('.poemLine');
+        var countSpan = $(lineSpan).find('.lineCount');
+        var count = $(countSpan).text();
+        if ($(this).css('border-left-color') == "rgb(255, 0, 0)"){
+            console.log('yay');
+            $(this).css('border-left', 'none');
+            $(this).data('syllable', 'false');
+            count--;
+            $(countSpan).text(count);
+            //remove spans
+        }
+        else{
+            var oldSyl=$(this).closest('.syllable');
+            var syLs= oldSyl.find('.letter');
+            var flag = true;
+            var beginning = false;
+            var clicked=this;
+            var newSyl=$('<span class=syllable>');
+            if ($(syLs[0]).css('border-left-color') == "rgb(255, 0, 0)"){
+                 newSyl.css('border-left', "3px solid red");
+            }
+            var secondSyl = $('<span class=syllable>');
+            syLs.each(function(){
+                if(clicked==this){
+                    flag = false;
+                    beginning = true;
+                    $(oldSyl).replaceWith(newSyl);
+                }
+                if (flag){
+                    //store background color
+                    console.log($(this).html());
+                    newSyl.append('<span class=letter>'+$(this).html()+'</span>');
+                }
+                else{
+                if (beginning){
+                    //store background color
+                    console.log($(this).html());
+                    var special = $('<span class=letter>'+$(this).html()+'</span>');
+                    special.css('border-left', '3px solid red');
+                    special.data('syllable', 'true');
+                    secondSyl.append(special);
+                    beginning = false;
+                }
+                else{
+                    //store background color
+                    console.log($(this).html());
+                    secondSyl.append('<span class=letter>'+$(this).html()+'</span>');
+                }
+                }
+            })
+            $(newSyl).after(secondSyl);
+            count++;
+            $(countSpan).text(count);
+            if ($('.syllablesGrid').data('gridded')===true){
+                $('.syllable').css('display', 'inline');
+                $('.syllable').css('border', 'none');
+                $('.syllable').css('min-width', '0');
+                $('.syllable').css('display', 'inline-block');
+                $('.syllable').css('border', '1px solid transparent');
+                $('.syllable').css('min-width', '65px');
+                $('.syllablesGrid').data('gridded',true);
+            }
+        }
+    }  
     //attempt to only update edited text
    /* function updateSpans() {
         $('.letter, .space').each(function(){
@@ -100,8 +173,9 @@ $(document).ready(function(){
     }*/
     
     function stopSyllables(){
-        $('.letter, .space').unbind('mouseover');
-        $('.letter, .space').unbind('click');
+        $('.poem').off("mouseover", ".letter, .space", ghostMarker);
+        $('.poem').off("mouseout", ".letter, .space", noghostMarker);
+        $('.poem').off("click", ".letter, .space", clickSyllable);
         
         $('.letter').on('click', function(){
         if(selectedType=='rhyme' && highlightElement=='letter'){
@@ -182,12 +256,14 @@ function generalSetup(){
       $('.layer').each(function(){
           if(this == clickedLayer){
               $(this).css('opacity', 1.0);
+              $(this).css('background-color', 'lightblue');
                selectedType=$(this).data('name');
                console.log(selectedType);
                selectedLayer=$(this).attr('id');
                 highlightElement=$(clickedLayer).find('.rhymeSelect').val();
           }else{
-              $(this).css('opacity',0.5);
+              $(this).css('opacity',1.0);
+              $(this).css('background-color','#ddd');
           }
       });
       if (selectedType=='syllable'){
@@ -211,6 +287,7 @@ function generalSetup(){
                     $(this).css('border-left', '3px solid red');
                 }
                 });
+                $('.lineCount').css('opacity','1.0');
             }
             else{
                 $('.syllable').css('border-color', 'white');
@@ -218,6 +295,7 @@ function generalSetup(){
                 $('.letter, .space').each(function(){
                     $(this).css('border-left', 'none');
                 });
+                $('.lineCount').css('opacity','0.0');
             }
         }
         if($(this).data('layer')=='rhyme'){
@@ -496,42 +574,10 @@ function boldSetup(id){
 }*/
 
 function startSyllables(){
-    $('.letter, .space').unbind('click');
-    $( ".letter, .space" )
-         .mouseover(function() {
-           if ($(this).css('border-left-color') == 'rgb(255, 0, 0)'){}
-           else{
-           $(this).css('border-left', '3px solid gray');}
-         })
-         .mouseout(function() {
-          if ($(this).css('border-left-color') =='rgb(255, 0, 0)'){}
-          else{ 
-          $(this).css('border-left', 'none');}
-         });
-      
-    $('.letter, .space').click(function (e) { //Default mouse Position
-        if ($(this).css('border-left-color') == 'rgb(255, 0, 0)'){
-            $(this).css('border-left', 'none');
-            $(this).data('syllable', 'false')
-        }
-        else{
-            $(this).css('border-left', '3px solid red');
-            $(this).data('syllable', 'true');
-            /*var oldSyl=$(this).parent();
-            var syLs=oldSyl.find('.letter');
-            var clicked=this;
-            var newSyl='<span class=syllable>';
-            syLs.each(function(){
-                if(clicked==this){
-                    newSyl+='</span><span class=syllable><span class=letter>'+$(this).html()+'</span>';
-                }else{
-                    newSyl +='<span class=letter>'+$(this).html()+'</span>';
-                }
-            })
-            newSyl+='</span>'
-            $(oldSyl).replaceWith(newSyl);*/
-        }
-    })
+    $('.poem').off("click", ".letter, .space", clickSyllable);
+    $('.poem').on("mouseover", ".letter, .space", ghostMarker);
+    $('.poem').on("mouseout", ".letter, .space", noghostMarker);
+    $('.poem').on("click", ".letter, .space", clickSyllable);
 }
 
 $('.wordOption').on('click',function(){
@@ -546,7 +592,7 @@ $('.wordOption').on('click',function(){
         }
 });
             
-$('.puncOption').on('click',function(){
+/*$('.puncOption').on('click',function(){
         if($('.puncOption').data('active')){
             //go back to original, use stored input data?
             $('.puncOption').text('Lines by Punctuation');
@@ -588,7 +634,7 @@ $('.puncOption').on('click',function(){
             $(inside).append(lineCount);
         }
         }
-});
+});*/
 
 function syllableSetup() {   
   
@@ -600,37 +646,7 @@ function syllableSetup() {
         
     });  
     
-    $('.syllablesGrid').on('click' , function(){
-       /* if ($('.syllablesGrid').data('gridded')===false){
-            var gridArray=[];
-            $('.line').each(function(){
-                var lineText=$(this).text().split('|').join(' ').split(' ');
-                lineText.pop();
-                gridArray.push(lineText);
-            });
-            
-            console.log(gridArray);
-            var result = "<table id='griddedSyllables' border=1>";
-            for(var i=0; i<gridArray.length; i++) {
-                result += "<tr>";
-                for(var j=0; j<gridArray[i].length; j++){
-                    result += "<td><div style='width:60px'>"+gridArray[i][j]+"</div></td>";
-                }
-                result += "</tr>";
-            }
-            result += "</table>";
-            
-            var grid=$(result);
-            $('.poem').hide();
-            $('.left').append(grid);
-            $('.syllablesGrid').data('gridded',true);
-            $('.syllablesGrid').text('Ungrid');
-        }else{
-            $('.poem').show();
-            $('#griddedSyllables').remove();
-            $('.syllablesGrid').data('gridded',false);
-            $('.syllablesGrid').text('Grid');
-        }*/
+   function startGrid(){
         if ($('.syllablesGrid').data('gridded')===false){
         $('.syllable').css('display', 'inline-block');
         $('.syllable').css('border', '1px solid transparent');
@@ -643,39 +659,28 @@ function syllableSetup() {
              $('.syllable').css('border', 'none');
              $('.syllable').css('min-width', '0');
         }
-        
-    });
+}
+    
+    $('.syllablesGrid').on('click' , function(){ startGrid();});
     
     $('.syllablesClear').on('click',function(){
-        $('.letter, .space').each(function(){
+          $('.letter, .space').each(function(){
            if ($(this).css('border-left-color') == 'black'){}
            else{
-               if ($(this).css('border-left-color', 'red')){
+               if ($(this).css('border-left-color') == 'rgb(255, 0, 0)'){
                 $(this).css('border-left', 'none');
                 $(this).data('syllable', 'false');   
+                var lineSpan = $(this).closest('.poemLine');
+                var countSpan = $(lineSpan).find('.lineCount');
+                var count = $(countSpan).text();
+                count--;
+               $(countSpan).text(count);
+               //remove spans
                }
-           }
+               }
         });
-       /* var visible=$(this).parent().parent().parent().find('.visibility').is(':checked');
-       var markers=$('.syllableMarker');
-       markers.each(function(){
-            var lineSpan = $(this).parent().parent().parent().parent()[0];
-            var countSpan = $(lineSpan).children('.lineCount')[0];
-            var count = $(countSpan).text();
-            if ($(this).data('layer')==selectedLayer){
-                $(this).remove();
-                if(visible){
-                    count--;
-                }
-            }
-            $(countSpan).text(count);
-       });*/
-   });
+});
 }
-
-   
-    
-    
 
 
 syllableSetup();   
@@ -696,7 +701,7 @@ syllableSetup();
                         "<option value='letter'>Letter</option>"+
                     "</select>"+
                     "<div class='highlighting'>"+
-                        "<span class='highlightColors'>Erase:<div class='colorSquare eraseHighlight' data-color='transparent'></div> Colors:</span>"+
+                        "<span class='highlightColors'><div class='colorSquare eraseHighlight' data-color='transparent'></div></span>"+
                         "<button class='addColor'>"+
                            "+" +
                        "</button>"+
@@ -830,5 +835,5 @@ syllableSetup();
             $('.overlay').addClass('close');
         }
     });
-    
+
 })

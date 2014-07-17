@@ -11,7 +11,6 @@ Router.map(function () {
     data: function(){
       var poem_id = this.params.id
       var poem = Poems.findOne({_id:poem_id}).htmlContent
-      
       var annotations = Annotations.find({poem_id: poem_id}).fetch()
       
       
