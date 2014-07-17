@@ -198,7 +198,6 @@ function generalSetup(){
    });
    
    $('.visibility').on('change',function(){
-       console.log('fun');
        console.log($(this).data('layer'));
         var idFull = $(this).closest('.layer');
         var id = idFull.attr('id').slice(-1);
@@ -387,7 +386,6 @@ $('.line').on('click', function(){
             if (flag){
                  $(this).css('background-color', 'transparent');
             }
-            $(this).css('background-color','transparent');
         }
     }
     if(selectedType=='bold' && boldElement=='boldLine'){
@@ -484,7 +482,7 @@ function boldSetup(id){
      colorSetup('0');
 
     
-    function addSyllable(object, color, ifghost){
+  /*  function addSyllable(object, color, ifghost){
     if (ifghost){
         var verticalLine = $('<span class = ghostMarker>|</span>');
     }
@@ -495,7 +493,7 @@ function boldSetup(id){
     verticalLine.css('font-size', '1em');
     verticalLine.data('layer', selectedLayer);
     object.prepend(verticalLine);
-}
+}*/
 
 function startSyllables(){
     $('.letter, .space').unbind('click');
@@ -556,7 +554,7 @@ $('.puncOption').on('click',function(){
         }else{
             $('.puncOption').text('Lines by Linebreaks');
             $('.puncOption').data('active', true);
-            var text = $('.poem').text().split(",");
+            var text = $('.poem').text().split(/[,.?!;:]|-\s/);
             console.log(text);
             $('.poem .poemLine').remove();
             for (var t = 0; t < text.length; t++) {
@@ -603,7 +601,7 @@ function syllableSetup() {
     });  
     
     $('.syllablesGrid').on('click' , function(){
-        if ($('.syllablesGrid').data('gridded')===false){
+       /* if ($('.syllablesGrid').data('gridded')===false){
             var gridArray=[];
             $('.line').each(function(){
                 var lineText=$(this).text().split('|').join(' ').split(' ');
@@ -632,7 +630,20 @@ function syllableSetup() {
             $('#griddedSyllables').remove();
             $('.syllablesGrid').data('gridded',false);
             $('.syllablesGrid').text('Grid');
+        }*/
+        if ($('.syllablesGrid').data('gridded')===false){
+        $('.syllable').css('display', 'inline-block');
+        $('.syllable').css('border', '1px solid transparent');
+        $('.syllable').css('min-width', '65px');
+        $('.syllablesGrid').data('gridded',true);
         }
+        else{
+             $('.syllablesGrid').data('gridded',false);
+             $('.syllable').css('display', 'inline');
+             $('.syllable').css('border', 'none');
+             $('.syllable').css('min-width', '0');
+        }
+        
     });
     
     $('.syllablesClear').on('click',function(){
@@ -645,7 +656,6 @@ function syllableSetup() {
                }
            }
         });
-        console.log('yo');
        /* var visible=$(this).parent().parent().parent().find('.visibility').is(':checked');
        var markers=$('.syllableMarker');
        markers.each(function(){
@@ -776,7 +786,7 @@ syllableSetup();
    
     
     var newPoem = $("<div class='overlay close overlay-hugeinc'>");
-    $(newPoem).append("<but ton type='button' class='overlay-close' id='overlay-closed'>Close</button>");
+    $(newPoem).append("<button type='button' class='overlay-close' id='overlay-closed'>Close</button>");
     $(newPoem).append("<span class='newPoem'>");
     $(newPoem).append("<textarea class='editPoem' id='editPoem'>");
     $(newPoem).append("</textarea></span></div>");
@@ -794,19 +804,23 @@ syllableSetup();
 //        });
     $('body').append($(newPoem));
     
+    var copyingCount = 0;
     
     $('.copyPoem').on('click',function(){
         if( $('.overlay').hasClass('close') ) {
             $('.overlay').removeClass('close' );
             $('.overlay').addClass('open');
             
-            var obj = document.getElementById('editPoem');
-            console.log(obj);
-            $('.line').each(function(){
-                var lineText = $(this).text();
-                obj.value += lineText;
-                obj.value += "\r\n";
-            });
+            if (copyingCount === 0){
+                var obj = document.getElementById('editPoem');
+                console.log(obj);
+                $('.line').each(function(){
+                    var lineText = $(this).text();
+                    obj.value += lineText;
+                    obj.value += "\r\n";
+                });
+            }
+            copyingCount++;
         }
     });
     

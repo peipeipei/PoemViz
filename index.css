@@ -17,14 +17,6 @@ td{
     text-align:center;
 }
 
-.syllable{
-    display:inline-block;
-    border-width:1px;
-    border-style:solid;
-    border-color:#eee;
-    min-width:65px;
-}
-
 .colorSquare{
     width:18px;
     height:18px;
@@ -128,16 +120,16 @@ td{
 /* Overlay closing cross */
 /*.overlay .overlay-close {*/
 #overlay-closed{
-	width: 80px;
-	height: 80px;
+	/*width: 80px;*/
+	/*height: 80px;*/
 	position: absolute;
 	right: 20px;
 	top: 20px;
 	overflow: hidden;
 	border: none;
-	background: url(cross.png) no-repeat center center;
-	text-indent: 200%;
-	color: transparent;
+	/*background: url(cross.png) no-repeat center center;*/
+	/*text-indent: 200%;*/
+	/*color: transparent;*/
 	outline: none;
 	z-index: 100;
 }
@@ -169,7 +161,11 @@ td{
 }
 
 .editPoem{
+    top:20px;
     min-width: 80%;
     min-height: 80%;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
 }
 
