@@ -11,34 +11,61 @@
     
 </head>
 
+<!--
 <body>
 </body>
+-->
 
 <template name="poem">
+{{# if isReady}}
     <div class="toolbar">
-        <div class="btn-group" id="toggle">
-            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
-            <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
-        </div>
+        <!--<div class="btn-group" id="toggle">-->
+        <!--    <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>-->
+        <!--    <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>-->
+        <!--</div>-->
     </div>
     
     <div class='container'>
         <div class='row'>
             <div class='col-md-8 left' id='leftSide'>
+            <!--
             {{{poem}}}
+            -->
+            
+            {{# each pLine}}
+                <p><span class='poemLine'><span class='line col-md-11' data-index={{this.index}}>
+                {{# each word}}
+                    <span class='word' data-index={{this.index}}>
+                        {{# each letter}}
+                            <span class='letter' data-index={{this.index}}>
+                                {{this.text}}
+                            </span>
+                        {{/each}}
+                    </span>
+                    <span class='space'>&nbsp;</span>
+                {{/each}}
+                </span></span></p>
+            {{/each}}
+            
             </div>
             <div class='col-md-4 right' id='layers'>
             <div class = 'existingLayers'>
                 <div class="layer" data-name="typing" id="typing0">
                     <div class="layerName">Text</div>
-                    <button class="copyPoem" id="trigger-overlay">Editable Text</button>
-                    Style:
-                    <select class='rhymeSelect'>
-                        <option value='none'>None</option>
-                        <option value='bold'>Bold</option>
-                        <option value='itatlics'>Italicize</option>
-                        <option value='strike'>Strike Through</option>
-                    </select>  
+                    <!--<button class="copyPoem" id="trigger-overlay">Editable Text</button>-->
+                    <div class="btn-group" id="toggle">
+                        <span><button type="button" class="btn btn-default copyPoem" id="trigger-overlay">Editable Text</button></span>
+                        <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
+                        <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
+                    </div>
+                    <!--<br>-->
+                    <!--Style:-->
+                    <!--<select class='rhymeSelect'>-->
+                    <!--    <option value='none'>None</option>-->
+                    <!--    <option value='bold'>Bold</option>-->
+                    <!--    <option value='itatlics'>Italicize</option>-->
+                    <!--    <option value='strike'>Strike Through</option>-->
+                    <!--</select>  -->
                 </div>
                 <div class='layer' data-name='rhyme' id="color0">
                     <div class='layerName'>Rhyme</div>
@@ -87,6 +114,8 @@
             </div>
         </div>
     </div>
+    {{/if}}
 </template>
+
 
 

@@ -1,2 +1,2 @@
-Meteor.subscribe('poems')
+var poemsHandle=Meteor.subscribe('poems')
 Meteor.subscribe('annotations')
