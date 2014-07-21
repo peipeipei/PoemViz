@@ -4,6 +4,11 @@
     padding-left:0px;
 }
 
+.lineCount{
+    color:blue;
+    font-weight:bold;
+    display:inline-block;
+}
 
 .rhymeCheck{
     margin-right:10px;

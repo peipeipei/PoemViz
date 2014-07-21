@@ -39,6 +39,8 @@ Styles = new Meteor.Collection('styles')
 Layers = new Meteor.Collection('layers')
 /* A layer has:
     _id : identifier
+    id: identifier in html
     poem_id : string, id of poem that this layer is in
     name : string, user-provided description of the layer, e.g. "Rhyming scheme"
+    type: whether it is used for selections, markers, bold, or typing
 */

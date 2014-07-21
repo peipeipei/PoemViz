@@ -28,11 +28,9 @@
     <div class='container'>
         <div class='row'>
             <div class='col-md-8 left' id='leftSide'>
-            <!--
             {{{poem}}}
-            -->
             
-            {{# each pLine}}
+            <!--{{# each pLine}}
                 <p><span class='poemLine'><span class='line col-md-11' data-index={{this.index}}>
                 {{# each word}}
                     <span class='word' data-index={{this.index}}>
@@ -42,10 +40,10 @@
                             </span>
                         {{/each}}
                     </span>
-                    <span class='space'>&nbsp;</span>
+                    <span class='space' data-index= {{this.index}}>&nbsp;</span>
                 {{/each}}
                 </span></span></p>
-            {{/each}}
+            {{/each}}-->
             
             </div>
             <div class='col-md-4 right' id='layers'>
@@ -94,7 +92,62 @@
                         <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
                     </div>
                 </div>
-                </div>
+            </div>
+            
+            {{# each layer}}
+                {{if {{this.type}}=='typing'}}
+                    <div class="layer" data-name="typing" id={{this.id}}>
+                        <div class="layerName">{{this.name}}</div>
+                        <!--<button class="copyPoem" id="trigger-overlay">Editable Text</button>-->
+                        <div class="btn-group" id="toggle">
+                            <span><button type="button" class="btn btn-default copyPoem" id="trigger-overlay">Editable Text</button></span>
+                            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
+                            <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
+                        </div>
+                        <!--<br>-->
+                        <!--Style:-->
+                        <!--<select class='rhymeSelect'>-->
+                        <!--    <option value='none'>None</option>-->
+                        <!--    <option value='bold'>Bold</option>-->
+                        <!--    <option value='itatlics'>Italicize</option>-->
+                        <!--    <option value='strike'>Strike Through</option>-->
+                        <!--</select>  -->
+                    </div>
+                {{/if}}
+                {{# if type=='rhyme'}}
+                    <div class='layer' data-name='rhyme' id={{this.id}}>
+                        <div class='layerName'>{{this.name}}</div>
+                        Highlight:
+                        <select class='rhymeSelect'>
+                            <option value='line'>Line</option>
+                            <option value='word'>Word</option>
+                            <option value='letter'>Letter</option>
+                        </select>
+                        <div class='highlighting'>
+                            <span class='highlightColors'><div class='colorSquare eraseHighlight' data-color='transparent'></div></span>
+                            <button class='addColor'>
+                                +
+                            </button>
+                        </div>
+                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>
+                        <span class="layerOpacitySpan">Opacity: <input type="text" class="span2" value="opacity" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="10" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="hide"></span>
+                    </div>
+                {{/if}}
+                    {{# if type=='syllable'}}
+                    <div class='layer' data-name='syllable' id={{this.id}}>
+                        <div class='layerName'>{{this.name}}</div>
+                        <div class='info'> <!--ONLY CLICK FOR SYLLABLE BREAKS INSIDE OF WORDS, SAVE YOURSELF SOME WORK-->Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
+                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
+                        <div class="btn-group" id="toggle">
+                            <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
+                            <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
+                        </div>
+                    </div>
+                {{/if}}
+                {{if type=='bold'}}
+                {{/if}}
+            {{/each}}
+            
                 
                 <div class="dropdown btn-group">
                     <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
@@ -116,6 +169,3 @@
     </div>
     {{/if}}
 </template>
-
-
-

@@ -1,4 +1,4 @@
-Meteor.startup(function () {	
+/*Meteor.startup(function () {	
 
   if(Poems.find().count() == 0){
     var poem_id = Poems.insert({
@@ -16,21 +16,8 @@ Meteor.startup(function () {
                     "<p class='poemLine'><span>Like to the lark at break of day arising</span></p>"+
                     "<p class='poemLine'><span>From sullen earth, sings hymns at heaven's gate;</span></p>"+
                     "<p class='poemLine'><span>For thy sweet love remember'd such wealth brings</span></p>"+
-                    "</div>",
-        poemLines: ["When, in disgrace with fortune and men's eyes,",
-                    "I all alone beweep my outcast state,",                    
-                    "And trouble deaf heaven with my bootless cries,",                    
-                    "And look upon myself, and curse my fate,",                    
-                    "Wishing me like to one more rich in hope,",                    
-                    "Featur'd like him, like him with friends possess'd,",                    
-                    "Desiring this man's art and that man's scope,",                    
-                    "With what I most enjoy contented least;",                    
-                    "Yet in these thoughts myself almost despising,",                    
-                    "Haply I think on thee, and then my state,",                    
-                    "Like to the lark at break of day arising",                    
-                    "From sullen earth, sings hymns at heaven's gate;",                    
-                    "For thy sweet love remember'd such wealth brings"]            
+                    "</div>"
     })   
-   
   }
-})
+  Layers.insert({})
+})*/
