@@ -94,24 +94,24 @@
                 </div>
             </div>
             
-            {{# each layer}}
-                {{if {{this.type}}=='typing'}}
+<!--            {{# each layer}}
+                {{# if type=='typing'}}
                     <div class="layer" data-name="typing" id={{this.id}}>
                         <div class="layerName">{{this.name}}</div>
-                        <!--<button class="copyPoem" id="trigger-overlay">Editable Text</button>-->
+                        <button class="copyPoem" id="trigger-overlay">Editable Text</button>
                         <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default copyPoem" id="trigger-overlay">Editable Text</button></span>
                             <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
                             <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
                         </div>
-                        <!--<br>-->
-                        <!--Style:-->
-                        <!--<select class='rhymeSelect'>-->
-                        <!--    <option value='none'>None</option>-->
-                        <!--    <option value='bold'>Bold</option>-->
-                        <!--    <option value='itatlics'>Italicize</option>-->
-                        <!--    <option value='strike'>Strike Through</option>-->
-                        <!--</select>  -->
+                        <br>
+                        Style:
+                        <select class='rhymeSelect'>
+                            <option value='none'>None</option>
+                            <option value='bold'>Bold</option>
+                            <option value='itatlics'>Italicize</option>
+                            <option value='strike'>Strike Through</option>
+                        </select>  
                     </div>
                 {{/if}}
                 {{# if type=='rhyme'}}
@@ -136,7 +136,7 @@
                     {{# if type=='syllable'}}
                     <div class='layer' data-name='syllable' id={{this.id}}>
                         <div class='layerName'>{{this.name}}</div>
-                        <div class='info'> <!--ONLY CLICK FOR SYLLABLE BREAKS INSIDE OF WORDS, SAVE YOURSELF SOME WORK-->Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
+                        <div class='info'> Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
                         <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
                         <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
@@ -146,7 +146,7 @@
                 {{/if}}
                 {{if type=='bold'}}
                 {{/if}}
-            {{/each}}
+            {{/each}}-->
             
                 
                 <div class="dropdown btn-group">

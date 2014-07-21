@@ -1,4 +1,4 @@
-var colors=['#f99','#F9F','#D9F','#A9F', "#9CF",'#9FF', '#9FA','#CF9', '#FF9', '#FC9'];
+//var colors=['#f99','#F9F','#D9F','#A9F', "#9CF",'#9FF', '#9FA','#CF9', '#FF9', '#FC9'];
 var darkColors=['#000','#063','#009','#506','#602'];
 var boldColor='';
 var highlighting=true;
@@ -26,6 +26,10 @@ checkIsReady = function(){
 
 Template.poem.isReady=function(){
     return checkIsReady();
+}
+
+Template.poem.layer=function(){
+    //return Layers.find().fetch();
 }
 
 /*Template.poem.pLine=function(){
@@ -497,7 +501,7 @@ function colorSetup(id){
             $(thing).data('syllable', 'false');
             count--;
             $(countSpan).text(count);
-            SyllableMarkers.remove({location : thing.attr("id")});
+            //SyllableMarkers.remove({location : thing.attr("id")});
             var secondSyl= $(thing).closest();
             var firstSyl= $(secondSyl).prev();
             console.log(firstSyl);

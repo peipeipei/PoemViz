@@ -9,6 +9,7 @@ Meteor.startup(function () {
    
   }
   Layers.insert({
+    name:'Text',
     id:'typing0',
     type: 'typing',
     poem_id:poem_id
