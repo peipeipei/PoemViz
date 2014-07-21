@@ -47,23 +47,16 @@
             
             </div>
             <div class='col-md-4 right' id='layers'>
-            <div class = 'existingLayers'>
+            <!--<div class = 'existingLayers'>
                 <div class="layer" data-name="typing" id="typing0">
                     <div class="layerName">Text</div>
-                    <!--<button class="copyPoem" id="trigger-overlay">Editable Text</button>-->
+
                     <div class="btn-group" id="toggle">
                         <span><button type="button" class="btn btn-default copyPoem" id="trigger-overlay">Editable Text</button></span>
                         <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
                         <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
                     </div>
-                    <!--<br>-->
-                    <!--Style:-->
-                    <!--<select class='rhymeSelect'>-->
-                    <!--    <option value='none'>None</option>-->
-                    <!--    <option value='bold'>Bold</option>-->
-                    <!--    <option value='itatlics'>Italicize</option>-->
-                    <!--    <option value='strike'>Strike Through</option>-->
-                    <!--</select>  -->
+
                 </div>
                 <div class='layer' data-name='rhyme' id="color0">
                     <div class='layerName'>Rhyme</div>
@@ -85,24 +78,24 @@
 
                 <div class='layer' data-name='syllable' id='syllable0'>
                     <div class='layerName'>Syllables</div>
-                    <div class='info'> <!--ONLY CLICK FOR SYLLABLE BREAKS INSIDE OF WORDS, SAVE YOURSELF SOME WORK-->Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
+                    <div class='info'> Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
                     <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
                     <div class="btn-group" id="toggle">
                         <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
                         <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
                     </div>
                 </div>
-            </div>
+            </div>-->
             
-<!--            {{# each layer}}
-                {{# if type=='typing'}}
+            {{# each layer}}
+                {{# if equals type 'typing'}}
                     <div class="layer" data-name="typing" id={{this.id}}>
                         <div class="layerName">{{this.name}}</div>
                         <button class="copyPoem" id="trigger-overlay">Editable Text</button>
                         <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default copyPoem" id="trigger-overlay">Editable Text</button></span>
-                            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
-                            <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
+<!--                            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
+                            <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>-->
                         </div>
                         <br>
                         Style:
@@ -114,7 +107,7 @@
                         </select>  
                     </div>
                 {{/if}}
-                {{# if type=='rhyme'}}
+                {{# if equals type 'rhyme'}}
                     <div class='layer' data-name='rhyme' id={{this.id}}>
                         <div class='layerName'>{{this.name}}</div>
                         Highlight:
@@ -133,7 +126,7 @@
                         <span class="layerOpacitySpan">Opacity: <input type="text" class="span2" value="opacity" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="10" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="hide"></span>
                     </div>
                 {{/if}}
-                    {{# if type=='syllable'}}
+                    {{# if equals type 'syllable'}}
                     <div class='layer' data-name='syllable' id={{this.id}}>
                         <div class='layerName'>{{this.name}}</div>
                         <div class='info'> Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
@@ -144,9 +137,9 @@
                         </div>
                     </div>
                 {{/if}}
-                {{if type=='bold'}}
+                {{# if equals type 'bold'}}
                 {{/if}}
-            {{/each}}-->
+            {{/each}}
             
                 
                 <div class="dropdown btn-group">

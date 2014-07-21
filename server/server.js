@@ -5,25 +5,27 @@ Meteor.startup(function () {
   if(Poems.find().count() == 0){
     var poem_id = Poems.insert({
       htmlContent:  first
-    })   
+    });
+    
+    Layers.insert({
+        name:'Text',
+        id:'typing0',
+        type: 'typing',
+        poem_id:poem_id
+      });
+      Layers.insert({
+          name:'Rhyme',
+          id:'color0',
+          poem_id:poem_id,
+          type:'rhyme'
+      });
+      Layers.insert({
+          name:'Syllables',
+          id:'syllable0',
+          poem_id:poem_id,
+          type:'syllable'
+      });
    
   }
-  Layers.insert({
-    name:'Text',
-    id:'typing0',
-    type: 'typing',
-    poem_id:poem_id
-  });
-  Layers.insert({
-      name:'Rhyme',
-      id:'color0',
-      poem_id:poem_id,
-      type:'color'
-  });
-  Layers.insert({
-      name:'Syllables',
-      id:'syllable0',
-      poem_id:poem_id,
-      type:'syllable'
-  });
+
 })

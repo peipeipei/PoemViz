@@ -20,7 +20,6 @@ Router.map(function () {
         poem = poem.substring(0, start) + "<b>" + poem.substring(start, poem.length)
         poem = poem.substring(0, end) + "</b>" + poem.substring(end, poem.length)
       })
-      console.log(poem);
       Session.set('currentPoem', this.params.id);
       //console.log(annotations);
       return {poem: poem, annotations: annotations}

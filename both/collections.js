@@ -36,7 +36,7 @@ Styles = new Meteor.Collection('styles')
     name : string, user-provided description of what the style means, e.g. "feminine rhyme" (OPTIONAL)
 */
 
-Layers = new Meteor.Collection('layers')
+Layers = new Meteor.Collection('layers');
 /* A layer has:
     _id : identifier
     id: identifier in html

@@ -136,7 +136,11 @@ function clickSyllable() {
             $(this).data('syllable', 'false');
             count--;
             $(countSpan).text(count);
-            //remove spans
+            var secondSyl= $(thing).closest();
+            var firstSyl= $(secondSyl).prev();
+            console.log(firstSyl);
+            console.log(secondSyl);
+            $(secondSyl).prepend($(firstSyl).html()).prev().remove();
         }
         else{
             var oldSyl=$(this).closest('.syllable');
