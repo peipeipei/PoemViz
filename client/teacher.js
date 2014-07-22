@@ -1,4 +1,8 @@
-parseHTML=function(raw){
+Template.teacher.isReady = function(){
+  return checkIsReady();  
+}
+
+function parseHTML(raw){
     var arr=raw.split('\n');
     var spanned=[];
     var lineCounter=0,
@@ -52,3 +56,44 @@ parseHTML=function(raw){
     })
     return longest;
 }
+
+Template.teacher.events({
+    'click #submitPoem':function(){
+        var raw=$('#createPoem').val();
+        var html=parseHTML(raw);
+        var newPoem=Poems.insert({htmlContent:html});
+        $div = $('<div>')
+        $div.attr('title', 'Launch')
+        url = window.location.host + '/poem/' + newPoem
+        $div.html('Your PoemViz is at ' + url + '<br>')
+        $div.dialog({
+          resizable: false,
+          height:250,
+          width:500,
+          modal: true,
+          buttons: {
+            "Go": function() {
+              $( this).dialog('close');
+              window.open('/poem/'+newPoem, '_blank');
+            },
+            Cancel: function() {
+              $( this ).dialog( "close" );
+            }
+          }
+        })
+        Layers.insert({
+          name:'Rhyme',
+          id:'color0',
+          poem_id:newPoem,
+          type:'rhyme'
+        });
+        Layers.insert({
+          name:'Syllables',
+          id:'syllable0',
+          poem_id:newPoem,
+          type:'syllable'
+        });
+   
+        
+    }
+})

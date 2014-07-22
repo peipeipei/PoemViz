@@ -1,31 +1,35 @@
 var colors=['#f99','#F9F','#D9F','#A9F', "#9CF",'#9FF', '#9FA','#CF9', '#FF9', '#FC9'];
 var darkColors=['#000','#063','#009','#506','#602'];
-var boldColor='';
 var highlighting=true;
 Session.set('highlightElement','line');
-var boldElement='boldLine';
+Session.set('boldElement', 'boldLine');
 var counter = 1;
 var sCounter=1;
 var target = $('.rhymeSelect');
 var boldCounter = 1;
-var boldColor = 'black';
 var lineCounter = 0;
 var wordCounter = 0;
 var letterCounter = 0;
 var spaceCounter = 0;
 var styleCounter = 0;
 var selCounter = 0;
-var curPoem;
+var curPoem=Session.get('currentPoem');
+var curStyle;
+var num;
 
 var poemsHandle = Meteor.subscribe('poems');
 var layersHandle=Meteor.subscribe('layers');
+var selectionsHandle=Meteor.subscribe('selections');
+var stylesHandle=Meteor.subscribe('styles');
+var syllablesHandle=Meteor.subscribe('syllableMarkers');
 
 Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
 });
 
 checkIsReady = function(){
-  return poemsHandle.ready()&&layersHandle.ready();
+    console.log('ready!');
+  return poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready();
 }
 
 Template.poem.isReady=function(){
@@ -34,7 +38,7 @@ Template.poem.isReady=function(){
 
 
 Template.poem.layer=function(){
-    return Layers.find().fetch();
+    return Layers.find({poem_id:Session.get('currentPoem')}).fetch();
 }
 
 /*Template.poem.pLine=function(){
@@ -77,23 +81,33 @@ Template.poem.space=function(){
     return s;
 }*/
 
-function chooseColor(){
-    Session.set('highlightColor',$(this).data('color'));
+var typewatch = (function(){
+  var timer = 0;
+  return function(callback, ms){
+    clearTimeout (timer);
+    timer = setTimeout(callback, ms);
+  }  
+})();
+
+function chooseColor(thing){
     if(Session.get('selectedType')=='rhyme'){
-    $('.colorSquare').each(function(){
-        $(this).css('border-width', '0px');
-    })
-    $(this).css('border-width', '2px');
-    Styles.insert({poem_id: curPoem, layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
+        Session.set('highlightColor',$(thing).data('color'));
+        $('.colorSquare').each(function(){
+            $(this).css('border-width', '0px');
+        })
+        $(thing).css('border-width', '2px');
+        curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
     }
     if (Session.get('selectedType')=='bold'){
-        $('.boldSquare').each(function(){
+        Session.set('boldColor',$(thing).data('color'));
+        $('.colorSquare').each(function(){
         $(this).css('border-width', '0px');
     })
-    $(this).css('border-width', '2px');
-    Styles.insert({poem_id: curPoem, layer_id: Session.get('curLayer'), font_color: Session.get('highlightColor')});
+    $(thing).css('border-width', '2px');
+    Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('highlightColor')});
     }
 }
+
 
 /*function updateSelections(){
     Selections.find().observeChanges({
@@ -123,11 +137,39 @@ Template.poem.events({
                 $(this).css('background-color','#ddd');
             }
         });
+        if (Session.get('selectedType')=='bold'){
+            var colors=$(clickedLayer).find('.colorSquare');
+            Session.set('boldColor', '');
+            colors.each(function(){
+                if($(this).css('border-width')==='2px'){
+                    Session.set('boldColor', $(this).data('color'));
+                }
+            })
+            Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
+        }
+        if (Session.get('selectedType')=='rhyme'){
+            var colors=$(clickedLayer).find('.colorSquare');
+            Session.set('highlightColor', '');
+            colors.each(function(){
+                if($(this).css('border-width') ==='2px'){
+                    Session.set('highlightColor', $(this).data('color'));
+                }
+            })
+            Session.set('highlightElement', $(clickedLayer).find('.rhymeSelect').val());
+        }
 /*        if (selectedType=='syllable'){
             startSyllables();
         }else{
             stopSyllables();
         }*/
+    },
+    'keyup .layerName':function(event){
+        var newName=$(event.currentTarget).text();
+        var layerID=$(event.currentTarget).parent().attr('id');
+        var curL_id=Layers.findOne({id:layerID})._id;
+        typewatch(function () {
+            Layers.update(curL_id, {$set: {name: newName}});
+        }, 500);
     },
     'click .addColor': function(event){
         var colorSquare=$('<div class="colorSquare"></div>');
@@ -136,16 +178,31 @@ Template.poem.events({
         colorSquare.data('color', colors[ccount]);
         colorSquare.css('background-color', colors[ccount]);
         rightlightColors.append(colorSquare);
-        $('.colorSquare').on('click',chooseColor);
         if(ccount>=colors.length-1){
             $(event.target).css('display','none');
         }
     },
-    'change .rhymeSelect':function(){
-        Session.set('highlightElement',$(this).val());
+    'click .colorSquare':function(event){
+        chooseColor(event.currentTarget);
     },
-    'change .boldSelect':function(){
-        Session.set('highlightElement',$(this).val());
+    'click .addBoldColor': function(event){
+        var colorSquare=$('<div class="colorSquare"></div>');
+        var rightlightColors=$($(event.target).parent()).find('.boldColors');
+        var ccount=rightlightColors.find('.colorSquare').length;
+        colorSquare.data('color', darkColors[ccount]);
+        colorSquare.css('background-color', darkColors[ccount]);
+        rightlightColors.append(colorSquare);
+        $('.colorSquare').on('click',chooseColor);
+        if(ccount>=darkColors.length-1){
+            $(event.target).css('display','none');
+        }
+    },
+    'change .rhymeSelect':function(event){
+        Session.set('highlightElement',$(event.currentTarget).val());
+    },
+    'change .boldSelect':function(event){
+        Session.set('boldElement',$(event.currentTarget).val());
+        console.log(Session.get('boldElement'));
     },
     'click .syllablesClear': function(event){
           console.log('hi');
@@ -170,27 +227,29 @@ Template.poem.events({
                    $(this).prepend($(firstSyl).html()).prev().remove();}
                    });
                });
-            Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
         },
     'click .line':function(event){
         if(Session.get('selectedType')=='rhyme' && Session.get('highlightElement')=='line'){
-            var num = Session.get('curLayer').slice(-1);
-            Selections.insert({poem_id: curPoem, style_id: Styles.findOne(), location: $(event.currentTarget).attr('id')})
-            $(event.currentTarget).css('background-color',Session.get('highlightColor'));
+            num = Session.get('curLayer').slice(-1);
             if (typeof $(event.currentTarget).data('colorer'+num) === 'undefined'){
                 $(event.currentTarget).css('background-color',Session.get('highlightColor'));
                 $(event.currentTarget).data('colorer'+num, []);
                 $(event.currentTarget).data('colorer'+num).push(Session.get('highlightColor'));
                 $(event.currentTarget).data('colorer'+num).push(true);
-                console.log( $(event.currentTarget).data('colorer'+num));
-                console.log(num);
+                 Selections.insert({poem_id: curPoem, style_id: curStyle, location: $(event.currentTarget).attr('id')});
             }else{
                 $(event.currentTarget).removeData('colorer'+num);
+                var idR = Selections.find({location: $(event.currentTarget).attr('id')}).fetch();
+                var idRemove = idR[0]._id;
+                console.log("id"+idRemove)
+                Selections.remove({_id: idRemove});
+                console.log("bte");
                 var flag=true;
-                for (var i = 0; i < counter; i++){
+                for (var i = 0; i < Layers.find({type:'rhyme'}).fetch().length; i++){
+                    console.log(i,$(event.currentTarget).data('colorer'+i));
                     if(typeof $(event.currentTarget).data('colorer'+i) !== 'undefined'){
                         if ($(event.currentTarget).data('colorer'+i)[1] === true){
-                            $(event.currentTarget).css('background-color', $(this).data('colorer'+i)[0]);
+                            $(event.currentTarget).css('background-color', $(event.currentTarget).data('colorer'+i)[0]);
                             flag = false;
                             break;
                         }
@@ -200,10 +259,37 @@ Template.poem.events({
                      $(event.currentTarget).css('background-color', 'transparent');
                 }
             }
-            Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
-            //updateSelections();
+          }
+          if(Session.get('selectedType')=='bold' && Session.get('boldElement')=='boldLine'){
+            num = Session.get('curLayer').slice(-1);
+            Selections.insert({poem_id: curPoem, style_id: Styles.findOne(), location: $(event.currentTarget).attr('id')})
+            if (typeof $(event.currentTarget).data('bolder'+num) === 'undefined'){
+                $(event.currentTarget).css('color',Session.get('boldColor'));
+                $(event.currentTarget).css('font-weight','bold');
+                $(event.currentTarget).data('bolder'+num, []);
+                $(event.currentTarget).data('bolder'+num).push(Session.get('boldColor'));
+                $(event.currentTarget).data('bolder'+num).push(true);
+            }else{
+                $(event.currentTarget).removeData('bolder'+num);
+                var flag=true;
+                for (var i = 0; i < Layers.find({type:'bold'}).fetch().length; i++){
+                    if(typeof $(event.currentTarget).data('bolder'+i) !== 'undefined'){
+                        if ($(event.currentTarget).data('bolder'+i)[1] === true){
+                            $(event.currentTarget).css('color', $(event.currentTarget).data('bolder'+i)[0]);
+                            $(event.currentTarget).css('font-weight','bold');
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+                if (flag){
+                     $(event.currentTarget).css('color', 'black');
+                    $(event.currentTarget).css('font-weight','normal');
+                }
             }
-            },
+        }
+        //Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
+      },
       'change .visibility': function(event){
         var idFull = $(event.currentTarget).closest('.layer');
         var id = idFull.attr('id').slice(-1);
@@ -213,6 +299,7 @@ Template.poem.events({
                 $('.syllable').css('border-color', '#eee');
                 $('.syllable').css('min-width', '65px');
                 $('.letter, .space').each(function(){
+                //must make sure we give this data attribute to other users
                 if ($(this).data('syllable') == 'true'){
                     $(this).css('border-left', '3px solid red');
                 }
@@ -315,48 +402,63 @@ Template.poem.events({
     },
     'click .word':function(event){
         if(Session.get('selectedType')=='rhyme' && Session.get('highlightElement')=='word'){
-            var num = Session.get('curLayer').slice(-1);
-            Selections.insert({poem_id: curPoem, style_id: Styles.findOne(), location: $(event.currentTarget).attr('id')})
+             num = Session.get('curLayer').slice(-1);
             if (typeof $(event.currentTarget).data('colorer'+num) === 'undefined'){
                 $(event.currentTarget).css('background-color',Session.get('highlightColor'));
                 $(event.currentTarget).data('colorer'+num, []);
                 $(event.currentTarget).data('colorer'+num).push(Session.get('highlightColor'));
                 $(event.currentTarget).data('colorer'+num).push(true);
+                Selections.insert({poem_id: curPoem, style_id: curStyle, location: $(event.currentTarget).attr('id')});
             }else{
-                $(this).removeData('colorer'+num);
+                var idRemove = Selections.find({location: $(event.currentTarget).attr('id')})._id;
+                Selections.remove({_id: idRemove});
+                $(event.currentTarget).removeData('colorer'+num);
                 var flag=true;
-                for (var i = 0; i < counter; i++){
+                for (var i = 0; i < Layers.find({type:'rhyme'}).fetch().length; i++){
                     if(typeof $(event.currentTarget).data('colorer'+i) !== 'undefined'){
                         if ($(event.currentTarget).data('colorer'+i)[1] === true){
-                            $(event.currentTarget).css('background-color', $(this).data('colorer'+i)[0]);
+                            $(event.currentTarget).css('background-color', $(event.currentTarget).data('colorer'+i)[0]);
                             flag = false;
                             break;
                         }
                     }
                 }
                 if (flag){
-                     $(this).css('background-color', 'transparent');
+                     $(event.currentTarget).css('background-color', 'transparent');
                 }
             }
-            Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
+           
         }
-        if(Session.get('selectedType')=='bold' && boldElement=='boldWord'){
-            var num = Session.get('curLayer').slice(-1);
-            Selections.insert({poem_id: curPoem, style_id: Styles.findOne(), location: $(event.currentTarget).attr('id')})
-            if(boldColor != 'transparent'){
-                $(this).css('color',boldColor);
-                $(this).css('font-weight','bold');
+        if(Session.get('selectedType')=='bold' && Session.get('boldElement')=='boldWord'){
+            num = Session.get('curLayer').slice(-1);
+            Selections.insert({poem_id: curPoem, style_id: Styles.findOne(), location: $(event.currentTarget).attr('id')});
+            
+            if (typeof $(event.currentTarget).data('bolder'+num) === 'undefined'){
+                $(event.currentTarget).css('color',Session.get('boldColor'));
+                $(event.currentTarget).css('font-weight','bold');
+                $(event.currentTarget).data('bolder'+num, []);
+                $(event.currentTarget).data('bolder'+num).push(Session.get('boldColor'));
+                $(event.currentTarget).data('bolder'+num).push(true);
+            }else{
+                $(event.currentTarget).removeData('bolder'+num);
+                var flag=true;
+                for (var i = 0; i < Layers.find({type:'bold'}).fetch(); i++){
+                    if(typeof $(event.currentTarget).data('bolder'+i) !== 'undefined'){
+                        if ($(event.currentTarget).data('bolder'+i)[1] === true){
+                            $(event.currentTarget).css('color', $(event.currentTarget).data('bolder'+i)[0]);
+                            $(event.currentTarget).css('font-weight','bold');
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+                if (flag){
+                     $(event.currentTarget).css('color', 'black');
+                    $(event.currentTarget).css('font-weight','normal');
+                }
             }
-            else{
-                $(this).css('color','black');
-                $(this).css('font-weight','normal');
-            }
-            $(this).data('bolder'+num, []);
-            $(this).data('bolder'+num).push(boldColor);
-            $(this).data('bolder'+num).push(true);
-            console.log($(this).data('bolder'+num));
-            Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
         }
+        //Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
     },
     
     'mouseover .letter, .space': function(event){
@@ -374,9 +476,70 @@ Template.poem.events({
         if (Session.get('selectedType')=='syllable'){
             clickSyllable(event.currentTarget);
         }
+            if(Session.get('selectedType')=='rhyme' && Session.get('highlightElement')=='letter'){
+            num = Session.get('curLayer').slice(-1);
+            if (typeof $(event.currentTarget).data('colorer'+num) === 'undefined'){
+                $(event.currentTarget).css('background-color',Session.get('highlightColor'));
+                $(event.currentTarget).data('colorer'+num, []);
+                $(event.currentTarget).data('colorer'+num).push(Session.get('highlightColor'));
+                $(event.currentTarget).data('colorer'+num).push(true);
+                Selections.insert({poem_id: curPoem, style_id: curStyle, location: $(event.currentTarget).attr('id')});
+            }else{
+                $(event.currentTarget).removeData('colorer'+num);
+                var idRemove = Selections.find({location: $(event.currentTarget).attr('id')})._id;
+                Selections.remove({_id: idRemove});
+                var flag=true;
+                for (var i = 0; i < Layers.find({type:'rhyme'}).fetch().length; i++){
+                    console.log(i,$(event.currentTarget).data('colorer'+i));
+                    if(typeof $(event.currentTarget).data('colorer'+i) !== 'undefined'){
+                        if ($(event.currentTarget).data('colorer'+i)[1] === true){
+                            $(event.currentTarget).css('background-color', $(event.currentTarget).data('colorer'+i)[0]);
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+                if (flag){
+                     $(event.currentTarget).css('background-color', 'transparent');
+                }
+            }
+             
+          }
+          if(Session.get('selectedType')=='bold' && Session.get('boldElement')=='boldLetter'){
+            num = Session.get('curLayer').slice(-1);
+            Selections.insert({poem_id: curPoem, style_id: Styles.findOne(), location: $(event.currentTarget).attr('id')})
+            if (typeof $(event.currentTarget).data('bolder'+num) === 'undefined'){
+                $(event.currentTarget).css('color',Session.get('boldColor'));
+                $(event.currentTarget).css('font-weight','bold');
+                $(event.currentTarget).data('bolder'+num, []);
+                $(event.currentTarget).data('bolder'+num).push(Session.get('boldColor'));
+                $(event.currentTarget).data('bolder'+num).push(true);
+            }else{
+                $(event.currentTarget).removeData('bolder'+num);
+                var flag=true;
+                for (var i = 0; i < Layers.find({type:'bold'}).fetch().length; i++){
+                    if(typeof $(event.currentTarget).data('bolder'+i) !== 'undefined'){
+                        if ($(event.currentTarget).data('bolder'+i)[1] === true){
+                            $(event.currentTarget).css('color', $(event.currentTarget).data('bolder'+i)[0]);
+                            $(event.currentTarget).css('font-weight','bold');
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+                if (flag){
+                     $(event.currentTarget).css('color', 'black');
+                    $(event.currentTarget).css('font-weight','normal');
+                }
+            }
+        }
+        //Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
     },
     'click .syllablesGrid': function(event){
         grid();
+    },
+    'click .dropdown-toggle':function(event){
+        $(".right").animate({ scrollTop: $(document).height() }, "slow");
     },
     'click .newColorLayer':function(event){
         var name = $(event.currentTarget).text();
@@ -386,13 +549,47 @@ Template.poem.events({
             name='Name layer';
         }
         Layers.insert({
-          name:'Rhyme',
+          name:name,
           id:'color'+count,
           poem_id:Session.get('currentPoem'),
           type:'rhyme'
       })
+    },
+    'click .newBoldLayer':function(event){
+        var name = $(event.currentTarget).text();
+        var count=Layers.find({type:'bold'}).fetch().length;
+        console.log(count);
+        if (name == "Other Bolding"){
+            name='Name layer';
+        }
+        Layers.insert({
+          name:name,
+          id:'bold'+count,
+          poem_id:Session.get('currentPoem'),
+          type:'bold'
+      })
+    },
+    'click .newBarsLayer':function(event){
+        var name = $(event.currentTarget).text();
+        var count=Layers.find({type:'syllable'}).fetch().length;
+        console.log(count);
+        if (name == "Other Vertical Bars"){
+            name='Name layer';
+        }
+        Layers.insert({
+          name:name,
+          id:'syllable'+count,
+          poem_id:Session.get('currentPoem'),
+          type:'syllable'
+      })
     }
 })
+
+    function setHeights(){
+        var halfies = $(window).height();
+        $('.left').css('height',halfies);
+        $('.right').css('height',halfies);
+    }
 
     //make each alphanumeric character/space/word/line a span with seperate class
     function makeSpans() {
@@ -441,15 +638,6 @@ Template.poem.events({
         
     }
     
-    function initialCount(){
-        $('.poemLine').each(function(){
-            var words = $(this).find('.word');
-            var wordCount = words.length;
-            var lineCount = $(this).children('.lineCount')[0]
-            $(lineCount).text(wordCount);
-        })
-    }
-    
 
 
 function grid(){
@@ -466,16 +654,6 @@ function grid(){
     }
 }
 
-    
-function colorSetup(id){  
-        for (i=0;i<2;i++){
-           var colorSquare=$('<div class="colorSquare"></div>');
-           colorSquare.data('color', colors[i]);
-           colorSquare.css('background-color', colors[i]);
-           var highlight = $('#' +'color'+ id).find('.highlightColors');
-           $(highlight).append(colorSquare);
-        }
-}
     function ghostMarker(thing) {
            if ($(thing).css('border-left-color') == 'rgb(255, 0, 0)'){}
            else{
@@ -498,11 +676,10 @@ function colorSetup(id){
             $(thing).data('syllable', 'false');
             count--;
             $(countSpan).text(count);
-            //SyllableMarkers.remove({location : thing.attr("id")});
+            var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id:Session.get('currentPoem')}); 
+            SyllableMarkers.remove({_id: syl._id});
             var secondSyl= $(thing).closest('.syllable');
             var firstSyl= $(secondSyl).prev('.syllable');
-            console.log(firstSyl);
-            console.log(secondSyl);
             $(secondSyl).prepend($(firstSyl).html()).prev().remove();
         }
         else{
@@ -511,7 +688,7 @@ function colorSetup(id){
             var flag = true;
             var beginning = false;
             var clicked=thing;
-            SyllableMarkers.insert({location: $(thing).attr("id")});
+            SyllableMarkers.insert({location: $(thing).attr("id"), poem_id:Session.get('currentPoem')});
             var newSyl=$('<span class=syllable>');
             if ($(syLs[0]).css('border-left-color') == "rgb(255, 0, 0)"){
                  newSyl.css('border-left', "3px solid red");
@@ -549,7 +726,6 @@ function colorSetup(id){
             count++;
             $(countSpan).text(count);
         }
-        Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
     }  
     
     function stopSyllables(){
@@ -560,19 +736,18 @@ function colorSetup(id){
         //must update selections and styles
         $('.letter').on('click', function(){
         if(selectedType=='rhyme' && highlightElement=='letter'){
-            var num = $(clickedLayer).attr('id').slice(-1);
+           num = $(clickedLayer).attr('id').slice(-1);
             Selections.insert({poem_id: curPoem, style_id: Styles.findOne(), location: $(event.currentTarget).attr('id')})
             $(this).css('background-color',highlightColor);
             $(this).data('colorer'+num, []);
             $(this).data('colorer'+num).push(highlightColor);
             $(this).data('colorer'+num).push(true);
-            Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
         }
-        if(selectedType=='bold' && boldElement=='boldLetter'){
-            var num = $(clickedLayer).attr('id').slice(-1);
+        if(selectedType=='bold' && Session.get('boldElement')=='boldLetter'){
+            num = $(clickedLayer).attr('id').slice(-1);
             Selections.insert({poem_id: curPoem, style_id: Styles.findOne(), location: $(event.currentTarget).attr('id')})
-            if(boldColor != 'transparent'){
-                $(this).css('color',boldColor);
+            if(Session.get('boldColor') != 'transparent'){
+                $(this).css('color',Session.get('boldColor'));
                 $(this).css('font-weight','bold');
             }
             else{
@@ -580,9 +755,8 @@ function colorSetup(id){
                 $(this).css('font-weight','normal');
             }
             $(this).data('bolder'+num, []);
-            $(this).data('bolder'+num).push(boldColor);
+            $(this).data('bolder'+num).push(Session.get('boldColor'));
             $(this).data('bolder'+num).push(true);
-            Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
         }
     });
     }
@@ -628,7 +802,7 @@ function startSyllables(){
 }
 
 //must update layers 
-//individual or group action?
+//individual action
 $('.wordOption').on('click',function(){
         if($('.wordOption').data('active')){
             $('.poem').css('color', 'rgba(0,0,0,1)');
@@ -685,127 +859,6 @@ $('.wordOption').on('click',function(){
         }
 });*/
 
-function syllableSetup() {   
-    $('.syllablesCount').on('click', function(){
-        console.log('click');
-        $('.poemLine').each(function(){
-            console.log($(this).find('.syllableMarker').length)
-        });
-        
-    });  
-    
-   function startGrid(){
-        if ($('.syllablesGrid').data('gridded')===false){
-        $('.syllable').css('display', 'inline-block');
-        //$('.syllable').css('border', '1px solid transparent');
-        $('.syllable').css('min-width', '65px');
-        $('.syllablesGrid').data('gridded',true);
-        }
-        else{
-             $('.syllablesGrid').data('gridded',false);
-             $('.syllable').css('display', 'inline');
-             //$('.syllable').css('border', 'none');
-             $('.syllable').css('min-width', '0');
-        }
-}
-    
-    $('.syllablesGrid').on('click' , function(){ startGrid();});
-    
-    //must update syllable markers
-};
-
-
-    //update layers
-    $('.newColorLayer').on('click', function(){
-        var name = $(this).text();
-        if (name == "Other Coloring"){
-            var openDiv = "<div contenteditable='true' class='layerName'>"+ "Click Here to Enter Layer Name" ;
-        }
-        else{
-            var openDiv = "<div class='layerName'>"+ name ;
-        }
-        $(".existingLayers").append("<div class='layer' data-name='rhyme' id='color"+counter+ "' "+" </div>"+
-                    openDiv + "</div>"+
-                    "Highlight:"+
-                    "<select class='rhymeSelect'>"+
-                        "<option value='line'>Line</option>" +
-                        "<option value='word'>Word</option>"+
-                        "<option value='letter'>Letter</option>"+
-                    "</select>"+
-                    "<div class='highlighting'>"+
-                        "<span class='highlightColors'><div class='colorSquare eraseHighlight' data-color='transparent'></div></span>"+
-                        "<button class='addColor'>"+
-                           "+" +
-                       "</button>"+
-                    "</div>"+
-                    "<span class='visibilitySpan'>Visibility:<input type='checkbox' data-layer='rhyme' class='visibility' checked></span>" +
-                "</div>");
-      Layers.insert({id: "color"+counter, poem_id: curPoem , name: "Rhyme"});
-      syllableSetup(); 
-      generalSetup();         
-      colorSetup(counter);
-      counter++;
-    });
-    
-    //update layers
-    $('.newBarsLayer').on('click', function(){
-        var name = $(this).text();
-        console.log(name);
-        if (name == "Other Vertical Bars"){
-            var openDiv = "<div contenteditable='true' class='layerName'>"+ "Click Here to Enter Layer Name" ;
-        }
-        else{
-            var openDiv = "<div class='layerName'>"+ name ;
-        }
-        $(".existingLayers").append("<div class='layer' data-name='syllable'  id='syllable"+sCounter+ "' "+" </div>"+
-                    openDiv+ "</div>"+
-                    "<div class='info'> Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>"+
-                    "<span class='visibilitySpan'>Visibility: <input type='checkbox' data-layer='syllable' class='visibility' checked></span>"+
-                    "<div class='btn-group' id='toggle'>"+
-                        "<span><button type='button' class='btn btn-default syllablesClear'>Clear All Syllable Marks</button></span>"+
-                        "<span><button type='button' class='btn btn-default syllablesGrid' data-gridded=false>Grid</button></span>"+
-                    "</div>"+
-                "</div>");
-         Layers.insert({id: "syllable"+sCounter, poem_id: curPoem , name: "Syllable"});
-         generalSetup(); 
-         syllableSetup();
-         sCounter++;
-    });
-    
-    //update layers
-    $('.newBoldLayer').on('click',function(){
-        var name = $(this).text();
-        if (name == "Other Bolding"){
-            var openDiv = "<div contenteditable='true' class='layerName'>"+ "Click Here to Enter Layer Name" ;
-        }
-        else{
-            var openDiv = "<div class='layerName'>"+ name ;
-        }
-        $(".existingLayers").append("<div class='layer' data-name='bold' id='bold"+boldCounter+ "' "+" </div>"+
-                    openDiv + "</div>"+
-                    "Bold:"+
-                    "<select class='boldSelect'>"+
-                        "<option value='boldLine'>Line</option>" +
-                        "<option value='boldWord'>Word</option>"+
-                        "<option value='boldLetter'>Letter</option>"+
-                    "</select>"+
-                    "<div class='bolding'>"+
-                        "<span class='boldColors'>Erase:<div class='boldSquare eraseBold' data-color='transparent'></div> Colors:</span>"+
-                        "<button class='addColor'>"+
-                           "+" +
-                       "</button>"+
-                    "</div>"+
-                    "<span class='visibilitySpan'>Visibility:<input type='checkbox' data-layer='bold' class='visibility' checked></span>" +
-                "</div>");
-      Layers.insert({id: "bold"+boldCounter, poem_id: curPoem , name: "Bold"});
-      generalSetup();         
-      boldSetup(boldCounter);
-      boldCounter++;
-    })
-    
-    
-    
-   
    /*function throttle(f, delay){
     var timer = null;
     return function(){
@@ -861,13 +914,12 @@ function syllableSetup() {
     });
     
 ////////////////////////////////////////////////////////////////////////////////
-    //meteor style of document.ready
+/*    //meteor style of document.ready
     Template.poem.rendered=function(){
         console.log("start rendered");
         //makeSpans();
         console.log("done rendered");
         //currentPoem set in routes.js
-        //Poems.update(Session.get("currentPoem"), {$set: {htmlContent: newPoem}});
         //initialCount();
         //generalSetup();
         colorSetup('0');
@@ -877,4 +929,73 @@ function syllableSetup() {
         Layers.insert({id: "typing0", poem_id: curPoem , name: "Text"});
         Layers.insert({id: "rhyme0", poem_id: curPoem , name: "Rhyme"});
         Layers.insert({id: "syllable0", poem_id: curPoem , name: "Syllable"});
-    }
+    }*/
+    
+    ///////////////////////////
+    // Once the poem is rendered, run a query for all selections
+    // When a selection is added, update the HTML of the poem using
+    // the identifiers you gave it for every line, word, etc.
+    ///////////////////////////
+     Template.poem.rendered=function(){
+         curPoem = Session.get("currentPoem");
+          var selectionsCursor = Selections.find({poem_id:Session.get('currentPoem')});
+        selectionsCursor.observe({
+          added: function (selection, beforeIndex) {
+            var location = selection.location;
+            var styleID = selection.style_id;
+            var style = Styles.find({_id:styleID}).fetch();
+            console.log(style);
+            if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
+               var substring = style[0].background_color.substr(1);
+               $('#'+location).addClass(substring);
+               $('#'+location).data('colorer'+num, []);
+               $('#'+location).data('colorer'+num).push(Session.get('highlightColor'));
+               $('#'+location).data('colorer'+num).push(true)
+               console.log(substring);
+            }
+            if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
+                var substring = style[0].font_color.substr(1);
+                $('#'+location).addClass(substring);
+            }
+            if ((style[0].bold !== null)&&(typeof style[0].bold !== "undefined")) {
+                var substring = style[0].bold.substr(1);
+                $('#'+location).addClass(substring);
+            }
+          },
+          removed: function (selection, beforeIndex) {
+            var location = selection.location;
+            var styleID = selection.style_id;
+            var style = Styles.find({_id:styleID}).fetch();
+            if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
+               var substring = style[0].background_color.substr(1);
+               $('#'+location).removeClass(substring);
+               $('#'+location).removeData('colorer'+num);
+            }
+            if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
+                var substring = style[0].font_color.substr(1);
+                $('#'+location).removeClass(substring);
+            }
+            if ((style[0].bold !== null)&&(typeof style[0].bold !== "undefined")) {
+                var substring = style[0].bold.substr(1);
+                $('#'+location).removeClass(substring);
+            }
+          }
+        });
+          var syllablesCursor = SyllableMarkers.find({poem_id:Session.get('currentPoem')});
+          syllablesCursor.observe({
+            added: function (selection, beforeIndex) {
+            var location = selection.location;
+            console.log(location);
+            $('#'+location).addClass("syllableStyle");
+            $('#'+location).data('syllable', 'true'); 
+            console.log('wrong');
+            },
+            removed: function (selection, beforeIndex) {
+            var location = selection.location;
+            console.log(location+":)            . ");
+            $('#'+location).removeClass("syllableStyle");
+            $('#'+location).data('syllable', 'false');   
+            } });
+            
+            // setHeights();
+        };

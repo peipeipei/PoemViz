@@ -15,6 +15,7 @@ SyllableMarkers = new Meteor.Collection('syllableMarkers')
 /* A syllable marker has:
     _id : identifier
     location: id of letter span that starts the syllable, e.g. "letter23"
+    poem_id:which poem the marker is on
 */
 
 Selections = new Meteor.Collection('selections')

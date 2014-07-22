@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/css/bootstrap.min.css">
     <script src="https://netdna.bootstrapcdn.com/bootstrap/3.1.1/js/bootstrap.min.js"></script>
     <!-- <link rel="stylesheet" type="text/css" href="index.css">  -->
+    <link rel="stylesheet" href="//code.jquery.com/ui/1.11.0/themes/smoothness/jquery-ui.css">
+    <script src="//code.jquery.com/ui/1.11.0/jquery-ui.js"></script>
     
     
 </head>
@@ -26,7 +28,7 @@
     </div>
     
     <div class='container'>
-        <div class='row'>
+        <!--<div class='row'>-->
             <div class='col-md-8 left' id='leftSide'>
             {{{poem}}}
             
@@ -69,7 +71,7 @@
                     <div class='highlighting'>
                         <span class='highlightColors'><div class='colorSquare eraseHighlight' data-color='transparent'></div></span>
                         <button class='addColor'>
-                            +
+                        
                         </button>
                     </div>
                     <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>
@@ -90,7 +92,7 @@
             {{# each layer}}
                 {{# if equals type 'typing'}}
                     <div class="layer" data-name="typing" id={{this.id}}>
-                        <div class="layerName">{{this.name}}</div>
+                        <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
                         <button class="copyPoem" id="trigger-overlay">Editable Text</button>
                         <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default copyPoem" id="trigger-overlay">Editable Text</button></span>
@@ -109,7 +111,7 @@
                 {{/if}}
                 {{# if equals type 'rhyme'}}
                     <div class='layer' data-name='rhyme' id={{this.id}}>
-                        <div class='layerName'>{{this.name}}</div>
+                        <div class="layerName" contenteditable=true>{{this.name}}</div>
                         Highlight:
                         <select class='rhymeSelect'>
                             <option value='line'>Line</option>
@@ -117,7 +119,10 @@
                             <option value='letter'>Letter</option>
                         </select>
                         <div class='highlighting'>
-                            <span class='highlightColors'><div class='colorSquare eraseHighlight' data-color='transparent'></div></span>
+                            <span class='highlightColors'>
+                                <div class='colorSquare' data-color='#f99' style='background-color:#f99'></div>
+                                <div class='colorSquare' data-color='#f9f' style='background-color:#f9f'></div>
+                            </span>
                             <button class='addColor'>
                                 +
                             </button>
@@ -128,7 +133,7 @@
                 {{/if}}
                     {{# if equals type 'syllable'}}
                     <div class='layer' data-name='syllable' id={{this.id}}>
-                        <div class='layerName'>{{this.name}}</div>
+                        <div class="layerName" contenteditable=true>{{this.name}}</div>
                         <div class='info'> Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
                         <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
                         <div class="btn-group" id="toggle">
@@ -138,6 +143,26 @@
                     </div>
                 {{/if}}
                 {{# if equals type 'bold'}}
+                    <div class='layer' data-name='bold' id={{this.id}}>
+                        <div class="layerName" contenteditable=true>{{this.name}}</div>
+                        Bold:
+                        <select class='boldSelect'>
+                            <option value='boldLine'>Line</option>
+                            <option value='boldWord'>Word</option>
+                            <option value='boldLetter'>Letter</option>
+                        </select>
+                        <div class='bolding'>
+                            <span class='boldColors'>
+                                <div class='colorSquare' data-color='#000' style='background-color:#000'></div>
+                                <div class='colorSquare' data-color='#063' style='background-color:#063'></div>
+                            </span>
+                            <button class='addBoldColor'>
+                                +
+                            </button>
+                        </div>
+                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>
+                        <span class="layerOpacitySpan">Opacity: <input type="text" class="span2" value="opacity" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="10" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="hide"></span>
+                    </div>
                 {{/if}}
             {{/each}}
             
@@ -158,7 +183,7 @@
                     </ul>
                 </div>
             </div>
-        </div>
+        <!--</div>-->
     </div>
     {{/if}}
 </template>

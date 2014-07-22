@@ -1,6 +1,7 @@
 
 .left{
-    padding-top: 80px;
+    margin-top: 80px;
+    padding-top: 0px !important;
     padding-left:0px;
 }
 
@@ -42,6 +43,7 @@ td{
     margin:10px 0px;
     background-color:#dddddd;
     position:relative;
+    opacity:1.0;
 }
 
 .eraseHighlight, .eraseBold{
@@ -343,4 +345,48 @@ td{
     margin-left: auto;
     margin-right: auto;
 }
+
+.f99 {
+    background-color: #f99;
+}
+.f9f {
+    background-color: #f9f;
+}
+.F9F {
+    background-color: #F9F;
+}
+.D9F {
+    background-color: #D9F;
+}
+.A9F {
+    background-color: #A9F;
+}
+/*.9CF {
+    background-color: #9CF;
+}
+.9FF {
+    background-color: #9FF;
+}
+.9FA {
+    background-color: #9FA;
+}*/
+.CF9 {
+    background-color: #CF9;
+}
+.FF9 {
+    background-color: #FF9;
+}
+.FC9 {
+    background-color: #f99;
+}
+
+.syllableStyle{
+    border-left: 3px solid red;
+}
+
+.left, .right{
+    overflow:auto;
+    height: 80vh;
+}
+
 

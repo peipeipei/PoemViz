@@ -1,4 +1,4 @@
-Router.map(function () {
+/*Router.map(function () {
   this.route('poem', {
     path: '/poem/:id',
     template: 'poem',
@@ -34,4 +34,28 @@ Router.map(function () {
     }
     
     })
-});
+});*/
+
+
+Router.map(function () {
+  this.route('poem', {
+    path: '/poem/:id',
+    template: 'poem',
+    waitOn: function(){
+      return [Meteor.subscribe('poems'), Meteor.subscribe('selections')]
+    },
+    data: function(){
+      var poem_id = this.params.id
+      var poem = Poems.findOne({_id:poem_id}).htmlContent
+      console.log(poem_id,poem);
+      Session.set('currentPoem', this.params.id);
+      return {poem: poem}
+    },
+    action: function(){
+        if (this.ready()) {
+            this.render();
+        } 
+    }    
+    })
+    this.route('teacher', {path:'/create'})
+});   

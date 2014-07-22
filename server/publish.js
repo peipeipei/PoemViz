@@ -6,6 +6,16 @@ Meteor.publish('layers', function(){
     return Layers.find()
 })
 
-Meteor.publish('annotations', function () {
-  return Annotations.find()
+Meteor.publish('selections', function () {
+  return Selections.find()
 });
+
+
+Meteor.publish('styles', function () {
+  return Styles.find()
+});
+
+Meteor.publish('syllableMarkers', function() {
+    return SyllableMarkers.find()
+});
+

@@ -1,0 +1,16 @@
+#createDiv{
+    background-color:aliceBlue;
+    text-align:center;
+    padding:80px 0px;
+    height:100%;
+}
+
+html,body, .container, .row{
+    height:100%;
+}
+
+#createPoem{
+    width:60%;
+    height:300px;
+    margin:20px;
+}

@@ -1,0 +1,14 @@
+<template name = 'teacher' >
+  {{# if isReady}}
+  <div class = 'container'>
+    <div class = 'row'>
+      <div class='col-md-8 col-md-offset-2' id='createDiv'>
+        <div>Enter a poem below and click submit to create a PoemViz</div>
+        <textarea id='createPoem'></textarea><br>
+        <button id='submitPoem'>Submit</button>
+        <div id='showURL'></div>
+      </div>
+    </div>
+  </div>
+  {{/if}}
+</template>
