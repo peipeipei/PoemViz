@@ -2,14 +2,14 @@ Template.teacher.isReady = function(){
   return checkIsReady();  
 }
 
-function parseHTML(raw){
+parseHTML=function(raw){
     var arr=raw.split('\n');
     var spanned=[];
     var lineCounter=0,
         wordCounter=0,
         charCounter=0;
     arr.forEach(function(v, i){
-      var elements = v.split('');
+      var elements = v.trim().split('');
       var p=$('<p class="poemLine">');
       var line = $('<span class="line col-md-11">');
       line.attr("id","line"+ lineCounter);
@@ -82,18 +82,50 @@ Template.teacher.events({
           }
         })
         Layers.insert({
-          name:'Rhyme',
-          id:'color0',
-          poem_id:newPoem,
-          type:'rhyme'
+            name:'Text Options',
+            id:'typing0',
+            poem_id:newPoem,
+            type:'typing'
         });
-        Layers.insert({
-          name:'Syllables',
-          id:'syllable0',
-          poem_id:newPoem,
-          type:'syllable'
-        });
-   
-        
+        var choices=$('#chooseLayers').find('.layerChoice');
+        choices.each(function(){
+            if($(this).is(':checked')){
+                var name=$(this).val();
+                switch(name){
+                    case 'Sound':
+                        Layers.insert({
+                            name:name,
+                            id:'color0',
+                            poem_id:newPoem,
+                            type:'rhyme'
+                        });
+                        break;
+                    case 'Syllable':
+                        Layers.insert({
+                            name:name,
+                            id:'syllable0',
+                            poem_id:newPoem,
+                            type:'syllable'
+                        });
+                        break;
+                    case 'Tone':
+                        Layers.insert({
+                            name:name,
+                            id:'color'+Layers.find({type:'rhyme'}).fetch().length,
+                            poem_id:newPoem,
+                            type:'rhyme'
+                        });
+                        break;
+                    case 'Consonance/Assonance':
+                        Layers.insert({
+                            name:name,
+                            id:'bold0',
+                            poem_id:newPoem,
+                            type:'bold'
+                        });
+                        break;
+                }
+            }
+        })
     }
 })

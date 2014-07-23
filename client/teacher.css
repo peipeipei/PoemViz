@@ -14,3 +14,7 @@ html,body, .container, .row{
     height:300px;
     margin:20px;
 }
+
+#submitPoem{
+    margin:20px;
+}

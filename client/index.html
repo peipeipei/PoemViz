@@ -93,20 +93,27 @@
                 {{# if equals type 'typing'}}
                     <div class="layer" data-name="typing" id={{this.id}}>
                         <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
-                        <button class="copyPoem" id="trigger-overlay">Editable Text</button>
                         <div class="btn-group" id="toggle">
-                            <span><button type="button" class="btn btn-default copyPoem" id="trigger-overlay">Editable Text</button></span>
-<!--                            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
-                            <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>-->
+                           <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
+                           <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation (Refresh Page)</button></span>
                         </div>
                         <br>
-                        Style:
+                        <br>
+                        Stress:
+                        <select class='stressSelect'>
+                            <option value='stressSyllable'>Syllable</option>
+                            <option value='stressWord'>Word</option>
+                            <option value='stressLetter'>Letter</option>
+                        </select>
+                        
+                        <br>
+                        <!--Style:
                         <select class='rhymeSelect'>
                             <option value='none'>None</option>
                             <option value='bold'>Bold</option>
                             <option value='itatlics'>Italicize</option>
                             <option value='strike'>Strike Through</option>
-                        </select>  
+                        </select>  -->
                     </div>
                 {{/if}}
                 {{# if equals type 'rhyme'}}
@@ -128,7 +135,14 @@
                             </button>
                         </div>
                         <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>
-                        <span class="layerOpacitySpan">Opacity: <input type="text" class="span2" value="opacity" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="10" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="hide"></span>
+                         <span class="opacities">
+                            <form action="">
+                                Opacity:
+                                <input type="radio" class="opacity" name="radioButton" id="opacity100" data-value="1" checked>100%
+                                <input type="radio" class="opacity" name="radioButton" id="opacity60" data-value=".6">60%
+                                <input type="radio" class="opacity" name="radioButton" id="opacity20" data-value=".2">20%
+                            </form>    
+                        </span>    
                     </div>
                 {{/if}}
                     {{# if equals type 'syllable'}}
@@ -168,12 +182,12 @@
             
                 
                 <div class="dropdown btn-group">
-                    <a class="btn dropdown-toggle" data-toggle="dropdown" href="#">
+                    <a class="btn dropdown-toggle layers-menu" data-toggle="dropdown" href="#">
                         Add Layer
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <li><a class = "newColorLayer" href="#">Rhyme</a></li>
+                        <li><a class = "newColorLayer" href="#">Sound</a></li>
                         <li><a class = "newBarsLayer" href="#">Syllable</a></li>
                         <li><a class = "newColorLayer" href="#">Tone</a></li>
                         <li><a class = "newBoldLayer" href="#">Consonance/Assonance</a></li>

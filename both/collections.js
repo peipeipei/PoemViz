@@ -34,6 +34,7 @@ Styles = new Meteor.Collection('styles')
     font_color : string, CSS color for text in this style (OPTIONAL)
     background_color : string, CSS background color for text in this style (OPTIONAL) 
     bold : boolean, whether the text is bold or not (OPTIONAL)
+    opacity: opacity of background color (OPTIONAL)
     name : string, user-provided description of what the style means, e.g. "feminine rhyme" (OPTIONAL)
 */
 

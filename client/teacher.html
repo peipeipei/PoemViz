@@ -3,10 +3,16 @@
   <div class = 'container'>
     <div class = 'row'>
       <div class='col-md-8 col-md-offset-2' id='createDiv'>
-        <div>Enter a poem below and click submit to create a PoemViz</div>
+        <div>Enter a poem below and choose the layers you want to start.</div>
         <textarea id='createPoem'></textarea><br>
+        <div id='chooseLayers'>Start the poem with:<br>
+            <input type="checkbox" class="layerChoice" value="Sound"> Sound&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" class="layerChoice" value="Syllable"> Syllable&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" class="layerChoice" value="Tone"> Tone&nbsp;&nbsp;&nbsp;&nbsp;
+            <input type="checkbox" class="layerChoice" value="Consonance/Assonance"> Consonance/Assonance
+        </div>
         <button id='submitPoem'>Submit</button>
-        <div id='showURL'></div>
+
       </div>
     </div>
   </div>
