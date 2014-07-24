@@ -19,3 +19,7 @@ Meteor.publish('syllableMarkers', function() {
     return SyllableMarkers.find()
 });
 
+Meteor.publish('lineCounts', function() {
+    return LineCounts.find()
+});
+

@@ -1,4 +1,4 @@
-var colors=['#f99','#F9F','#D9F','#A9F', "#9CF",'#9FF', '#9FA','#CF9', '#FF9', '#FC9'];
+var colors=['rgba(255,153,153,1)','rgba(255,153,255,1)','#D9F','#A9F', "#9CF",'#9FF', '#9FA','#CF9', '#FF9', '#FC9'];
 var darkColors=['#000','#063','#009','#506','#602'];
 var highlighting=true;
 Session.set('highlightElement','line');
@@ -23,6 +23,7 @@ var layersHandle=Meteor.subscribe('layers');
 var selectionsHandle=Meteor.subscribe('selections');
 var stylesHandle=Meteor.subscribe('styles');
 var syllablesHandle=Meteor.subscribe('syllableMarkers');
+var linesHandle=Meteor.subscribe('lineCounts');
 
 Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
@@ -30,7 +31,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 
 checkIsReady = function(){
     console.log('ready!');
-  return poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready();
+  return poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&linesHandle.ready();
 }
 
 Template.poem.isReady=function(){
@@ -164,6 +165,10 @@ Template.poem.events({
             })
             Session.set('highlightElement', $(clickedLayer).find('.rhymeSelect').val());
         }
+        if (Session.get('selectedType')=='typing'){
+            Session.set('stressElement', $(clickedLayer).find('.stressSelect').val());
+            curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), verticalAlign:'super'});
+        }
 /*        if (selectedType=='syllable'){
             startSyllables();
         }else{
@@ -211,22 +216,24 @@ Template.poem.events({
         Session.set('boldElement',$(event.currentTarget).val());
         console.log(Session.get('boldElement'));
     },
+    'change .stressSelect':function(event){
+        Session.set('stressElement',$(event.currentTarget).val());
+        console.log(Session.get('stressElement'));
+    },
     'click .syllablesClear': function(event){
           console.log('hi');
           $('.letter, .space').each(function(){
-           if ($(this).css('border-left-color') == 'black'){}
-           else{
-               if ($(this).css('border-left-color') == 'rgb(255, 0, 0)'){
+           if ($(this).hasClass('syllableStyle')){
                 $(this).css('border-left', 'none');
                 $(this).data('syllable', 'false');   
-                var lineSpan = $(this).closest('.poemLine');
-                var countSpan = $(lineSpan).find('.lineCount');
-                var count = $(countSpan).text();
-                count--;
-               $(countSpan).text(count);
-               }
-           }
-               });
+            }
+          });
+          $('.poemLine').each(function(){
+            var lineSpan = this;
+            var countSpan = $(lineSpan).find('.lineCount');
+            var count = $(countSpan).text();
+            $(countSpan).text($(lineSpan).find('.word').length);
+          })
 /*               $('.word').each(function(){
                    $('.syllable').each(function(){
                    if ($(this).prev()){
@@ -243,21 +250,20 @@ Template.poem.events({
             num = Session.get('curLayer').slice(-1);
             if (typeof $(event.currentTarget).data('colorer'+num) === 'undefined'){
                 // $(event.currentTarget).css('background-color',Session.get('highlightColor'));
-                $(event.currentTarget).data('colorer'+num, []);
+               /* $(event.currentTarget).data('colorer'+num, []);
                 $(event.currentTarget).data('colorer'+num).push(curColor);
                 $(event.currentTarget).data('colorer'+num).push(true);
-                console.log($(event.currentTarget).data('colorer'+num));
+                console.log($(event.currentTarget).data('colorer'+num));*/
                 Selections.insert({poem_id: curPoem, style_id: curStyle, location: $(event.currentTarget).attr('id')});
                 var op = $('.opacity:checked').data("value");
-                console.log(op);
                 curStyle = Styles.insert({poem_id: curPoem, layer_id: Session.get('curLayer'), opacity: op});
                 Selections.insert({poem_id: curPoem, style_id: curStyle, location: Session.get('curLayer').slice(-1)});
             }else{
-                $(event.currentTarget).data('colorer'+num, null);
+               // $(event.currentTarget).data('colorer'+num, null);
                 var idR = Selections.find({poem_id: curPoem, location: $(event.currentTarget).attr('id')}).fetch();
                 var idRemove = idR[0]._id;
                 Selections.remove(idRemove);
-                var flag=true;
+                /*var flag=true;
                 for (var i = 0; i < Layers.find({type:'rhyme', poem_id: curPoem}).fetch().length; i++){
                     console.log(i,$(event.currentTarget).data('colorer'+i));
                     if(typeof $(event.currentTarget).data('colorer'+i) !== 'undefined' && $(event.currentTarget).data('colorer'+i) !== null){
@@ -270,7 +276,7 @@ Template.poem.events({
                 }
                 if (flag){
                      //$(event.currentTarget).css('background-color', 'transparent');
-                }
+                }*/
             }
           }
           if(Session.get('selectedType')=='bold' && Session.get('boldElement')=='boldLine'){
@@ -306,7 +312,7 @@ Template.poem.events({
             }
         }
         //Poems.update(Session.get("currentPoem"), {$set: {htmlContent: $('#leftSide').html()}});
-      },
+        },
       'change .opacity': function(event){
         var op = $(event.currentTarget).data("value");
         console.log(op);
@@ -320,7 +326,6 @@ Template.poem.events({
         var visible=$(event.currentTarget).is(':checked');
         if($(event.currentTarget).data('layer') =='syllable'){
             if(visible){
-                $('.syllable').css('border-color', '#eee');
                 $('.syllable').css('min-width', '65px');
                 $('.letter, .space').each(function(){
                 //must make sure we give this data attribute to other users
@@ -331,7 +336,6 @@ Template.poem.events({
                 $('.lineCount').css('opacity','1.0');
             }
             else{
-                $('.syllable').css('border-color', 'white');
                 $('.syllable').css('min-width', '0px');
                 $('.letter, .space').each(function(){
                     $(this).css('border-left', 'none');
@@ -494,6 +498,7 @@ Template.poem.events({
                 $(event.currentTarget).css('vertical-align','super');
                 $(event.currentTarget).data('stresser'+num).push(true);
                 Selections.insert({poem_id: curPoem, style_id: curStyle, location: $(event.currentTarget).attr('id')});
+                console.log('supposedly inserted', Styles.find(curStyle).fetch());
             }
             else{
                 $(event.currentTarget).removeData('stresser'+num);
@@ -509,6 +514,9 @@ Template.poem.events({
                             break;
                         }
                     }
+                }
+                if (flag){
+                     $(event.currentTarget).css('vertical-align', 'baseline');
                 }
             }
         }
@@ -588,6 +596,35 @@ Template.poem.events({
                 if (flag){
                      $(event.currentTarget).css('color', 'black');
                     $(event.currentTarget).css('font-weight','normal');
+                }
+            }
+        }
+        if (Session.get('selectedType')=='typing' && Session.get('stressElement')=='stressLetter'){
+            num = Session.get('curLayer').slice(-1);
+            console.log('super stress');
+            if (typeof $(event.currentTarget).data('stresser'+num) === 'undefined'){
+                $(event.currentTarget).data('stresser'+num, []);
+                $(event.currentTarget).css('vertical-align','super');
+                $(event.currentTarget).data('stresser'+num).push(true);
+                Selections.insert({poem_id: curPoem, style_id: curStyle, location: $(event.currentTarget).attr('id')});
+            }
+            else{
+                $(event.currentTarget).removeData('stresser'+num);
+                var idR = Selections.find({poem_id: curPoem, location: $(event.currentTarget).attr('id')}).fetch();
+                var idRemove = idR[0]._id;
+                Selections.remove(idRemove);
+                var flag=true;
+                for (var i = 0; i < Layers.find({type:'typing', poem_id: curPoem}).fetch().length; i++){
+                    console.log(i,$(event.currentTarget).data('stresser'+i));
+                    if(typeof $(event.currentTarget).data('stresser'+i) !== 'undefined' && $(event.currentTarget).data('stresser'+i) !== null){
+                        if ($(event.currentTarget).data('stresser'+i)[1] === true){
+                            flag = false;
+                            break;
+                        }
+                    }
+                }
+                if (flag){
+                     $(event.currentTarget).css('vertical-align', 'baseline');
                 }
             }
         }
@@ -728,55 +765,6 @@ Template.poem.events({
         $('.right').css('height',halfies);
     }
 
-    //make each alphanumeric character/space/word/line a span with seperate class
-    function makeSpans() {
-        console.log($('.poem').html());
-        $('.poemLine').each(function(){
-            console.log('MEEP');
-            var elements = $(this).text().split('');
-            $(this).text('');
-            var line = $('<span class="line col-md-11">');
-            line.attr("id","line"+ lineCounter);
-            $(this).append(line);
-            lineCounter++;
-            for (var i = 0; i < elements.length; i++) {
-                if (elements[i-1] === ' ' || i === 0){
-                    var syllable=$('<span class=syllable>')
-                    var word = $('<span class=word>');
-                    word.attr("id", "word"+wordCounter);
-                    wordCounter++;
-                    $(word).append(syllable);
-                    $(line).append(word);
-                }
-                if (elements[i] === ' '){
-                    var space = $('<span class=space>' + elements[i] + '</span>');
-                    space.attr("id", "char"+charCounter);
-                    $(line).append(space);
-                    charCounter++;
-                } 
-                else{
-                    var letter = $('<span class=letter>' + elements[i] + '</span>');
-                    letter.attr("id", "char"+charCounter);
-                    $(syllable).append(letter);
-                    charCounter++;
-                    
-                }
-                if (i == elements.length - 1){
-                    //make linebreak space wide enough to prepend breaks to
-                    //only works if no spaces at end of line already!
-                    var linebreak = $('<span class=space > </span>');
-                    linebreak.css('padding-left', '1px');
-                    $(line).append(linebreak);
-                 }
-            }
-            var lineCount = $('<span class=lineCount style="color:blue; font-weight:bold">');
-            $(this).append(lineCount);
-        });
-        
-    }
-    
-
-
 function grid(){
     if ($('.syllablesGrid').data('gridded')===false){
         $('.syllable').each(function(){
@@ -821,10 +809,17 @@ function grid(){
         $('.syllablesGrid').data('gridded',true);
     }else{
         $('.word').each(function(){
-           $('.syllable').each(function(){
+          var letters=$(this).find('.letter');
+          $(this).find('.syllable').remove();
+          var oneSyl=$('<span class=syllable>');
+          letters.each(function(){
+            $(oneSyl).append(this);
+          })
+          $(this).append(oneSyl);
+  /*         $('.syllable').each(function(){
            var firstSyl= $(this).prev('.syllable');
            $(this).prepend($(firstSyl).html().prev().remove())
-           });
+           });*/
        });
         $('.syllable').css('display', 'inline');
         //$('.syllable').css('border', 'none');
@@ -832,6 +827,7 @@ function grid(){
         $('.syllablesGrid').data('gridded',false);
     }
 }
+
 
     function ghostMarker(thing) {
            if ($(thing).css('border-left-color') == 'rgb(255, 0, 0)'){}
@@ -849,27 +845,28 @@ function grid(){
     function clickSyllable(thing) {
         var lineSpan = $(thing).closest('.poemLine');
         var countSpan = $(lineSpan).find('.lineCount');
-        var count = $(countSpan).text();
+        var wordCount=$(lineSpan).find('.word').length;
         if ($(thing).css('border-left-color') == "rgb(255, 0, 0)"){
             $(thing).css('border-left', 'none');
             $(thing).data('syllable', 'false');
-            count--;
-            $(countSpan).text(count);
             var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: curPoem}).fetch(); 
             console.log(syl);
             SyllableMarkers.remove(syl[0]._id);
-            /*var secondSyl= $(thing).closest('.syllable');
-            var firstSyl= $(secondSyl).prev('.syllable');
-            $(secondSyl).prepend($(firstSyl).html()).prev().remove();*/
         }
         else{
             $(thing).css('border-left', '3px solid red');
             $(thing).data('syllable', 'true');
-            count++;
-            $(countSpan).text(count);
             var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: curPoem}).fetch(); 
             SyllableMarkers.insert({location: $(thing).attr("id"), poem_id: curPoem});
         }
+        var sylCount=0;
+        $(lineSpan).find('.letter').each(function(){
+            if ($(this).hasClass('syllableStyle')===true){
+                sylCount++; 
+            }
+        })
+        $(countSpan).text(wordCount+sylCount);
+        
     }  
     
     function stopSyllables(){
@@ -900,26 +897,6 @@ function grid(){
         })
     }
     
-//must update selections and styles
-function boldSetup(id){  
-    for (i=0;i<2;i++){
-       var colorSquare=$('<div class="colorSquare"></div>');
-       colorSquare.data('color', darkColors[i]);
-       colorSquare.css('background-color', darkColors[i]);
-       var highlight = $('#' +'bold'+ id).find('.boldColors');
-      $(highlight).append(colorSquare);
-    }
-}
-
-function startSyllables(){
-    $('.poem').off("click", ".letter, .space", clickSyllable);
-    $('.poem').on("mouseover", ".letter, .space", ghostMarker);
-    $('.poem').on("mouseout", ".letter, .space", noghostMarker);
-    $('.poem').on("click", ".letter, .space", clickSyllable);
-}
-
-
-
 
    /*function throttle(f, delay){
     var timer = null;
@@ -1002,8 +979,8 @@ function startSyllables(){
        Session.set('highlightElement','line');
        Session.set('boldElement', 'boldLine');
        Session.set('opacities', '1.0');
-       Session.set('stressElement','Syllable');
-         //need to use local Storage?
+       Session.set('stressElement','stressWord');
+
         if($('.puncOption').data('active')){
              $(".puncOption").remove();
          }
@@ -1014,28 +991,77 @@ function startSyllables(){
             var location = selection.location;
             var styleID = selection.style_id;
             var style = Styles.find({_id:styleID}).fetch();
-            console.log(style);
             if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
-               var substring = style[0].background_color.substr(1);
-               $('#'+location).addClass("color"+substring);
+               var substring = style[0].background_color;
+               console.log(substring);
+               $("#"+location).css(
+                {
+                    "background-color": substring
+                    
+                }
+               );
+               /*$('#'+location).addClass("color"+substring);
                $('#'+location).data('colorer'+num, []);
                $('#'+location).data('colorer'+num).push(curColor);
-               $('#'+location).data('colorer'+num).push(true);
+               $('#'+location).data('colorer'+num).push(true);*/
             }
             if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
-                var substring = style[0].font_color.substr(1);
-                $('#'+location).data('bolder'+num, []);
+                var substring = style[0].font_color;
+                $("#"+location).css(
+                 {
+                    "color": substring
+                    
+                 }
+                );
+                /*$('#'+location).data('bolder'+num, []);
                 $('#'+location).data('bolder'+num).push(Session.get('boldColor'));
                 $('#'+location).data('bolder'+num).push(true);
-                $('#'+location).addClass("bold"+substring);
+                $('#'+location).addClass("bold"+substring);*/
+            }
+            if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
+                console.log('streeeesssed out');
+                var substring = style[0].verticalAlign;
+                $("#"+location).css(
+                    {
+                        "vertical-align":substring
+                    });
             }
             if ((style[0].bold !== null)&&(typeof style[0].bold !== "undefined")) {
                 var substring = style[0].bold;
-                $('#'+location).addClass("bold"+substring);
+                if (substring){
+                $("#"+location).css(
+                 {
+                    "font-weight": bold
+                 }
+                );
+                }
+               // $('#'+location).addClass("bold"+substring);
             }
             if ((style[0].opacity !== null)&&(typeof style[0].opacity !== "undefined")) {
-              //we really need to switch from data to searching all selections, styles, layer!!!
-                  $(".line, .letter, .word, .space").each(function() {
+                var allColorStylesofLayer = Styles.find({layer_id: "color"+location}).fetch();
+                var allSelections = [];
+                _.each(allColorStylesofLayer, function(allColor){
+                    var piece = Selections.find({style_id: allColor._id}).fetch();
+                    allSelections = allSelections.concat(piece);
+                })
+                console.log(allSelections);
+                _.each(allSelections, function(sel){
+                    var thisID = sel.location;
+                    var thisStyleID = sel.style_id;
+                    var thisStyle = Styles.findOne({_id: thisStyleID});
+                    if (thisStyle.background_color !== undefined){
+                    var rgba = thisStyle.background_color;
+                    console.log(rgba);
+                    var lastIndex = rgba.lastIndexOf(",");
+                    var substring = rgba.substr(0, lastIndex+1);
+                    $("#"+thisID).css(
+                    {
+                      "background": substring+style[0].opacity+")"
+                    }
+                    );
+                    }
+                    })
+                  /*$(".line, .letter, .word, .space").each(function() {
                     if (($(this).data('colorer'+location) !== null)&&($(this).data('colorer'+location) !== undefined)){
                     var rgb = $(this).css('background-color');
                     var mid = rgb.split("(")[1];
@@ -1044,18 +1070,35 @@ function startSyllables(){
                     var middle = rgbaArray[0]+", "+rgbaArray[1]+", "+rgbaArray[2];
                     $(this).css("background", "rgba( "+middle+", "+style[0].opacity+")");
                     }
-               }) }
+               }) */
+               }
           },
           removed: function (selection, beforeIndex) {
-              console.log('remove');
+            console.log('remove');
             var location = selection.location;
             console.log('loc',location);
             var styleID = selection.style_id;
             var style = Styles.find({_id:styleID}).fetch();
             if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
-               var substring = style[0].background_color.substr(1);
-               $('#'+location).removeData('colorer'+num);
-               $('#'+location).removeClass("color"+substring);
+               var substring = "white";
+                var allSelections = Selections.find({location: location}).fetch();
+                var allStyles = []
+                _.each(allSelections, function(sel){
+                  var piece = sel.style_id;  
+                  var otherStyle = Styles.find({_id: piece}).fetch();
+                   if ((otherStyle[0].background_color !== null)&&(typeof otherStyle[0].background_color !== "undefined")){
+                       substring = otherStyle[0].background_color;
+                   }
+                })
+               $("#"+location).css(
+                {
+                    "background-color": substring
+                    
+                }
+               );
+              
+              /* $('#'+location).removeData('colorer'+num);
+               $('#'+location).removeClass("color"+substring);*/
             }
             if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
                 var substring = style[0].font_color.substr(1);
@@ -1066,6 +1109,28 @@ function startSyllables(){
                 var substring = style[0].bold;
                 $('#'+location).removeClass("bold"+substring);
             }
+            if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
+                console.log('streeeesssed out');
+                var substring = style[0].verticalAlign;
+                $("#"+location).removeClass("vertical-align"+substring);
+            }
+            //do we need opacity??
+            /*if ((style[0].opacity !== null)&&(typeof style[0].opacity !== "undefined")) {
+              var allSelections = Styles.find({layer_id: "color"+location}).fetch();
+              _.each(allSelections, function(sel){
+                  var thisID = sel.location;
+                  var rgb = $(thisID).css("backgroud-color");
+              })
+                  $(".line, .letter, .word, .space").each(function() {
+                    if (($(this).data('colorer'+location) !== null)&&($(this).data('colorer'+location) !== undefined)){
+                    var rgb = $(this).css('background-color');
+                    var mid = rgb.split("(")[1];
+                    var middl = mid.split(")")[0];
+                    var rgbaArray = middl.split(",");
+                    var middle = rgbaArray[0]+", "+rgbaArray[1]+", "+rgbaArray[2];
+                    $(this).css("background", "rgba( "+middle+", "+style[0].opacity+")");
+                    }
+               }) }*/
           }
         });
           var syllablesCursor = SyllableMarkers.find({poem_id:Session.get('currentPoem')});
@@ -1082,7 +1147,15 @@ function startSyllables(){
             console.log(location+":)            . ");
             $('#'+location).removeClass("syllableStyle");
             $('#'+location).data('syllable', 'false');   
-            } });
+            } 
+          });
+          /*
+          var linesCursor = LineCounts.find({poem_id:Session.get('currentPoem')});
+          linesCursor.observeChanges({
+            changed: function (id, fields) {
+                var words
+            } 
+          });*/
             
             // setHeights();
         };

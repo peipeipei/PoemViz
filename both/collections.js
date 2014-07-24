@@ -8,8 +8,12 @@ Poems = new Meteor.Collection('poems');
          lines/words/letters in the poem.
 */
 
-Annotations = new Meteor.Collection('annotations')
-// Annotations is deprecated, will remove
+LineCounts = new Meteor.Collection('lineCounts')
+/* A line count has:
+    _id : identifier
+    line: id of line span that starts the syllable, e.g. "line3"
+    poem_id:which poem the line count is on
+*/
 
 SyllableMarkers = new Meteor.Collection('syllableMarkers')
 /* A syllable marker has:
