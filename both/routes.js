@@ -42,7 +42,7 @@ Router.map(function () {
     path: '/poem/:id',
     template: 'poem',
     waitOn: function(){
-      return [Meteor.subscribe('poems'), Meteor.subscribe('selections')]
+      return [Meteor.subscribe('poems'), Meteor.subscribe('selections'), Meteor.subscribe('layers'), Meteor.subscribe('styles'), Meteor.subscribe('syllableMarkers')]
     },
     data: function(){
       var poem_id = this.params.id

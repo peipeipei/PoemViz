@@ -20,12 +20,8 @@
 
 <template name="poem">
 {{# if isReady}}
-    <div class="toolbar">
-        <!--<div class="btn-group" id="toggle">-->
-        <!--    <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>-->
-        <!--    <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>-->
-        <!--</div>-->
-    </div>
+    <!--<div class="toolbar">-->
+    <!--</div>-->
     
     <div class='container'>
         <!--<div class='row'>-->
@@ -49,45 +45,7 @@
             
             </div>
             <div class='col-md-4 right' id='layers'>
-            <!--<div class = 'existingLayers'>
-                <div class="layer" data-name="typing" id="typing0">
-                    <div class="layerName">Text</div>
-
-                    <div class="btn-group" id="toggle">
-                        <span><button type="button" class="btn btn-default copyPoem" id="trigger-overlay">Editable Text</button></span>
-                        <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
-                        <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
-                    </div>
-
-                </div>
-                <div class='layer' data-name='rhyme' id="color0">
-                    <div class='layerName'>Rhyme</div>
-                    Highlight:
-                    <select class='rhymeSelect'>
-                        <option value='line'>Line</option>
-                        <option value='word'>Word</option>
-                        <option value='letter'>Letter</option>
-                    </select>
-                    <div class='highlighting'>
-                        <span class='highlightColors'><div class='colorSquare eraseHighlight' data-color='transparent'></div></span>
-                        <button class='addColor'>
-                        
-                        </button>
-                    </div>
-                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>
-                    <span class="layerOpacitySpan">Opacity: <input type="text" class="span2" value="opacity" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="10" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="hide"></span>
-                </div>
-
-                <div class='layer' data-name='syllable' id='syllable0'>
-                    <div class='layerName'>Syllables</div>
-                    <div class='info'> Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
-                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
-                    <div class="btn-group" id="toggle">
-                        <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
-                        <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
-                    </div>
-                </div>
-            </div>-->
+            
             
             {{# each layer}}
                 {{# if equals type 'typing'}}
@@ -95,25 +53,20 @@
                         <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
                         <div class="btn-group" id="toggle">
                            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
-                           <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation (Refresh Page)</button></span>
+                           <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
                         </div>
-                        <br>
-                        <br>
+                    </div>
+                {{/if}}
+                {{# if equals type 'stressing'}}
+                    <div class="layer" data-name="stressing" id={{this.id}}>
+                    <div class="layerName" contenteditable=true>{{this.name}}</div>
+                    <div class='info'> <i>Click to show stress.</i></div>
+                   <!-- <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> -->
                         Stress:
                         <select class='stressSelect'>
                             <option value='stressWord'>Word</option>
-                            <!--<option value='stressSyllable'>Syllable</option>-->
                             <option value='stressLetter'>Letter</option>
                         </select>
-                        
-                        <br>
-                        <!--Style:
-                        <select class='rhymeSelect'>
-                            <option value='none'>None</option>
-                            <option value='bold'>Bold</option>
-                            <option value='itatlics'>Italicize</option>
-                            <option value='strike'>Strike Through</option>
-                        </select>  -->
                     </div>
                 {{/if}}
                 {{# if equals type 'rhyme'}}
@@ -134,13 +87,14 @@
                                 +
                             </button>
                         </div>
-                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>
+                        <!--<span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>-->
                          <span class="opacities">
                             <form action="">
                                 Opacity:
                                 <input type="radio" class="opacity" name="radioButton" id="opacity100" data-value="1" checked>100%
                                 <input type="radio" class="opacity" name="radioButton" id="opacity60" data-value=".6">60%
                                 <input type="radio" class="opacity" name="radioButton" id="opacity20" data-value=".2">20%
+                                <input type="radio" class="opacity" name="radioButton" id="opacity20" data-value="0">0%
                             </form>    
                         </span>    
                     </div>
@@ -148,8 +102,8 @@
                     {{# if equals type 'syllable'}}
                     <div class='layer' data-name='syllable' id={{this.id}}>
                         <div class="layerName" contenteditable=true>{{this.name}}</div>
-                        <div class='info'> Please show the syllable breaks WITHIN words, the ones between words have already been counted.</div>
-                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
+                        <div class='info'> <i>Click to show syllable breaks.</i><br>Please click WITHIN words, the breaks between words have already been counted.</div>
+                        <!--<span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>-->
                         <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
                             <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
@@ -174,8 +128,8 @@
                                 +
                             </button>
                         </div>
-                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>
-                        <span class="layerOpacitySpan">Opacity: <input type="text" class="span2" value="opacity" data-slider-min="0" data-slider-max="10" data-slider-step="1" data-slider-value="10" data-slider-orientation="vertical" data-slider-selection="after" data-slider-tooltip="hide"></span>
+                        <!--<span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>-->
+                        
                     </div>
                 {{/if}}
             {{/each}}
@@ -188,12 +142,10 @@
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
                         <li><a class = "newColorLayer" href="#">Sound</a></li>
-                        <li><a class = "newBarsLayer" href="#">Syllable</a></li>
                         <li><a class = "newColorLayer" href="#">Tone</a></li>
                         <li><a class = "newBoldLayer" href="#">Consonance/Assonance</a></li>
                         <li><a class = "newBoldLayer" href="#">Other Bolding</a></li>
                         <li><a class = "newColorLayer" href="#">Other Coloring</a></li>
-                        <li><a class = "newBarsLayer" href="#">Other Vertical Bars</a></li>
                     </ul>
                 </div>
             </div>

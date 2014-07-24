@@ -87,6 +87,20 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'typing'
         });
+        var selStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), verticalAlign:'super'});
+        Layers.insert({
+            name:'Meter',
+            id:'stress0',
+            poem_id:newPoem,
+            type:'stressing',
+            style:selStyle
+        });
+        Layers.insert({
+            name:'Syllables',
+            id:'syllable0',
+            poem_id:newPoem,
+            type:'syllable'
+        });
         var choices=$('#chooseLayers').find('.layerChoice');
         choices.each(function(){
             if($(this).is(':checked')){
@@ -98,14 +112,6 @@ Template.teacher.events({
                             id:'color0',
                             poem_id:newPoem,
                             type:'rhyme'
-                        });
-                        break;
-                    case 'Syllable':
-                        Layers.insert({
-                            name:name,
-                            id:'syllable0',
-                            poem_id:newPoem,
-                            type:'syllable'
                         });
                         break;
                     case 'Tone':
