@@ -1,0 +1,83 @@
+CLARIFICATION
+We have four types of layers: 'rhyme', 'syllable', 'bold', and 'typing'.'Rhyme' is the highlighting layer, 
+and shows up as a layer with title "Sound." 'Syllable' is the syllable marks layer, and shows up as a layer
+with title "Syllable." 'Bold' is the bolding/font-color layer, and shows up as a layer with title "Words."
+'Typing' is the layer with name "Text Options" and allows the user to turn the text off (so as to only 
+see their annotations) and insert line breaks/automatically seperate the text by punctutation (partially
+implemented).
+
+
+NEXT STEPS
+FROM MEETING WITH CLIENT
+Number the lines of the poem so users can talk about the poem more easily. Decide what to do with these
+numbers when the user makes new line breaks.
+
+Currently, the syllables are split by syllable breaks (spans) WHEN 'Grid' is clicked.
+You might want to change it so that it splits (i.e. creates spans) when clicked, AND is 
+remembered in a collection. That way, you can stress by syllable.
+
+Delete pop-up and implement own version of shoutkey so multiple users can play around with the same poem.
+
+In the text options ('typing') layer, have "Line Breaks: button("original") button("punctuation") button("sentence")
+Allow the users to (either individually or globally) toggle between these options.
+With these new breaks, keep the line, word, letter, and space spans the same, just insert <br>'s or 
+put lines by each other. Ultimately, users with still be highlighting original lines/words/letters.
+
+Create a new layer called "writing" where the user can rewrite lines (maybe with contenteditable div),
+change the order of words, and insert their own line breaks.
+
+Make it clear that the bolded blue numbers at the right of lines are syllable counts. 
+Maybe create a label.
+
+"Clear all syllable marks" button should be made less easy to accidentally click (smaller, maybe X).
+
+In syllable grid, there should be a hyphen after syllable split (me-    |te-    |or)
+
+
+FROM FINAL PRESENTATION
+Have default color for bolding like there is for highlighting 
+(so user doesn't have to click on square to start bolding)
+
+“Click to name this layer” would be more intuitive if there were a dotted line border or 
+textbox-looking thing around that text so that it looks editable. 
+
+Rename opacity/make it a drop down menu? Have a way for all users to see which opacity is selected 
+for a particular layer?
+
+New layers have new set of colors?
+
+Have a way to distinguish between individual and global features
+
+Have set of instructions?
+
+Create a concept of users--- anonymous animals? all cursors visible? something to alert people that they
+aren't accidentally making changes themselves
+
+
+
+
+BUGS/NECESSARY CHANGES
+Don't add to Selections unless necessary fields are there (i.e. user shouldn't be added weird things 
+to collections when clicking without purpose of highlighting/bolding/etc.)
+
+Shouldn't be able to add syllable mark to beginning of word
+
+Layers shouldn't look unclickable... have them all the dark gray and the selected layer should be 
+highlighted blue
+
+When visibility of syllables is toggled, the syllable red marks don't come back
+
+Don't display syllable count for blank lines (syllable count should never say "0")
+
+Stress should only affect syllables, not words/letters
+
+Color labels should be global
+
+Allow poems to have a title and an author
+
+
+
+
+
+
+

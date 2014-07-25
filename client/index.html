@@ -61,7 +61,7 @@
                     <div class="layer" data-name="stressing" id={{this.id}}>
                     <div class="layerName" contenteditable=true>{{this.name}}</div>
                     <div class='info'> <i>Click to show stress.</i></div>
-                   <!-- <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> -->
+                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
                         Stress:
                         <select class='stressSelect'>
                             <option value='stressWord'>Word</option>
@@ -79,10 +79,19 @@
                             <option value='letter'>Letter</option>
                         </select>
                         <div class='highlighting'>
-                            <span class='highlightColors'>
-                                <div class='colorSquare' data-color='rgba(255,153,153,1)' style='background-color:rgba(255,153,153,1)'></div>
-                                <div class='colorSquare' data-color='rgba(255,153,255,1)' style='background-color:rgba(255,153,255,1)'></div>
-                            </span>
+                            <div class='highlightColors'>
+                                <div class="colorBlock">
+                                    <span class='colorSquare' data-color='rgba(255,153,153,1)' style='background-color:rgba(255,153,153,1)'></span> 
+                                    <span class="colorName" contenteditable=true>Color Label</span>
+                                </div>
+                                <div class="colorBlock">
+                                    <span class='colorSquare' data-color='rgba(255,153,255,1)' style='background-color:rgba(255,153,255,1)'></span> 
+                                    <span class="colorName" contenteditable=true>Color Label</span>
+                                </div>
+                                <!--<div class='colorSquare' data-color='rgba(255,153,153,1)' style='background-color:rgba(255,153,153,1)'></div> -->
+                                <!--<div class='colorSquare' data-color='rgba(255,153,255,1)' style='background-color:rgba(255,153,255,1)'></div>-->
+                            </div>
+                            <br>
                             <button class='addColor'>
                                 +
                             </button>
@@ -103,7 +112,7 @@
                     <div class='layer' data-name='syllable' id={{this.id}}>
                         <div class="layerName" contenteditable=true>{{this.name}}</div>
                         <div class='info'> <i>Click to show syllable breaks.</i><br>Please click WITHIN words, the breaks between words have already been counted.</div>
-                        <!--<span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>-->
+                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
                         <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
                             <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
@@ -141,9 +150,7 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu" role="menu" aria-labelledby="dLabel">
-                        <li><a class = "newColorLayer" href="#">Sound</a></li>
-                        <li><a class = "newColorLayer" href="#">Tone</a></li>
-                        <li><a class = "newBoldLayer" href="#">Consonance/Assonance</a></li>
+                        <li><a class = "newColorLayer" href="#">Words</a></li>
                         <li><a class = "newBoldLayer" href="#">Other Bolding</a></li>
                         <li><a class = "newColorLayer" href="#">Other Coloring</a></li>
                     </ul>

@@ -87,13 +87,11 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'typing'
         });
-        var selStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), verticalAlign:'super'});
         Layers.insert({
-            name:'Meter',
-            id:'stress0',
+            name:'Sound',
+            id:'color0',
             poem_id:newPoem,
-            type:'stressing',
-            style:selStyle
+            type:'rhyme'
         });
         Layers.insert({
             name:'Syllables',
@@ -101,37 +99,14 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'syllable'
         });
-        var choices=$('#chooseLayers').find('.layerChoice');
-        choices.each(function(){
-            if($(this).is(':checked')){
-                var name=$(this).val();
-                switch(name){
-                    case 'Sound':
-                        Layers.insert({
-                            name:name,
-                            id:'color0',
-                            poem_id:newPoem,
-                            type:'rhyme'
-                        });
-                        break;
-                    case 'Tone':
-                        Layers.insert({
-                            name:name,
-                            id:'color'+Layers.find({type:'rhyme'}).fetch().length,
-                            poem_id:newPoem,
-                            type:'rhyme'
-                        });
-                        break;
-                    case 'Consonance/Assonance':
-                        Layers.insert({
-                            name:name,
-                            id:'bold0',
-                            poem_id:newPoem,
-                            type:'bold'
-                        });
-                        break;
-                }
-            }
-        })
+        var sel=Layers.insert({
+            name:'Meter',
+            id:'stress0',
+            poem_id:newPoem,
+            type:'stressing',
+        });
+        var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'});
+        Layers.update(sel, {$set:{style:selStyle}})
+
     }
 })

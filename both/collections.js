@@ -40,6 +40,7 @@ Styles = new Meteor.Collection('styles')
     bold : boolean, whether the text is bold or not (OPTIONAL)
     opacity: opacity of background color (OPTIONAL)
     name : string, user-provided description of what the style means, e.g. "feminine rhyme" (OPTIONAL)
+    verticalAlign: "super" when using stress marks; only used once in poem with stress marks (OPTIONAL)
 */
 
 Layers = new Meteor.Collection('layers');

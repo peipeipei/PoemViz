@@ -418,6 +418,13 @@ td{
 
 
 
+.colorName{
+    border-style:dotted;
+    border-width:1px;
+    border-color:gray;
+}
+
+
 /*fancy scroll bar for funsies*/
 
 ::-webkit-scrollbar {
