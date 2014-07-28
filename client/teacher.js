@@ -46,8 +46,10 @@ parseHTML=function(raw){
            }
       }
       var lineCount = $('<span class=lineCount style="color:blue; font-weight:bold">');
+      if ($(p).text().split(' ').length-1 !== 0){
       $(lineCount).text($(p).text().split(' ').length-1);
-      $(p).append(lineCount);
+      $(p).append(lineCount);}
+      //spanned will be used to make long HTML content string 
       spanned.push($(p)[0].outerHTML);
     })
     var longest='';

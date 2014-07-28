@@ -41,16 +41,6 @@ td{
     display:inline-block;
 }
 
-.layer{
-    border-width:1px;
-    border-style:solid;
-    padding:10px;
-    margin:10px 0px;
-    background-color:#dddddd;
-    position:relative;
-    opacity:1.0;
-}
-
 .eraseHighlight, .eraseBold{
     background-color:white;
 }
@@ -145,14 +135,6 @@ td{
 	z-index: 100;
 }
 
-/*Effects */
-/*.overlay-hugeinc {*/
-/*	opacity: 0;*/
-/*	visibility: hidden;*/
-/*	-webkit-transition: opacity 0.5s, visibility 0s 0.5s;*/
-/*	transition: opacity 0.5s, visibility 0s 0.5s;*/
-/*}*/
-
 .overlay-hugeinc.open {
 	opacity: 1;
 	visibility: visible;
@@ -218,7 +200,7 @@ td{
     padding:10px;
     margin:10px 0px;
     background-color:#dddddd;
-    opacity:0.5;
+    opacity: 1.0;
     position:relative;
 }
 

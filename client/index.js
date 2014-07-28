@@ -117,7 +117,6 @@ function boldClick(thing){
        var idR = Selections.find({poem_id: curPoem, location: $(thing).attr('id')}).fetch();
         var target = "";
         _.each(idR, function(sel){
-            console.log(sel);
             var styleR = sel.style_id;
             var stylethis = Styles.findOne({_id: styleR});
             if (stylethis !== undefined){
@@ -149,22 +148,28 @@ Template.poem.events({
         var clickedLayer=event.currentTarget;
         $('.layer').each(function(){
             if(this == clickedLayer){
-                $(this).css('opacity', 1.0);
+                $(this).css('background-color', 'lightblue');
                 Session.set('selectedType',$(this).data('name'));
                 Session.set('curLayer', $(clickedLayer).attr('id'));
-            }else{
-                $(this).css('opacity',0.5);
+            }
+            else{
+               $(this).css('background-color', '#dddddd'); 
             }
         });
         if (Session.get('selectedType')=='bold'){
-            var colors=$(clickedLayer).find('.colorSquare');
-            colors.each(function(){
+            var colorSquares=$(clickedLayer).find('.colorSquare');
+            var noneColored=true;
+            //set default color if necessary (on the re-selection of layer)
+            colorSquares.each(function(){
                 if($(this).css('border-width')==='2px'){
-                    Session.set('boldColor', $(this).data('color'));
+                    noneColored=false;
                 }
             })
+            if (noneColored){
+              chooseColor(colorSquares[0]);  
+            }
             Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
-            console.log(Session.get('boldElement'));
+            curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
         }
         if (Session.get('selectedType')=='rhyme'){
             var colorSquares=$(clickedLayer).find('.colorSquare');
@@ -282,8 +287,10 @@ Template.poem.events({
             if(visible){
                 $('.syllable').css('min-width', '65px');
                 $('.letter, .space').each(function(){
+                    console.log('hi');
                 //must make sure we give this data attribute to other users
-                if ($(this).hasClass('syllableStyle') == 'true'){
+                if ($(this).hasClass('syllableStyle')){
+                    console.log('syllable');
                     $(this).css('border-left', '3px solid red');
                 }
                 });
@@ -322,15 +329,16 @@ Template.poem.events({
         if(Session.get('selectedType')=='bold' && Session.get('boldElement')=='boldWord'){
             boldClick(event.currentTarget);
         }
-        if (Session.get('selectedType')=='stressing' && Session.get('stressElement')=='stressWord'){
+       /* if (Session.get('selectedType')=='stressing' && Session.get('stressElement')=='stressWord'){
             stressClick(event.currentTarget);
-        }
+        }*/
     },
     
     //when user mouses over possible place to put syllable mark, syllable mark preview (gray ghostmarker) is shown
     'mouseover .letter, .space': function(event){
         if (Session.get('selectedType')=='syllable'){
-            ghostMarker(event.currentTarget);
+            if ($(event.currentTarget).prev().hasClass('letter')||$(event.currentTarget).prev().prev().hasClass('letter')){
+            ghostMarker(event.currentTarget);}
         }
     },
     
@@ -352,9 +360,11 @@ Template.poem.events({
           if(Session.get('selectedType')=='bold' && Session.get('boldElement')=='boldLetter'){
             boldClick(event.currentTarget);
         }
-        if (Session.get('selectedType')=='stressing' && Session.get('stressElement')=='stressLetter'){
+        /*if (Session.get('selectedType')=='stressing' && Session.get('stressElement')=='stressLetter'){
             stressClick(event.currentTarget);
-            
+        }*/
+        if (Session.get('selectedType')=='stressing'){
+            stressClick(event.currentTarget);
         }
     },
     
@@ -557,27 +567,27 @@ function grid(){
     
     //must update syllableMarkers
     function clickSyllable(thing) {
-        var lineSpan = $(thing).closest('.poemLine');
+        /*var lineSpan = $(thing).closest('.poemLine');
         var countSpan = $(lineSpan).find('.lineCount');
-        var wordCount=$(lineSpan).find('.word').length;
+        var wordCount=$(lineSpan).find('.word').length;*/
         if ($(thing).css('border-left-color') == "rgb(255, 0, 0)"){
             $(thing).css('border-left', 'none');
             var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: curPoem}).fetch(); 
-            console.log(syl);
             SyllableMarkers.remove(syl[0]._id);
         }
         else{
+            //don't allow user to place marks 
+            if ($(thing).prev().hasClass('letter')||$(thing).prev().prev().hasClass('letter')){
             $(thing).css('border-left', '3px solid red');
-            var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: curPoem}).fetch(); 
-            SyllableMarkers.insert({location: $(thing).attr("id"), poem_id: curPoem});
+            SyllableMarkers.insert({location: $(thing).attr("id"), poem_id: curPoem});}
         }
-        var sylCount=0;
+        /*var sylCount=0;
         $(lineSpan).find('.letter').each(function(){
             if ($(this).hasClass('syllableStyle')===true){
                 sylCount++; 
             }
         })
-        $(countSpan).text(wordCount+sylCount);
+        $(countSpan).text(wordCount+sylCount);*/
         
     }  
     
@@ -671,10 +681,22 @@ function grid(){
                }
             //if selection is from stressing style/layer
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
+                /*var syllableArray = [];
+                console.log($(location));
+                var firstLetter = $("#"+location).prev('syllableStyle');
+                //$("#"+location).closest('.word').children('.letter').first();
+                var lastLetter = $("#"+location).next('.syllableStyle');
+                //$("#"+location).closest('.word').children('.letter').last();
+                var aLetter = firstLetter;
+                console.log(firstLetter);
+                console.log(lastLetter);
+                lastLetter.addClass('stressStyle');
+                while (aLetter !== lastLetter){
+                    aLetter.addClass('stressStyle');
+                    aLetter = aLetter.next('.letter');
+                }*/
                 $("#"+location).addClass('stressStyle');
             }
-            }
-            else{
             }
           },
           //when something is removed from the Selections Collection
@@ -735,10 +757,30 @@ function grid(){
             added: function (selection, beforeIndex) {
             var location = selection.location;
             $('#'+location).addClass("syllableStyle");
+            var lineSpan = $('#'+location).closest('.poemLine');
+            var countSpan = $(lineSpan).find('.lineCount');
+            var wordCount=$(lineSpan).find('.word').length;
+            var sylCount=0;
+            $(lineSpan).find('.letter').each(function(){
+            if ($(this).hasClass('syllableStyle')===true){
+                sylCount++; 
+            }
+            })
+             $(countSpan).text(wordCount+sylCount);
             },
             removed: function (selection, beforeIndex) {
             var location = selection.location;
             $('#'+location).removeClass("syllableStyle");
-            } 
+            var lineSpan = $('#'+location).closest('.poemLine');
+            var countSpan = $(lineSpan).find('.lineCount');
+            var wordCount=$(lineSpan).find('.word').length;
+            var sylCount=0;
+            $(lineSpan).find('.letter').each(function(){
+            if ($(this).hasClass('syllableStyle')===true){
+                sylCount++; 
+            }
+            })
+             $(countSpan).text(wordCount+sylCount);
+            },
           });
         };
