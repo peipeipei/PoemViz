@@ -43,18 +43,20 @@ Template.poem.layer=function(){
 function chooseColor(thing){
     if(Session.get('selectedType')=='rhyme'){
         Session.set('highlightColor',$(thing).data('color'));
+        console.log($(thing).data('color'));
+        console.log(Session.get('highlightColor'))
         $('.colorSquare').each(function(){
-            $(this).css('border-width', '0px');
+            $(this).removeClass('selectedColorSquare');
         })
-        $(thing).css('border-width', '2px');
+        $(thing).addClass('selectedColorSquare');
         curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
     }
     if (Session.get('selectedType')=='bold'){
         Session.set('boldColor',$(thing).data('color'));
         $('.colorSquare').each(function(){
-        $(this).css('border-width', '0px');
+        $(this).removeClass('selectedColorSquare');
     })
-    $(thing).css('border-width', '2px');
+    $(thing).addClass('selectedColorSquare');
     curStyle = Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
     }
 }
@@ -143,7 +145,7 @@ function stressClick(thing){
 }
 //contains all the events that happen on the poem page
 Template.poem.events({
-    //whenever you click a layer, it visibly registers (clicked layer is full opacity), and selectedType and curLayer are set
+    //whenever you click a layer, it visibly registers (clicked layer is blue), and selectedType and curLayer are set
        'click .layer': function(event){
         var clickedLayer=event.currentTarget;
         $('.layer').each(function(){
@@ -161,30 +163,32 @@ Template.poem.events({
             var noneColored=true;
             //set default color if necessary (on the re-selection of layer)
             colorSquares.each(function(){
-                if($(this).css('border-width')==='2px'){
+                if($(this).hasClass('selectedColorSquare')){
                     noneColored=false;
                 }
             })
             if (noneColored){
               chooseColor(colorSquares[0]);  
             }
-            Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
-            curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+            //Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
+            //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
         }
         if (Session.get('selectedType')=='rhyme'){
             var colorSquares=$(clickedLayer).find('.colorSquare');
             var noneColored=true;
             //set default color if necessary (on the re-selection of layer)
             colorSquares.each(function(){
-               if($(this).css('border-width') ==='2px'){
+              console.log($(this).hasClass('selectedColorSquare'));
+               if($(this).hasClass('selectedColorSquare')){
                     noneColored=false;
                 } 
             })
             if (noneColored){
               chooseColor(colorSquares[0]);  
             }
-            Session.set('highlightElement', $(clickedLayer).find('.rhymeSelect').val());
-            curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
+            console.log(noneColored+"is the value of noneColored");
+            //Session.set('highlightElement', $(clickedLayer).find('.rhymeSelect').val());
+            //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
         }
         if (Session.get('selectedType')=='stressing'){
             Session.set('stressElement', $(clickedLayer).find('.stressSelect').val());
@@ -681,21 +685,20 @@ function grid(){
                }
             //if selection is from stressing style/layer
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
-                /*var syllableArray = [];
-                console.log($(location));
-                var firstLetter = $("#"+location).prev('syllableStyle');
+               /* var syllableArray = [];
+                console.log((location));
+                var firstLetter = $("#"+location).prev('.syllableStyle');
                 //$("#"+location).closest('.word').children('.letter').first();
                 var lastLetter = $("#"+location).next('.syllableStyle');
                 //$("#"+location).closest('.word').children('.letter').last();
                 var aLetter = firstLetter;
-                console.log(firstLetter);
-                console.log(lastLetter);
-                lastLetter.addClass('stressStyle');
-                while (aLetter !== lastLetter){
+                console.log(firstLetter.attr('id'));
+                console.log(lastLetter.attr('id'));
+                while (aLetter.attr('id') !== lastLetter.attr('id')){
                     aLetter.addClass('stressStyle');
                     aLetter = aLetter.next('.letter');
                 }*/
-                $("#"+location).addClass('stressStyle');
+               // $("#"+location).addClass('stressStyle');
             }
             }
           },
