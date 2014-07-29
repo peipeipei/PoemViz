@@ -49,9 +49,6 @@ Router.map(function () {
       var poemTitle = Poems.findOne({_id:poem_id}).title
       var poemAuthor = Poems.findOne({_id:poem_id}).author
       var poem = Poems.findOne({_id:poem_id}).htmlContent
-<<<<<<< HEAD
-      //console.log(poem_id,poem);
-      Session.set('currentPoem', this.params.id);
       
      /* var poem2 = [
           {type: "line", order: "1", content: [
@@ -79,10 +76,6 @@ Router.map(function () {
         }
       ]}
       ]
-      console.log(poem2)*/
-      return {poem: poem}
-      
-=======
       
       console.log(poem_id,poem);
       Session.set('currentPoem', this.params.id);
@@ -91,7 +84,6 @@ Router.map(function () {
           poemAuthor: poemAuthor,
           poem: poem
       }
->>>>>>> eab5dca71f921207b980649fc5c5f8f1fdb5e544
     },
     action: function(){
         if (this.ready()) {

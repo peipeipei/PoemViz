@@ -11,20 +11,8 @@ Session.set('boldElement','boldLine');
 var curStyle;
 //used to store the current layer (the number of the layer ID)
 var num;
-<<<<<<< HEAD
 //used to get current clicked syllable
 var firstID, lastID, doLast;
-=======
-//var layerSelector = new ReactiveDict;
-//layerSelector.set("curlayer ", "color1");
-//  selectLayer.set("curlayer", "color1");
-//  $('body').html("The weather here is <span class='forecast'></span>!");
-//  Deps.autorun(function () {
-//      $('.selectLayer').text(forecasts.get('curLayer'));
-//  });
-//  
->>>>>>> eab5dca71f921207b980649fc5c5f8f1fdb5e544
-
 //METEOR SETUP
 var poemsHandle = Meteor.subscribe('poems');
 var layersHandle=Meteor.subscribe('layers');
