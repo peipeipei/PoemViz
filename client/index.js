@@ -520,6 +520,7 @@ Template.poem.events({
     if($('.puncOption').data('active')){
             //what should happen when user has already clicked the button
         }else{
+        /*
             $('.puncOption').data('active', true);
             var poemtext = "";
             $(".line").each(function() {
@@ -577,7 +578,7 @@ Template.poem.events({
             $('#leftSide').html("");
             console.log(poemHTML);
             Poems.update(curPoem, {htmlContent: poemHTML});
-            location.reload();
+            location.reload();*/
  }} });
 
 //grid putting syllables in columns of equal width
