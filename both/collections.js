@@ -1,6 +1,8 @@
 Poems = new Meteor.Collection('poems');
 /* A poem has these fields:
     _id : identifier
+    title : give by user, string
+    author : given by user, string
     htmlContent : string of HTML for the poem.
          Each line/word/letter is surrounded by a <span>, with
          class set to "line"/"word"/"letter" and with
@@ -50,4 +52,14 @@ Layers = new Meteor.Collection('layers');
     poem_id : string, id of poem that this layer is in
     name : string, user-provided description of the layer, e.g. "Rhyming scheme"
     type: whether it is used for selections, markers, bold, or typing
+*/
+
+Colors = new Meteor.Collection('colors');
+/*
+     _id: identifier
+     poem_id: string, id of poem that this lyaer is in
+     layer_id: string, id of layer that this color is in
+     color_value: string, 
+     name: string, user input
+
 */

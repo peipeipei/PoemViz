@@ -25,27 +25,12 @@
     
 
     <div class='container'>
-        <div class = 'poemIdentifiers'>{{poemTitle}}</div>
+        <div class = 'poemIdentifiers'><br>{{poemTitle}}</div>
         <div class = 'poemIdentifiers'>By {{poemAuthor}}</div>
         <!--<div class='row'>-->
             <div class='col-md-8 left' id='leftSide'>
             <div id = 'syllableCount'>Syllable Count</div>
             {{{poem}}}
-            
-            <!--{{# each pLine}}
-                <p><span class='poemLine'><span class='line col-md-11' data-index={{this.index}}>
-                {{# each word}}
-                    <span class='word' data-index={{this.index}}>
-                        {{# each letter}}
-                            <span class='letter' data-index={{this.index}}>
-                                {{this.text}}
-                            </span>
-                        {{/each}}
-                    </span>
-                    <span class='space' data-index= {{this.index}}>&nbsp;</span>
-                {{/each}}
-                </span></span></p>
-            {{/each}}-->
             
             </div>
             <div class='col-md-4 right' id='layers'>
@@ -66,11 +51,9 @@
                     <div class="layerName" contenteditable=true>{{this.name}}</div>
                     <div class='info'> <i>Click to show stress.</i></div>
                     <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
-                      <!--  Stress:
-                        <select class='stressSelect'>
-                            <option value='stressWord'>Word</option>
-                            <option value='stressLetter'>Letter</option>
-                        </select> -->
+                    <div class="btn-group" id="toggle">
+                            <span><button type="button" class="btn btn-default stressClear">Clear All Stress Marks</button></span>
+                        </div>
                     </div>
                 {{/if}}
                 {{# if equals type 'rhyme'}}
@@ -92,15 +75,12 @@
                                     <span class='colorSquare' data-color='rgba(255,153,255,1)' style='background-color:rgba(255,153,255,1)'></span> 
                                     <span class="colorName" contenteditable=true>Color Label</span>
                                 </div>
-                                <!--<div class='colorSquare' data-color='rgba(255,153,153,1)' style='background-color:rgba(255,153,153,1)'></div> -->
-                                <!--<div class='colorSquare' data-color='rgba(255,153,255,1)' style='background-color:rgba(255,153,255,1)'></div>-->
                             </div>
                             <br>
                             <button class='addColor'>
                                 +
                             </button>
                         </div>
-                        <!--<span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>-->
                          <span class="opacities">
                             <form action="">
                                 Opacity:
@@ -141,7 +121,6 @@
                                 +
                             </button>
                         </div>
-                        <!--<span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='rhyme' class='visibility' checked></span>-->
                         
                     </div>
                 {{/if}}

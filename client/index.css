@@ -400,6 +400,16 @@ td{
     color: #602;
 }
 
+.extraHyphen{
+    color:red;
+    font-weight:bold;
+}
+
+.layerName:hover{
+  font-size:12pt;
+  font-weight:bold;
+  border: dotted 1px;
+}
 
 
 .colorName{
@@ -409,8 +419,7 @@ td{
 }
 
 
-/*fancy scroll bar for funsies*/
-
+/*scroll bar*/
 ::-webkit-scrollbar {
     width: 12px;
 }
@@ -425,4 +434,4 @@ td{
     -webkit-box-shadow: inset 0 0 6px rgba(0,0,0,0.4); 
 }
 
-/*end of fancy scroll bar for funsies*/
+
