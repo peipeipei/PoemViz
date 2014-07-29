@@ -467,11 +467,6 @@ Template.poem.events({
           type:'rhyme',
       })
        Session.set("curLayer", divLayerID);
-//       selectLayer('#' +divLayerID);
-//       console.log(divLayerID);
-////        console.log($('#' + divLayerID).click());
-//        Session.set('curLayer', divLayerID);
-//        $('#' + divLayerID).click();
        
     },
     
@@ -534,10 +529,12 @@ Template.poem.events({
             $('#leftSide .poemLine').remove();
             for (var t = 0; t < wholeArray.length; t++) {
                 var line = $('<p class="poemLine">');
+//                var insideNumber = $('<span class="lineNumber"' + lCounter + '>');
                 var inside = $('<span class="line col-md-11">');
                 inside.attr("id","line"+ lCounter);
                 $('#leftSide').append(line);
                 lCounter++;
+//                $(line).append(insideNumber);
                 $(line).append(inside);
                 var elements = wholeArray[t].trim();
                 for (var i = 0; i < elements.length; i++) {
