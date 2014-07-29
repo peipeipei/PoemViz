@@ -96,6 +96,12 @@ td{
     font-weight:bold;
 }
 
+.layerName:hover{
+  font-size:12pt;
+  font-weight:bold;
+  border: dotted 1px;
+}
+
 .addColor{
     height:20px;
     width:20px;

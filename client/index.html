@@ -25,6 +25,13 @@
     
 
     <div class='container'>
+<<<<<<< HEAD
+            {{#each poem2}}
+                <span class="{{this.type}}" id="{{this.type}}{{this.order}}">
+                {{#each this.content}}
+                    <span class="{{this.type}}" id="{{this.type}}{{this.order}}">
+                    {{this.content}}
+=======
         <div class = 'poemIdentifiers'>{{poemTitle}}</div>
         <div class = 'poemIdentifiers'>By {{poemAuthor}}</div>
         <!--<div class='row'>-->
@@ -41,12 +48,17 @@
                                 {{this.text}}
                             </span>
                         {{/each}}
+>>>>>>> eab5dca71f921207b980649fc5c5f8f1fdb5e544
                     </span>
-                    <span class='space' data-index= {{this.index}}>&nbsp;</span>
                 {{/each}}
-                </span></span></p>
-            {{/each}}-->
-            
+                </span>
+                <span class='syllabelcount-plaeholder'></span>
+                <br>
+            {{/each}}
+    
+    
+            <div class='col-md-8 left' id='leftSide'>
+            {{{poem}}}
             </div>
             <div class='col-md-4 right' id='layers'>
             
@@ -57,8 +69,13 @@
                         <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
                         <div class="btn-group" id="toggle">
                            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
-                           <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
                         </div>
+                        <form action="">
+                                Line breaks:
+                                <span><button type="button" class="btn btn-default originOption" data-active=false>Original</button></span>
+                                <span><button type="button" class="btn btn-default puncOption" data-active=false>Punctuation</button></span>
+                                <span><button type="button" class="btn btn-default sentenceOption" data-active=false>Sentence</button></span>
+                        </form>
                     </div>
                 {{/if}}
                 {{# if equals type 'stressing'}}
@@ -66,11 +83,9 @@
                     <div class="layerName" contenteditable=true>{{this.name}}</div>
                     <div class='info'> <i>Click to show stress.</i></div>
                     <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
-                      <!--  Stress:
-                        <select class='stressSelect'>
-                            <option value='stressWord'>Word</option>
-                            <option value='stressLetter'>Letter</option>
-                        </select> -->
+                      <div class="btn-group" id="toggle">
+                            <span><button type="button" class="btn btn-default stressClear">Clear All Stress Marks</button></span>
+                        </div>
                     </div>
                 {{/if}}
                 {{# if equals type 'rhyme'}}
