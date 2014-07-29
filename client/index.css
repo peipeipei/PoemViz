@@ -1,3 +1,8 @@
+#syllableCount {
+    text-align: right;
+    color: blue;
+}
+
 .poemIdentifiers{
 /*    text-align: center;*/
     font-size: 16pt;
