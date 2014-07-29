@@ -50,33 +50,6 @@ Router.map(function () {
       var poemAuthor = Poems.findOne({_id:poem_id}).author
       var poem = Poems.findOne({_id:poem_id}).htmlContent
       
-     /* var poem2 = [
-          {type: "line", order: "1", content: [
-        {
-         type:"letter",
-         order: "0",
-         content: "h"
-        },        {
-         type:"letter",
-         order: "1",
-         content: "i"
-        }
-      ]}
-      
-      , 
-      {type: "line", order: "2", content: [
-        {
-         type:"letter",
-         order: "2",
-         content: "y"
-        },        {
-         type:"letter",
-         order: "3",
-         content: "o"
-        }
-      ]}
-      ]
-      
       console.log(poem_id,poem);
       Session.set('currentPoem', this.params.id);
       return {
