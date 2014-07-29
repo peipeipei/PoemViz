@@ -10,8 +10,8 @@ parseHTML=function(raw){
         charCounter=0;
     arr.forEach(function(v, i){
       var elements = v.trim().split('');
-      var p=$('<p class="poemLine">');
-      var line = $('<span class="line col-md-11">');
+      var p=$('<p>');
+      var line = $('<span class="line col-md-11 poemLine">');
       line.attr("id","line"+ lineCounter);
       $(p).append(line);
       lineCounter++;

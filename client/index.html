@@ -24,25 +24,21 @@
     <!--</div>-->
     
     <div class='container'>
-        <!--<div class='row'>-->
+            {{#each poem2}}
+                <span class="{{this.type}}" id="{{this.type}}{{this.order}}">
+                {{#each this.content}}
+                    <span class="{{this.type}}" id="{{this.type}}{{this.order}}">
+                    {{this.content}}
+                    </span>
+                {{/each}}
+                </span>
+                <span class='syllabelcount-plaeholder'></span>
+                <br>
+            {{/each}}
+    
+    
             <div class='col-md-8 left' id='leftSide'>
             {{{poem}}}
-            
-            <!--{{# each pLine}}
-                <p><span class='poemLine'><span class='line col-md-11' data-index={{this.index}}>
-                {{# each word}}
-                    <span class='word' data-index={{this.index}}>
-                        {{# each letter}}
-                            <span class='letter' data-index={{this.index}}>
-                                {{this.text}}
-                            </span>
-                        {{/each}}
-                    </span>
-                    <span class='space' data-index= {{this.index}}>&nbsp;</span>
-                {{/each}}
-                </span></span></p>
-            {{/each}}-->
-            
             </div>
             <div class='col-md-4 right' id='layers'>
             
@@ -53,8 +49,13 @@
                         <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
                         <div class="btn-group" id="toggle">
                            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
-                           <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
                         </div>
+                        <form action="">
+                                Line breaks:
+                                <span><button type="button" class="btn btn-default originOption" data-active=false>Original</button></span>
+                                <span><button type="button" class="btn btn-default puncOption" data-active=false>Punctuation</button></span>
+                                <span><button type="button" class="btn btn-default sentenceOption" data-active=false>Sentence</button></span>
+                        </form>
                     </div>
                 {{/if}}
                 {{# if equals type 'stressing'}}
@@ -62,11 +63,9 @@
                     <div class="layerName" contenteditable=true>{{this.name}}</div>
                     <div class='info'> <i>Click to show stress.</i></div>
                     <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
-                      <!--  Stress:
-                        <select class='stressSelect'>
-                            <option value='stressWord'>Word</option>
-                            <option value='stressLetter'>Letter</option>
-                        </select> -->
+                      <div class="btn-group" id="toggle">
+                            <span><button type="button" class="btn btn-default stressClear">Clear All Stress Marks</button></span>
+                        </div>
                     </div>
                 {{/if}}
                 {{# if equals type 'rhyme'}}

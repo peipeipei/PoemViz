@@ -47,9 +47,38 @@ Router.map(function () {
     data: function(){
       var poem_id = this.params.id
       var poem = Poems.findOne({_id:poem_id}).htmlContent
-      console.log(poem_id,poem);
+      //console.log(poem_id,poem);
       Session.set('currentPoem', this.params.id);
+      
+     /* var poem2 = [
+          {type: "line", order: "1", content: [
+        {
+         type:"letter",
+         order: "0",
+         content: "h"
+        },        {
+         type:"letter",
+         order: "1",
+         content: "i"
+        }
+      ]}
+      
+      , 
+      {type: "line", order: "2", content: [
+        {
+         type:"letter",
+         order: "2",
+         content: "y"
+        },        {
+         type:"letter",
+         order: "3",
+         content: "o"
+        }
+      ]}
+      ]
+      console.log(poem2)*/
       return {poem: poem}
+      
     },
     action: function(){
         if (this.ready()) {
