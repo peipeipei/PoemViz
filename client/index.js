@@ -11,8 +11,19 @@ Session.set('boldElement','boldLine');
 var curStyle;
 //used to store the current layer (the number of the layer ID)
 var num;
+<<<<<<< HEAD
 //used to get current clicked syllable
 var firstID, lastID, doLast;
+=======
+//var layerSelector = new ReactiveDict;
+//layerSelector.set("curlayer ", "color1");
+//  selectLayer.set("curlayer", "color1");
+//  $('body').html("The weather here is <span class='forecast'></span>!");
+//  Deps.autorun(function () {
+//      $('.selectLayer').text(forecasts.get('curLayer'));
+//  });
+//  
+>>>>>>> eab5dca71f921207b980649fc5c5f8f1fdb5e544
 
 //METEOR SETUP
 var poemsHandle = Meteor.subscribe('poems');
@@ -51,6 +62,8 @@ var typewatch = (function(){
 
 //choose the color you want to highlight or bold with
 function chooseColor(thing){
+    console.log(thing);
+//    console.log(Session.get('selectedType'));
     if(Session.get('selectedType')=='rhyme'){
         Session.set('highlightColor',$(thing).data('color'));
         console.log($(thing).data('color'));
@@ -103,7 +116,7 @@ function colorClick(thing){
             }
             }
         })
-        console.log('remove', target._id)
+//        console.log('remove', target._id)
         Selections.remove(target._id);
     }
 }
@@ -193,16 +206,15 @@ function stressClick(thing){
       }
     }
 }
-//contains all the events that happen on the poem page
-Template.poem.events({
-    //whenever you click a layer, it visibly registers (clicked layer is blue), and selectedType and curLayer are set
-       'click .layer': function(event){
-        var clickedLayer=event.currentTarget;
+
+Deps.autorun(function () {
+        var clickedLayerID = Session.get('curLayer');
+        var clickedLayer = $('#' + clickedLayerID);
         $('.layer').each(function(){
-            if(this == clickedLayer){
+            var thisID = $(this).attr('id')
+            if(thisID == clickedLayerID){
                 $(this).css('background-color', 'lightblue');
                 Session.set('selectedType',$(this).data('name'));
-                Session.set('curLayer', $(clickedLayer).attr('id'));
             }
             else{
                $(this).css('background-color', '#dddddd'); 
@@ -223,7 +235,7 @@ Template.poem.events({
             //Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
             //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
         }
-        if (Session.get('selectedType')=='rhyme'){
+        else if (Session.get('selectedType')=='rhyme'){
             var colorSquares=$(clickedLayer).find('.colorSquare');
             var noneColored=true;
             //set default color if necessary (on the re-selection of layer)
@@ -240,11 +252,69 @@ Template.poem.events({
             //Session.set('highlightElement', $(clickedLayer).find('.rhymeSelect').val());
             //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
         }
-        if (Session.get('selectedType')=='stressing'){
+        else if (Session.get('selectedType')=='stressing'){
             Session.set('stressElement', $(clickedLayer).find('.stressSelect').val());
         }
-        
+        //$(event.target).next().click();
+});
+
+//contains all the events that happen on the poem page
+Template.poem.events({
+    'click .layer': function(event){
+//        selectLayer(event.currentTarget);
+//        console.log(event.currentTarget);
+        console.log($(event.currentTarget).attr('id'));
+        Session.set("curLayer", $(event.currentTarget).attr('id'));
     },
+    //whenever you click a layer, it visibly registers (clicked layer is full opacity), and selectedType and curLayer are set
+//       'click .layer': function(event){
+//        var clickedLayer=event.currentTarget;
+//        $('.layer').each(function(){
+//            if(this == clickedLayer){
+//                $(this).css('background-color', 'lightblue');
+//                Session.set('selectedType',$(this).data('name'));
+//                Session.set('curLayer', $(clickedLayer).attr('id'));
+//            }
+//            else{
+//               $(this).css('background-color', '#dddddd'); 
+//            }
+//        });
+//        if (Session.get('selectedType')=='bold'){
+//            var colorSquares=$(clickedLayer).find('.colorSquare');
+//            var noneColored=true;
+//            //set default color if necessary (on the re-selection of layer)
+//            colorSquares.each(function(){
+//                if($(this).css('border-width')==='2px'){
+//                    noneColored=false;
+//                }
+//            })
+//            if (noneColored){
+//              chooseColor(colorSquares[0]);  
+//            }
+//            Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
+//            curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+//        }
+//        else if (Session.get('selectedType')=='rhyme'){
+//            var colorSquares=$(clickedLayer).find('.colorSquare');
+//            var noneColored=true;
+//            //set default color if necessary (on the re-selection of layer)
+//            colorSquares.each(function(){
+//               if($(this).css('border-width') ==='2px'){
+//                    noneColored=false;
+//                } 
+//            })
+//            if (noneColored){
+//              chooseColor(colorSquares[0]);  
+//            }
+//            Session.set('highlightElement', $(clickedLayer).find('.rhymeSelect').val());
+//            curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
+//        }
+//        else if (Session.get('selectedType')=='stressing'){
+//            Session.set('stressElement', $(clickedLayer).find('.stressSelect').val());
+//        }
+//        //$(event.target).next().click();
+//        
+//    },
     //stores name of custom layer
     //updates the layer database with the new name after user stops typing
     'keyup .layerName':function(event){
@@ -273,7 +343,9 @@ Template.poem.events({
     },
     //updates highlighting/bolding color when user clicks a square
     'click .colorSquare':function(event){
+        console.log(event.currentTarget);
         chooseColor(event.currentTarget);
+        console.log("hi");
     },
     //same as addColor, but for the bold layer
     'click .addBoldColor': function(event){
@@ -439,16 +511,24 @@ Template.poem.events({
     'click .newColorLayer':function(event){
         var name = $(event.currentTarget).text();
         var count=Layers.find({poem_id: curPoem, type:'rhyme'}).fetch().length;
-        console.log(count);
+//        console.log(count);
         if (name == "Other Coloring"){
             name='Click to name this layer!';
         }
+        var divLayerID = 'color' + count;
        var layerID = Layers.insert({
           name:name,
-          id:'color'+count,
+          id:divLayerID,
           poem_id:Session.get('currentPoem'),
-          type:'rhyme'
+          type:'rhyme',
       })
+       Session.set("curLayer", divLayerID);
+//       selectLayer('#' +divLayerID);
+//       console.log(divLayerID);
+////        console.log($('#' + divLayerID).click());
+//        Session.set('curLayer', divLayerID);
+//        $('#' + divLayerID).click();
+       
     },
     
     //create new layer that allows bolding
@@ -459,12 +539,16 @@ Template.poem.events({
         if (name == "Other Bolding"){
             name='Click to name this layer!';
         }
+        var divLayerID = 'bold' + count;
         Layers.insert({
           name:name,
-          id:'bold'+count,
+          id:divLayerID,
           poem_id:Session.get('currentPoem'),
-          type:'bold'
+          type:'bold',
       })
+        Session.set("curLayer", divLayerID);
+        
+        
     },
     
     //function of "Text Options" ('typing') layer

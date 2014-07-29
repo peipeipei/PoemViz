@@ -23,12 +23,32 @@
     <!--<div class="toolbar">-->
     <!--</div>-->
     
+
     <div class='container'>
+<<<<<<< HEAD
             {{#each poem2}}
                 <span class="{{this.type}}" id="{{this.type}}{{this.order}}">
                 {{#each this.content}}
                     <span class="{{this.type}}" id="{{this.type}}{{this.order}}">
                     {{this.content}}
+=======
+        <div class = 'poemIdentifiers'>{{poemTitle}}</div>
+        <div class = 'poemIdentifiers'>By {{poemAuthor}}</div>
+        <!--<div class='row'>-->
+            <div class='col-md-8 left' id='leftSide'>
+            <div id = 'syllableCount'>Syllabe Count</div>
+            {{{poem}}}
+            
+            <!--{{# each pLine}}
+                <p><span class='poemLine'><span class='line col-md-11' data-index={{this.index}}>
+                {{# each word}}
+                    <span class='word' data-index={{this.index}}>
+                        {{# each letter}}
+                            <span class='letter' data-index={{this.index}}>
+                                {{this.text}}
+                            </span>
+                        {{/each}}
+>>>>>>> eab5dca71f921207b980649fc5c5f8f1fdb5e544
                     </span>
                 {{/each}}
                 </span>
