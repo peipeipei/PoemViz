@@ -46,10 +46,17 @@ Router.map(function () {
     },
     data: function(){
       var poem_id = this.params.id
+      var poemTitle = Poems.findOne({_id:poem_id}).title
+      var poemAuthor = Poems.findOne({_id:poem_id}).author
       var poem = Poems.findOne({_id:poem_id}).htmlContent
+      
       console.log(poem_id,poem);
       Session.set('currentPoem', this.params.id);
-      return {poem: poem}
+      return {
+          poemTitle: poemTitle,
+          poemAuthor: poemAuthor,
+          poem: poem
+      }
     },
     action: function(){
         if (this.ready()) {

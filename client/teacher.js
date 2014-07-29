@@ -61,9 +61,16 @@ parseHTML=function(raw){
 
 Template.teacher.events({
     'click #submitPoem':function(){
+        var title = $('#title').val();
+        var author = $('#author').val();
         var raw=$('#createPoem').val();
         var html=parseHTML(raw);
-        var newPoem=Poems.insert({htmlContent:html});
+        var newPoem = Poems.insert({
+            title:title,
+            author:author,
+            htmlContent:html
+        })
+//        var newPoem=Poems.insert({htmlContent:html});
         $div = $('<div>')
         $div.attr('title', 'Launch')
         url = window.location.host + '/poem/' + newPoem
