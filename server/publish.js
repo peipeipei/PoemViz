@@ -23,3 +23,7 @@ Meteor.publish('lineCounts', function() {
     return LineCounts.find()
 });
 
+Meteor.publish('shoutkeys', function() {
+    return Shoutkeys.find()
+});
+

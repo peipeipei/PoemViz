@@ -65,4 +65,26 @@ Router.map(function () {
     }    
     })
     this.route('teacher', {path:'/create'})
+    this.route('redirect',{
+        path: '/:_word',
+        notFoundTemplate: 'error',
+        waitOn: function(){
+          return [Meteor.subscribe('poems'), Meteor.subscribe('shoutkeys')]
+        },
+        data: function(){
+            console.log(Shoutkeys.findOne({key:this.params._word}));
+            return {"shoutkey":Shoutkeys.findOne({key:this.params._word})};
+        },
+        action: function(){
+        if (this.ready()) {
+            this.render();
+        } 
+        }
+    });
 });   
+
+
+Template.redirect.redirect = function(){
+
+    Router.go('poem', {"id":this.shoutkey.poem_id});
+}

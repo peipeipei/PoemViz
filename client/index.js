@@ -23,6 +23,7 @@ var selectionsHandle=Meteor.subscribe('selections');
 var stylesHandle=Meteor.subscribe('styles');
 var syllablesHandle=Meteor.subscribe('syllableMarkers');
 var linesHandle=Meteor.subscribe('lineCounts');
+var shoutkeysHandle=Meteor.subscribe('shoutkeys');
 
 Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);

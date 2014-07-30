@@ -57,9 +57,16 @@ Layers = new Meteor.Collection('layers');
 Colors = new Meteor.Collection('colors');
 /*
      _id: identifier
-     poem_id: string, id of poem that this lyaer is in
+     poem_id: string, id of poem that this layer is in
      layer_id: string, id of layer that this color is in
      color_value: string, 
      name: string, user input
 
+*/
+
+Shoutkeys = new Meteor.Collection('shoutkeys');
+/*
+     _id: identifier
+     key: string, random shoutkey keyword 
+     poem_id: string, id of the poem the key maps to
 */
