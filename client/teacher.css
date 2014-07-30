@@ -18,3 +18,7 @@ html,body, .container, .row{
 #submitPoem{
     margin:20px;
 }
+
+.lineNumberSpan{
+    float:left;
+}

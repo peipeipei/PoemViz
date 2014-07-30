@@ -8,14 +8,17 @@ parseHTML=function(raw){
     var lineCounter=0,
         wordCounter=0,
         charCounter=0;
-    arr.forEach(function(v, i){
-      var elements = v.trim().split('');
-      var p=$('<p class="poemLine">');
-      var line = $('<span class="line col-md-11">');
-      line.attr("id","line"+ lineCounter);
-      $(p).append(line);
-      lineCounter++;
-      for (var i = 0; i < elements.length; i++) {
+    arr.forEach(function(v, j){
+        var elements = v.trim().split('');
+        var p=$('<p class="poemLine">');
+        var lineNumberInt = lineCounter + 1;
+        var lineNumberSpan = '<span class = "lineNumberSpan">'+ lineNumberInt + '</span>'
+        $(p).append(lineNumberSpan);
+        var line = $('<span class="line col-md-11">');
+        line.attr("id","line"+ lineCounter);
+        $(p).append(line);
+        lineCounter++;
+        for (var i = 0; i < elements.length; i++) {
           if (elements[i-1] === ' ' || i === 0){
               var syllable=$('<span class=syllable>')
               var word = $('<span class=word>');
@@ -47,8 +50,9 @@ parseHTML=function(raw){
       }
       var lineCount = $('<span class=lineCount style="color:blue; font-weight:bold">');
       if ($(p).text().split(' ').length-1 !== 0){
-      $(lineCount).text($(p).text().split(' ').length-1);
-      $(p).append(lineCount);}
+        $(lineCount).text($(p).text().split(' ').length-1);
+        $(p).append(lineCount);
+      }
       //spanned will be used to make long HTML content string 
       spanned.push($(p)[0].outerHTML);
     })
