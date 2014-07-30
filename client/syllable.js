@@ -59,7 +59,8 @@ grid = function(){
             if (intervals[0] != $(letters[0]).attr('id')){
                 intervals.unshift(parseInt($(letters[0]).attr('id').slice(4),10));
             }
-            var last=(parseInt($(letters[letters.length-1]).attr('id').slice(4),10)+1)
+            console.log((letters.length));
+            var last=(parseInt($(letters[(letters.length) - 1]).attr('id').slice(4),10)+1)
             intervals.push(last);
             console.log("last: " + last);
             var oldSyl=$(this);
@@ -87,7 +88,7 @@ grid = function(){
         });
         $('.syllable').each(function(){
             //if this isn't last child of word
-            if (blah){
+            if (!($(this).is(':last-child'))){
                 $(this).append('<span class=extraHyphen>-</span>');
         }
         });

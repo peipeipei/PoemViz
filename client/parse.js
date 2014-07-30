@@ -1,5 +1,5 @@
-parseHTML=function(raw){
-    /*
+ parseHTML=function(raw){
+   /*
     var arr=raw.split('\n');
     var spanned=[];
     var lineCounter=0,
