@@ -65,6 +65,10 @@ parseHTML=function(raw){
 
 Template.teacher.events({
     'click #submitPoem':function(){
+        launchExercise();
+//        console.log(this._id);
+//        var _id = this._id
+//        launchExercise(_id)
         var title = $('#title').val();
         var author = $('#author').val();
         var raw=$('#createPoem').val();
@@ -120,6 +124,12 @@ Template.teacher.events({
         });
         var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'});
         Layers.update(sel, {$set:{style:selStyle}})
+//        Exercises.update({_id:_id},{$set:{keyword: key}}) 
 
     }
 })
+
+
+
+
+
