@@ -92,6 +92,7 @@ Template.poem.events({
         }
         if (Session.get('selectedType')=='stressing'){
             stressClick(event.currentTarget);
+            console.log($(event.currentTarget).attr('id')+'CLICKED!!');
         }
     },
     

@@ -1,5 +1,8 @@
 //how stressing is stored/removed from Selections Collection
 stressClick = function(thing){
+    console.log(firstID);
+    console.log(lastID);
+    console.log(doLast);
     var selStyle=Layers.findOne({id:Session.get('curLayer'), poem_id:Session.get('currentPoem')}).style;
     if ($(thing).hasClass('stressStyle')){
       getSyllable($(thing).attr('id'));
@@ -20,7 +23,7 @@ stressClick = function(thing){
          Selections.insert({poem_id: curPoem, style_id: selStyle, location: ('#char'+i)});
       }
       if (doLast){
-          console.log('#char'+lastID);
+          console.log('#char'+lastID+'LAST!');
         Selections.insert({poem_id: curPoem, style_id: selStyle, location: ('#char'+lastID)});
       }
     }
@@ -30,24 +33,17 @@ stressClick = function(thing){
 getSyllable = function(location){
   console.log('getSyllable called');
         doLast = false;
-        var firstLetter = $("#"+location).prevAll('.syllableStyle')[0];
+        if ($("#"+location).hasClass('syllableStyle')){
+         var firstLetter = $("#"+location);}
+        else{
+        var firstLetter = $("#"+location).prevAll('.syllableStyle')[0];}
         if (firstLetter == undefined){
-          if ($("#"+location).hasClass('syllableStyle')){
-            firstLetter = $("#"+location);
-          }
-          else{
             firstLetter = $("#"+location).closest('.word').children(":first").children('.letter');
-          }
         }
         var lastLetter = $("#"+location).nextAll('.syllableStyle')[0];
         if (lastLetter == undefined){
-          if ($("#"+location).hasClass('syllableStyle')){
-            lastLetter = $("#"+location);
-          }
-          else{
             lastLetter = $("#"+location).closest('.word').children(":first").children('.letter').last();
             doLast = true;
-          }
         }
         firstID = $(firstLetter).attr('id').substr(4);
         lastID = $(lastLetter).attr('id').substr(4);
