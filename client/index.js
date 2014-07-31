@@ -23,6 +23,7 @@ var selectionsHandle=Meteor.subscribe('selections');
 var stylesHandle=Meteor.subscribe('styles');
 var syllablesHandle=Meteor.subscribe('syllableMarkers');
 var linesHandle=Meteor.subscribe('lineCounts');
+var shoutkeysHandle=Meteor.subscribe('shoutkeys');
 
 Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
@@ -51,48 +52,68 @@ typewatch = (function(){
    }  
  })();
 
+// Cool meteor thing that runs automatically whenever a variable it gets is reset (in this case, "curLayer")
 Deps.autorun(function () {
-        var clickedLayerID = Session.get('curLayer');
-        var clickedLayer = $('#' + clickedLayerID);
-        $('.layer').each(function(){
-            var thisID = $(this).attr('id')
-            if(thisID == clickedLayerID){
-                $(this).css('background-color', 'lightblue');
-                Session.set('selectedType',$(this).data('name'));
-            }
-            else{
-               $(this).css('background-color', '#dddddd'); 
-            }
-        });
-        if (Session.get('selectedType')=='bold'){
-            var colorSquares=$(clickedLayer).find('.colorSquare');
-            var noneColored=true;
-            //set default color if necessary (on the re-selection of layer)
-            colorSquares.each(function(){
-                if($(this).hasClass('selectedColorSquare')){
-                    noneColored=false;
-                }
-            })
-            if (noneColored){
-              chooseColor(colorSquares[0]);  
-            }
-            //Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
-            //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+    var clickedLayerID = Session.get('curLayer');
+    var clickedLayer = $('#' + clickedLayerID);
+    $('.layer').each(function(){
+        var thisID = $(this).attr('id')
+        if(thisID == clickedLayerID){
+            $(this).css('background-color', 'lightblue');
+            Session.set('selectedType',$(this).data('name'));
         }
-        else if (Session.get('selectedType')=='rhyme'){
-            var colorSquares=$(clickedLayer).find('.colorSquare');
-            var noneColored=true;
-            //set default color if necessary (on the re-selection of layer)
-            colorSquares.each(function(){
-              console.log($(this).hasClass('selectedColorSquare'));
-               if($(this).hasClass('selectedColorSquare')){
-                    noneColored=false;
-                } 
-            })
-            if (noneColored){
-              chooseColor(colorSquares[0]);  
-            }
+        else{
+           $(this).css('background-color', '#dddddd'); 
         }
+    });
+    if (Session.get('selectedType')=='bold'){
+        var colorSquares=$(clickedLayer).find('.colorSquare');
+        var noneColored=true;
+        //set default color if necessary (on the re-selection of layer)
+        colorSquares.each(function(){
+            if($(this).hasClass('selectedColorSquare')){
+                noneColored=false;
+            }
+        })
+        if (noneColored){
+          chooseColor(colorSquares[0]);  
+        }
+        //Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
+        //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+    }
+    else if (Session.get('selectedType')=='rhyme'){
+        var colorSquares=$(clickedLayer).find('.colorSquare');
+        var noneColored=true;
+        //set default color if necessary (on the re-selection of layer)
+        colorSquares.each(function(){
+          console.log($(this).hasClass('selectedColorSquare'));
+           if($(this).hasClass('selectedColorSquare')){
+                noneColored=false;
+            } 
+        })
+        if (noneColored){
+          chooseColor(colorSquares[0]);  
+        }
+    }
+    
+    // Scrolls partial layers up or down. Also has means that when you create a new layer, it automatically scrolls to be on screen.
+    if (clickedLayer.position() != undefined){
+        var scrolledPos = $("#layers").scrollTop();
+        var layerPos = clickedLayer.position().top;
+        var layerHeight = clickedLayer.height();
+        var parentPadding = clickedLayer.parent().innerWidth() - clickedLayer.parent().width();
+        var parentHeight = clickedLayer.parent().height() - parentPadding;
+        
+        // if a layer is partially out of view from above, bring it down when you select it
+        if (layerPos < 0){
+            $("#layers").scrollTop(scrolledPos + layerPos);
+        }
+        // if a layer is partially out of view from below, bring it up when you select it
+        else if (layerPos + layerHeight > parentHeight){
+            $("#layers").scrollTop(scrolledPos + layerPos - parentHeight + layerHeight);
+        }
+    }
+    
 });
     
     ///////////////////////////

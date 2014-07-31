@@ -96,9 +96,12 @@ Template.poem.events({
         }
     },
     
-    //scroll bar function
+//    scroll bar function
     'click .layers-menu':function(event){
-        $(".right").animate({ scrollTop: $(document).height() }, "slow");
+        var scrolledPos = $("#layers").scrollTop();
+        var parentPadding = $(".dropdown").parent().innerWidth() - $(this).parent().width();
+        var parentHeight = $(".dropdown").parent().height() - parentPadding;
+        $("#layers").animate({ scrollTop: scrolledPos + parentHeight}, "fast");
     }
     
 });
