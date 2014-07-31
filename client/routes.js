@@ -72,7 +72,9 @@ Router.map(function () {
           return [Meteor.subscribe('poems'), Meteor.subscribe('shoutkeys')]
         },
         data: function(){
+            console.log(this);
             console.log(Shoutkeys.findOne({key:this.params._word}));
+            
             return {"shoutkey":Shoutkeys.findOne({key:this.params._word})};
         },
         action: function(){
@@ -87,4 +89,9 @@ Router.map(function () {
 Template.redirect.redirect = function(){
 
     Router.go('poem', {"id":this.shoutkey.poem_id});
+}
+
+Template.redirect.isReady = function(){
+    console.log("hello");
+  return checkIsReady();
 }

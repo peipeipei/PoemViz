@@ -52,48 +52,57 @@ typewatch = (function(){
    }  
  })();
 
+// Cool meteor thing that runs automatically whenever a variable it gets is reset (in this case, "curLayer")
 Deps.autorun(function () {
-        var clickedLayerID = Session.get('curLayer');
-        var clickedLayer = $('#' + clickedLayerID);
-        $('.layer').each(function(){
-            var thisID = $(this).attr('id')
-            if(thisID == clickedLayerID){
-                $(this).css('background-color', 'lightblue');
-                Session.set('selectedType',$(this).data('name'));
-            }
-            else{
-               $(this).css('background-color', '#dddddd'); 
-            }
-        });
-        if (Session.get('selectedType')=='bold'){
-            var colorSquares=$(clickedLayer).find('.colorSquare');
-            var noneColored=true;
-            //set default color if necessary (on the re-selection of layer)
-            colorSquares.each(function(){
-                if($(this).hasClass('selectedColorSquare')){
-                    noneColored=false;
-                }
-            })
-            if (noneColored){
-              chooseColor(colorSquares[0]);  
-            }
-            //Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
-            //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+    var clickedLayerID = Session.get('curLayer');
+    var clickedLayer = $('#' + clickedLayerID);
+    $('.layer').each(function(){
+        var thisID = $(this).attr('id')
+        if(thisID == clickedLayerID){
+            $(this).css('background-color', 'lightblue');
+            Session.set('selectedType',$(this).data('name'));
         }
-        else if (Session.get('selectedType')=='rhyme'){
-            var colorSquares=$(clickedLayer).find('.colorSquare');
-            var noneColored=true;
-            //set default color if necessary (on the re-selection of layer)
-            colorSquares.each(function(){
-              console.log($(this).hasClass('selectedColorSquare'));
-               if($(this).hasClass('selectedColorSquare')){
-                    noneColored=false;
-                } 
-            })
-            if (noneColored){
-              chooseColor(colorSquares[0]);  
-            }
+        else{
+           $(this).css('background-color', '#dddddd'); 
         }
+    });
+    if (Session.get('selectedType')=='bold'){
+        var colorSquares=$(clickedLayer).find('.colorSquare');
+        var noneColored=true;
+        //set default color if necessary (on the re-selection of layer)
+        colorSquares.each(function(){
+            if($(this).hasClass('selectedColorSquare')){
+                noneColored=false;
+            }
+        })
+        if (noneColored){
+          chooseColor(colorSquares[0]);  
+        }
+        //Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
+        //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+    }
+    else if (Session.get('selectedType')=='rhyme'){
+        var colorSquares=$(clickedLayer).find('.colorSquare');
+        var noneColored=true;
+        //set default color if necessary (on the re-selection of layer)
+        colorSquares.each(function(){
+          console.log($(this).hasClass('selectedColorSquare'));
+           if($(this).hasClass('selectedColorSquare')){
+                noneColored=false;
+            } 
+        })
+        if (noneColored){
+          chooseColor(colorSquares[0]);  
+        }
+    }
+    
+    // Scrolls to move whatever layer you clicked on to the middle. Also has means that when you create a new layer, it automatically scrolls to be on screen.
+    if (clickedLayer.position() != undefined){
+        $("#layers").scrollTop($("#layers").scrollTop() + clickedLayer.position().top - clickedLayer.parent().height()/2 + clickedLayer.height()/2);
+        // Currently does the same thing as above, regardless of the theoretical time length of the animation
+//        $("#layers").animate({ scrollTop: $("#layers").scrollTop($("#layers").scrollTop() + clickedLayer.position().top - clickedLayer.parent().height()/2 + clickedLayer.height()/2 }, 3000);
+    }
+    
 });
     
     ///////////////////////////

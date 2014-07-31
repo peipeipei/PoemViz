@@ -97,8 +97,14 @@ Template.poem.events({
     },
     
     //scroll bar function
-    'click .layers-menu':function(event){
-        $(".right").animate({ scrollTop: $(document).height() }, "slow");
+//    'click .layers-menu':function(event){
+//        $(".right").scrollTop(10000);
+////        $(".right").animate({ scrollTop: $(document).height() }, "slow");
+//    }
+    
+    'click .dropdown-menu':function(event){
+//        $("#layers").scrollTop($("#layers").scrollTop() + $(this).position().top);
+//        $(".right").animate({ scrollTop: $(document).height() }, "slow");
     }
     
 });
