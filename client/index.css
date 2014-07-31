@@ -1,3 +1,11 @@
+/*.bigCol {
+    white-space:nowrap !important;
+    overflow-x: auto !important;
+}*/
+
+.word{
+    display: inline;
+}
 #syllableCount {
     text-align: right;
     color: blue;
@@ -19,6 +27,7 @@
     color:blue;
     font-weight:bold;
     display:inline-block;
+    float:right;
 }
 
 .rhymeCheck{
@@ -34,7 +43,7 @@ td{
 }
 
 .stressStyle{
-    vertical-align:super;
+    vertical-align: super;
 }
 
 .colorSquare{
@@ -102,18 +111,6 @@ td{
     height: 100%;
 }
 
-.line{
-    border-bottom-style:solid;
-    border-bottom-width:1px;
-    border-bottom-color: #ddd;
-    padding-left:0px;
-    padding-right:0px;
-}
-
-
-
-
-
 /*Tryna do an overlay derp*/
 .overlay{
     position: fixed;
@@ -179,9 +176,6 @@ td{
     margin-right:10px;
 }
 
-.poemLine span{
-    margin-left:0.5px;
-}
 
 td{
     text-align:center;
@@ -228,6 +222,12 @@ td{
     font-style:italic;
 }
 
+.unnaturalLine{
+    color: black;
+    background: rgb(255, 255, 255) !important;
+    font-weight: normal;
+}
+    
 .btn{
     border: 1px solid gray;
     margin:5px;
@@ -263,6 +263,7 @@ td{
     border-bottom-color: #ddd;
     padding-left:0px;
     padding-right:0px;
+    margin-left:0.5px;
 }
 
 
@@ -363,10 +364,6 @@ td{
 }
 .colorFC9 {
     background-color: #fc9;
-}
-
-.syllableStyle{
-    border-left: 3px solid red;
 }
 
 .left, .right{

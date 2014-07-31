@@ -122,12 +122,15 @@ Deps.autorun(function () {
     // the identifiers you gave it for every line, word, etc.
     ///////////////////////////
      Template.poem.rendered=function(){
+         console.log("RENDER");
          displaySelections();
+         syllableCounts();
      }
      
      //what to do upon rendering of poem
     function displaySelections(){
         //defaults
+        Session.set('breaksOption','origOption');
         Session.set('highlightElement','line');
         Session.set('boldElement','boldLine');
        curPoem = Session.get("currentPoem");
@@ -145,7 +148,8 @@ Deps.autorun(function () {
             //if selection is from highlighting style/layer
             if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
                var substring = style[0].background_color;
-               $("#"+location).css(
+                console.log("lines"+location);
+               $("."+location).css(
                 {
                     "background-color": substring
                 }
@@ -154,7 +158,7 @@ Deps.autorun(function () {
             //if selection is from bolding style/layer
             if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
                 var substring = style[0].font_color;
-                $("#"+location).css(
+                $("."+location).css(
                  {
                     "color": substring
                  }
@@ -164,7 +168,7 @@ Deps.autorun(function () {
             if ((style[0].bold !== null)&&(typeof style[0].bold !== "undefined")) {
                 var substring = style[0].bold;
                 if (substring){
-                $("#"+location).css(
+                $("."+location).css(
                  {
                     "font-weight": "bold"
                  }
@@ -189,7 +193,7 @@ Deps.autorun(function () {
                     var rgba = thisStyle.background_color;
                     var lastIndex = rgba.lastIndexOf(",");
                     var substring = rgba.substr(0, lastIndex+1);
-                    $("#"+thisID).css( 
+                    $("."+thisID).css( 
                     {
                       "background": substring+style[0].opacity+")"
                     }
@@ -199,7 +203,8 @@ Deps.autorun(function () {
                }
             //if selection is from stressing style/layer
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
-              $(location).addClass('stressStyle');
+                location = location.substr(1);
+              $('.'+location).css('vertical-align','super');
             }
             }
           },
@@ -224,7 +229,7 @@ Deps.autorun(function () {
                        substring = otherStyle.background_color;
                    }
                 });
-               $("#"+location).css(
+               $("."+location).css(
                 {
                     "background-color": substring
                 }
@@ -232,7 +237,7 @@ Deps.autorun(function () {
             }
             //if removed is bolding
             if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
-                $("#"+location).css(
+                $("."+location).css(
                 {
                     "color": "black"
                 }
@@ -240,7 +245,7 @@ Deps.autorun(function () {
             }
             //if removed is bolding
             if ((style[0].bold !== null)&&(typeof style[0].bold !== "undefined")) {
-                $("#"+location).css(
+                $("."+location).css(
                 {
                     "font-weight": "normal"
                 }
@@ -248,7 +253,8 @@ Deps.autorun(function () {
             }
             //if removed is stressing
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
-                $(location).removeClass('stressStyle');
+                 location = location.substr(1);
+                $('.'+location).css('vertical-align','baseline');
             }
 
           }
@@ -259,13 +265,20 @@ Deps.autorun(function () {
             syllablesCursor.observe({
             added: function (selection, beforeIndex) {
             var location = selection.location;
-            $('#'+location).addClass("syllableStyle");
-            var lineSpan = $('#'+location).closest('.poemLine');
+            console.log($('#char138'));
+            $("."+location).css(
+            {
+               "border-left": "3px solid red"
+            });
+            console.log($('#'+location));
+             //or unknown line
+            var lineSpan = $('#'+location).closest('.line');
             var countSpan = $(lineSpan).find('.lineCount');
             var wordCount=$(lineSpan).find('.word').length;
             var sylCount=0;
             $(lineSpan).find('.letter').each(function(){
-            if ($(this).hasClass('syllableStyle')===true){
+                console.log($(this).css("border-left"));
+            if ($(this).css("border-left-color")==="rgb(255, 0, 0)"){
                 sylCount++; 
             }
             })
@@ -273,13 +286,18 @@ Deps.autorun(function () {
             },
             removed: function (selection, beforeIndex) {
             var location = selection.location;
-            $('#'+location).removeClass("syllableStyle");
-            var lineSpan = $('#'+location).closest('.poemLine');
+            $("."+location).css(
+            {
+               "border-left": "none"
+            });
+                //or unknown line
+            var lineSpan = $('#'+location).closest('.line');
             var countSpan = $(lineSpan).find('.lineCount');
             var wordCount=$(lineSpan).find('.word').length;
             var sylCount=0;
             $(lineSpan).find('.letter').each(function(){
-            if ($(this).hasClass('syllableStyle')===true){
+                console.log($(this).css("border-left"));
+            if  ($(this).css("border-left-color")==="rgb(255, 0, 0)"){
                 sylCount++; 
             }
             })
