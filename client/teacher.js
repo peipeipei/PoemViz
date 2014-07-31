@@ -7,11 +7,13 @@ Template.teacher.events({
         var title = $('#title').val();
         var author = $('#author').val();
         var raw=$('#createPoem').val();
-        var html=parseHTML(raw);
+        var poemObjsArray = parseHTML(raw);
         var newPoem = Poems.insert({
             title:title,
             author:author,
-            htmlContent:html
+            origObj: poemObjsArray[0],
+            puncObj: poemObjsArray[1],
+            sentObj: poemObjsArray[2]
         })
         $div = $('<div>')
         $div.attr('title', 'Launch')

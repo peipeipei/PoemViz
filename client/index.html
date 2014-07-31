@@ -27,21 +27,34 @@
         <div class = 'poemIdentifiers'><br>{{poemTitle}}</div>
         <div class = 'poemIdentifiers'>By {{poemAuthor}}</div>
         <!--<div class='row'>-->
-            <div class='col-md-8 left' id='leftSide'>
+            <div class='col-md-8 left bigCol' id='leftSide'>
             <div id = 'syllableCount'>Syllable Count</div>
-            {{{poem}}}
+            <!-- {{{poem}}} -->
+                
+           {{# each lines}}
+                <span class={{this.class}} id={{this.line_id}}>    
+                {{# each this.content}}
+                    <span id={{this.word_id}} class = {{this.class}}>
+    <span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span>{{/each}}</span><span class = "space">&nbsp;</span></span>{{/each}}
+                <span class='lineCount'></span>
+                </span>
+                <br>
+            {{/each}}
             
             </div>
-            <div class='col-md-4 right' id='layers'>
-            
-            
+            <div class='col-md-4 right bigCol' id='layers'> 
             {{# each layer}}
                 {{# if equals type 'typing'}}
                     <div class="layer" data-name="typing" id={{this.id}}>
                         <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
                         <div class="btn-group" id="toggle">
-                           <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span>
-                           <span><button type="button" class="btn btn-default puncOption" data-active=false>Lines by Punctuation</button></span>
+                           <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span><br>
+                       
+                        Line Breaks by: <select class='optionSelect'>
+                            <option value='origOption'>Original</option>
+                            <option value='puncOption'>All Punctuation</option>
+                            <option value='sentOption'>Sentence Punctuation</option>
+                        </select>
                         </div>
                     </div>
                 {{/if}}
@@ -138,7 +151,39 @@
                     </ul>
                 </div>
             </div>
-        <!--</div>-->
+        
+        <div class='col-md-8 left bigCol' id='puncSide'>
+            <div id = 'syllableCount'>Syllable Count</div>
+                {{# each lines1}}
+                <span class={{this.class}} id={{this.line_id}}>    
+                {{# each this.content}}
+                    <span id={{this.word_id}} class = {{this.class}}>
+    <span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span>{{/each}}</span>
+                        <span class = "space">&nbsp;</span>
+                    </span>
+                {{/each}}
+                <span class='lineCount'></span>
+                </span>
+                <br>
+            {{/each}}
+            </div>
+        
+        <div class='col-md-8 left bigCol' id='sentSide'>
+            <div id = 'syllableCount'>Syllable Count</div>
+                {{# each lines2}}
+                <span class={{this.class}} id={{this.line_id}}>    
+                {{# each this.content}}
+                    <span id={{this.word_id}} class = {{this.class}}>
+    <span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span>{{/each}}</span>
+                        <span class = "space">&nbsp;</span>
+                    </span>
+                {{/each}}
+                <span class='lineCount'></span>
+                </span>
+                <br>
+            {{/each}}
+            </div>
+        
     </div>
     {{/if}}
 </template>
