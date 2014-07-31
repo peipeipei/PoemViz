@@ -96,15 +96,12 @@ Template.poem.events({
         }
     },
     
-    //scroll bar function
-//    'click .layers-menu':function(event){
-//        $(".right").scrollTop(10000);
-////        $(".right").animate({ scrollTop: $(document).height() }, "slow");
-//    }
-    
-    'click .dropdown-menu':function(event){
-//        $("#layers").scrollTop($("#layers").scrollTop() + $(this).position().top);
-//        $(".right").animate({ scrollTop: $(document).height() }, "slow");
+//    scroll bar function
+    'click .layers-menu':function(event){
+        var scrolledPos = $("#layers").scrollTop();
+        var parentPadding = $(".dropdown").parent().innerWidth() - $(this).parent().width();
+        var parentHeight = $(".dropdown").parent().height() - parentPadding;
+        $("#layers").animate({ scrollTop: scrolledPos + parentHeight}, "fast");
     }
     
 });

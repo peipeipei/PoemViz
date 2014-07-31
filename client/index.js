@@ -96,11 +96,22 @@ Deps.autorun(function () {
         }
     }
     
-    // Scrolls to move whatever layer you clicked on to the middle. Also has means that when you create a new layer, it automatically scrolls to be on screen.
+    // Scrolls partial layers up or down. Also has means that when you create a new layer, it automatically scrolls to be on screen.
     if (clickedLayer.position() != undefined){
-        $("#layers").scrollTop($("#layers").scrollTop() + clickedLayer.position().top - clickedLayer.parent().height()/2 + clickedLayer.height()/2);
-        // Currently does the same thing as above, regardless of the theoretical time length of the animation
-//        $("#layers").animate({ scrollTop: $("#layers").scrollTop($("#layers").scrollTop() + clickedLayer.position().top - clickedLayer.parent().height()/2 + clickedLayer.height()/2 }, 3000);
+        var scrolledPos = $("#layers").scrollTop();
+        var layerPos = clickedLayer.position().top;
+        var layerHeight = clickedLayer.height();
+        var parentPadding = clickedLayer.parent().innerWidth() - clickedLayer.parent().width();
+        var parentHeight = clickedLayer.parent().height() - parentPadding;
+        
+        // if a layer is partially out of view from above, bring it down when you select it
+        if (layerPos < 0){
+            $("#layers").scrollTop(scrolledPos + layerPos);
+        }
+        // if a layer is partially out of view from below, bring it up when you select it
+        else if (layerPos + layerHeight > parentHeight){
+            $("#layers").scrollTop(scrolledPos + layerPos - parentHeight + layerHeight);
+        }
     }
     
 });
