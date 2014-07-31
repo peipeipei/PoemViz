@@ -92,6 +92,5 @@ Template.redirect.redirect = function(){
 }
 
 Template.redirect.isReady = function(){
-    console.log("hello");
   return checkIsReady();
 }

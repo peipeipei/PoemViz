@@ -29,7 +29,8 @@ var title = $('#title').val();
           console.log('removing key')
           Layers.update(sel, {$unset:{style:selStyle, keyword: ''}})  
         }
-        Meteor.setTimeout(removekey, 3600000);             //removes the key after an hour.
+        Meteor.setTimeout(removekey, 30000);
+//        Meteor.setTimeout(removekey, 3600000);             //removes the key after an hour.
         var $div = $('<div>'); 
         $div.attr('title', 'Launch');
         url = window.location.host + '/' + key;

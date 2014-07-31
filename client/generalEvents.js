@@ -102,6 +102,11 @@ Template.poem.events({
         var parentPadding = $(".dropdown").parent().innerWidth() - $(this).parent().width();
         var parentHeight = $(".dropdown").parent().height() - parentPadding;
         $("#layers").animate({ scrollTop: scrolledPos + parentHeight}, "fast");
-    }
     
+//        Meteor.setTimeout(testfunc, "fast"), 5000);
+    }
 });
+
+//testFunc = function(){
+//  $("#layers").animate({ scrollTop: 0};
+//}
