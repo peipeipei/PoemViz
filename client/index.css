@@ -13,10 +13,20 @@
     float:right;
 }
 
-.poemIdentifiers{
-/*    text-align: center;*/
-    font-size: 16pt;
+#poemTitle{
+    font-size: 24pt;
 }
+
+#poemAuthor{
+    font-size: 14pt;
+}
+
+/*
+#poemWrapper{
+    overflow: auto;
+    height: 600px;
+}
+*/
 
 .left{
     /*margin-top: 80px;*/
