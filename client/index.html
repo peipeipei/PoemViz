@@ -26,22 +26,16 @@
 
 <template name="poem">
 {{# if isReady}}
-    <!--<div class="toolbar">-->
-    <!--</div>-->
+
     
 
     <div class='container'>
-<!--
-        <div class = 'poemIdentifiers'><br>{{poemTitle}}</div>
-        <div class = 'poemIdentifiers'>By {{poemAuthor}}</div>
--->
-        <!--<div class='row'>-->
 
             <div class='col-md-8 left bigCol' id='leftSide'>
             <div class = 'poemIdentifiers'><br>{{poemTitle}}</div>
             <div class = 'poemIdentifiers'>By {{poemAuthor}}</div>
             <div id = 'syllableCount'>Syllable Count</div>
-            <!-- {{{poem}}} -->
+ 
                 
            {{# each lines}}
                 <span class={{this.class}} id={{this.line_id}}>    

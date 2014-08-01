@@ -20,16 +20,3 @@ Template.poem.events({
 }
 });
   
-  /*//in "Text Options" ('typing') layer, allow user to seperate poem by punctuation marks
-'click .puncOption': function(event){
-    //RIGHT NOW, makes new line/word/character spans (but she doesn't want this)
-    //instead, make such that line/word/letter spans are maintained, only new line breaks are made
-    
-    //used to make id's for lines, words, characters
-    var lCounter=0,
-        wCounter=0,
-        cCounter=0;
-    if($('.puncOption').data('active')){
-            //what should happen when user has already clicked the button
-        }else{
- }} });*/

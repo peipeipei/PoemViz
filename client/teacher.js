@@ -21,13 +21,6 @@ Template.teacher.events({
             key:key,
             poem_id:newPoem
         });
-         function removekey(){
-          console.log('removing key')
-          Layers.update(sel, {$unset:{style:selStyle, keyword: ''}})  
-        }
-        // Shorter version is for testing
-//        Meteor.setTimeout(removekey, 30000);
-//        Meteor.setTimeout(removekey, 3600000);             //removes the key after an hour.
         
         var $div = $('<div>'); 
         $div.attr('title', 'Launch');
@@ -41,8 +34,7 @@ Template.teacher.events({
           buttons: {
             "Go": function() {
               $( this).dialog('close');
-              window.open('/'+key, '_blank');
-//                Router.go('/'+key, '_blank');
+               Router.go('/'+key, '_blank');
             },
             Cancel: function() {
               $( this ).dialog( "close" );
@@ -73,10 +65,6 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'stressing',
         });
-        
-        var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
-        Layers.update(sel, {$set:{style:selStyle, keyword: key}});
-
     }
 })
 

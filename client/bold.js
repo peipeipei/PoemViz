@@ -1,9 +1,8 @@
 //how bolding is stored/removed from Selections Collection
 boldClick = function(thing){
     num = Session.get('curLayer').slice(-1);
-    console.log('hi');
     var flag = true;
-    var possibleSelections = Selections.find({poem_id: curPoem, location: $(thing).attr('id')}).fetch();
+    var possibleSelections = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
     _.each(possibleSelections, function(sel){
         var stylePosID = sel.style_id;
         var stylePos = Styles.findOne({_id:stylePosID});
@@ -14,9 +13,9 @@ boldClick = function(thing){
         }
     });
     if (flag){
-        Selections.insert({poem_id: curPoem, style_id: curStyle, location: $(thing).attr('id')});
+        Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id')});
     }else{
-       var idR = Selections.find({poem_id: curPoem, location: $(thing).attr('id')}).fetch();
+       var idR = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
         var target = "";
         _.each(idR, function(sel){
             var styleR = sel.style_id;
@@ -54,7 +53,7 @@ Template.poem.events({
         //create new layer that allows bolding
     'click .newBoldLayer':function(event){
         var name = $(event.currentTarget).text();
-        var count=Layers.find({poem_id: curPoem, type:'bold'}).fetch().length;
+        var count=Layers.find({poem_id: Session.get('currentPoem'), type:'bold'}).fetch().length;
         console.log(count);
         if (name == "Other Bolding"){
             name='Click to name this layer!';

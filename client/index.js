@@ -2,13 +2,10 @@
 colors=['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)'];
 //default colors for bolding (bolding layers)
 darkColors=['rgba(0,0,0,1)','rgba(0,102,51,1)','rgba(0,0,153,1)','rgba(85,0,102,1)','rgba(102,0,34,1)'];
-//used to store the current poem
-curPoem=Session.get('currentPoem');
 //defaults
 Session.set('highlightElement','line');
 Session.set('boldElement','boldLine');
 //used to store the current style
-curStyle = "";
 //used to store the current layer (the number of the layer ID)
 num  = "";
 //used to get current clicked syllable
@@ -133,18 +130,20 @@ Deps.autorun(function () {
         Session.set('breaksOption','origOption');
         Session.set('highlightElement','line');
         Session.set('boldElement','boldLine');
-       curPoem = Session.get("currentPoem");
         var selectionsCursor = Selections.find({poem_id:Session.get('currentPoem')});
         selectionsCursor.observe({
           //when something is added to the Selections Collection
           added: function (selection, beforeIndex) {
             var location = selection.location;
             var styleID = selection.style_id;
+              console.log(Session.get('currentPoem'));
             var style = Styles.find({_id:styleID}).fetch();
+            console.log(styleID, style);
             //used to catch errors
             if (style.length > 0){
             var layerNodeID = style[0].layer_id;
-            var layerID = Layers.findOne({poem_id: curPoem, id: layerNodeID})._id;
+            console.log(layerNodeID);
+            var layerID = Layers.findOne({poem_id: Session.get('currentPoem'), id: layerNodeID})._id;
             //if selection is from highlighting style/layer
             if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
                var substring = style[0].background_color;
@@ -178,7 +177,7 @@ Deps.autorun(function () {
             //if selection is from changing opacity
             if ((style[0].opacity !== null)&&(typeof style[0].opacity !== "undefined")) {
                 //must change opacity of ALL selections colored by layer
-                var allColorStylesofLayer = Styles.find({poem_id: curPoem, layer_id: "color"+location}).fetch();
+                var allColorStylesofLayer = Styles.find({poem_id: Session.get('currentPoem'), layer_id: "color"+location}).fetch();
                 var allSelections = [];
                 _.each(allColorStylesofLayer, function(allColor){
                     var piece = Selections.find({style_id: allColor._id}).fetch();
@@ -221,7 +220,7 @@ Deps.autorun(function () {
                 //see if after one background-color is turned off, there is another (from another layer)
                 //still coloring that line/word/character
                 var substring = "transparent";
-                var allSelections = Selections.find({poem_id: curPoem, location: location}).fetch();
+                var allSelections = Selections.find({poem_id: Session.get('currentPoem'), location: location}).fetch();
                 _.each(allSelections, function(sel){
                   var piece = sel.style_id;  
                   var otherStyle = Styles.findOne({_id: piece});

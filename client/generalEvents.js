@@ -3,13 +3,14 @@ Template.poem.events({
     'click .layer': function(event){
         console.log($(event.currentTarget).attr('id'));
         Session.set("curLayer", $(event.currentTarget).attr('id'));
+        console.log('click layer is called');
     },
 
     //stores name of custom layer
     //updates the layer database with the new name after user stops typing
     'keyup .layerName':function(event){
         var layerID=$(event.currentTarget).parent().attr('id');
-        var curL_id=Layers.findOne({poem_id: curPoem, id:layerID})._id;
+        var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
         typewatch(function () {
             var newName=$(event.currentTarget).text();
             Layers.update(curL_id, {$set: {name: newName}});
@@ -103,10 +104,7 @@ Template.poem.events({
         var parentHeight = $(".dropdown").parent().height() - parentPadding;
         $("#layers").animate({ scrollTop: scrolledPos + parentHeight}, "fast");
     
-//        Meteor.setTimeout(testfunc, "fast"), 5000);
     }
 });
 
-//testFunc = function(){
-//  $("#layers").animate({ scrollTop: 0};
-//}
+

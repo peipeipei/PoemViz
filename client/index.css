@@ -2,13 +2,15 @@
     white-space:nowrap !important;
     overflow-x: auto !important;
 }*/
+   
+    
 
 .word{
     display: inline;
 }
 #syllableCount {
-    text-align: right;
     color: blue;
+    float:right;
 }
 
 .poemIdentifiers{
@@ -33,10 +35,6 @@
 .rhymeCheck{
     margin-right:10px;
 }
-
-/*.poemLine span{
-    margin-left:0.5px;
-}*/
 
 td{
     text-align:center;
@@ -226,6 +224,12 @@ td{
     color: black;
     background: rgb(255, 255, 255) !important;
     font-weight: normal;
+    border-bottom-style:solid;
+    border-bottom-width:1px;
+    border-bottom-color: #ddd;
+    padding-left:0px;
+    padding-right:0px;
+    margin-left:0.5px;
 }
     
 .btn{
@@ -265,10 +269,6 @@ td{
     padding-right:0px;
     margin-left:0.5px;
 }
-
-
-
-
 
 /*Tryna do an overlay derp*/
 .overlay{

@@ -15,7 +15,7 @@ Template.poem.events({
                     var count = $(countSpan).text();
                     $(countSpan).text($(lineSpan).find('.word').length);
                 })
-                   var idR = SyllableMarkers.find({poem_id: curPoem}).fetch();
+                   var idR = SyllableMarkers.find({poem_id: Session.get('currentPoem')}).fetch();
                    for (var i = 0; i < idR.length; i++){
                         SyllableMarkers.remove(idR[i]._id);
                        
@@ -135,14 +135,14 @@ noghostMarker = function(thing) {
 clickSyllable = function(thing) {
     if ($(thing).css('border-left-color') == "rgb(255, 0, 0)"){
         $(thing).css('border-left', 'none');
-        var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: curPoem}).fetch(); 
+        var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: Session.get('currentPoem')}).fetch(); 
         SyllableMarkers.remove(syl[0]._id);
     }
     else{
         //don't allow user to place marks 
         if ($(thing).prev().hasClass('letter')||$(thing).prev().prev().hasClass('letter')){
         $(thing).css('border-left', '3px solid red');
-        SyllableMarkers.insert({location: $(thing).attr("id"), poem_id: curPoem});}
+        SyllableMarkers.insert({location: $(thing).attr("id"), poem_id: Session.get('currentPoem')});}
     }
 
 }  
@@ -155,7 +155,7 @@ stopSyllables = function(){
 }
 
 syllableCounts = function(){
-    if (Session.get('breaksOption') == 'origOption'){
+   // if (Session.get('breaksOption') == 'origOption'){
         $('.line').each(function() {    
             var existingCounter = 0;
             var letterArray = $(this).find('.letter');
@@ -167,9 +167,10 @@ syllableCounts = function(){
         var lineCount = $(this).find('.lineCount');
         $(lineCount).text(($(this).find('.word').length)+existingCounter);
         });
-    }
-    else{
-       $('.unnaturalLine').each(function() {       
+   // }
+   // else{
+       $('.unnaturalLine').each(function() { 
+           console.log('unnatural');
             var existingCounter = 0;
             var letterArray = $(this).find('.letter');
             _.each(letterArray, function(elem) {
@@ -180,6 +181,6 @@ syllableCounts = function(){
         var lineCount = $(this).find('.lineCount');
         $(lineCount).text($(this).find('.word').length+existingCounter);
     });
-    } 
+   // } 
 }
 

@@ -1,31 +1,42 @@
 //choose the color you want to highlight or bold with
 chooseColor = function (thing){
     console.log(thing);
+    console.log($(thing).closest('.layer'));
+    var layerName = $(thing).closest('.layer').attr('id');
+     Session.set('curLayer', layerName);
+   if (layerName.substr(0,5) == 'color'){
+       Session.set('selectedType', 'rhyme');
+   }
+   if (layerName.substr(0,4) == 'bold'){
+         Session.set('selectedType', 'bold');
+   }
     if(Session.get('selectedType')=='rhyme'){
         Session.set('highlightColor',$(thing).data('color'));
-        console.log($(thing).data('color'));
-        console.log(Session.get('highlightColor'))
         $('.colorSquare').each(function(){
             $(this).removeClass('selectedColorSquare');
         })
         $(thing).addClass('selectedColorSquare');
-        curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
+        console.log('insert');
+        var curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
+        Session.set("curStyle", curStyle);
     }
     if (Session.get('selectedType')=='bold'){
         Session.set('boldColor',$(thing).data('color'));
         $('.colorSquare').each(function(){
-        $(this).removeClass('selectedColorSquare');
-    })
-    $(thing).addClass('selectedColorSquare');
-    curStyle = Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+            $(this).removeClass('selectedColorSquare');
+        })
+        $(thing).addClass('selectedColorSquare');
+        var curStyle = Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+        Session.set("curStyle", curStyle);
     }
 }
 
 //how highlighting is stored/removed from Selections Collection
 colorClick = function (thing){
-    num = Session.get('curLayer').slice(-1);
+    console.log('colorClick');
     var flag = true;
-    var possibleSelections = Selections.find({poem_id: curPoem, location: $(thing).attr('id')}).fetch();
+    var possibleSelections = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
+    console.log(possibleSelections);
     _.each(possibleSelections, function(sel){
         var stylePosID = sel.style_id;
         var stylePos = Styles.findOne({_id:stylePosID});
@@ -36,12 +47,13 @@ colorClick = function (thing){
         }
     });
     if (flag){
-        Selections.insert({poem_id: curPoem, style_id: curStyle, location: $(thing).attr('id')});
+        Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id')});
+        console.log("flag is true");
         var op = $('.opacity:checked').data("value");
-        var opStyle = Styles.insert({poem_id: curPoem, layer_id: Session.get('curLayer'), opacity: op});
-        Selections.insert({poem_id: curPoem, style_id: opStyle, location: Session.get('curLayer').slice(-1)});
+        var opStyle = Styles.insert({poem_id: Session.get('currentPoem'), layer_id: Session.get('curLayer'), opacity: op});
+        Selections.insert({poem_id: Session.get('currentPoem'), style_id: opStyle, location: Session.get('curLayer').slice(-1)});
     }else{
-       var idR = Selections.find({poem_id: curPoem, location: $(thing).attr('id')}).fetch();
+       var idR = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
         var target = "";
         _.each(idR, function(sel){
             console.log(sel);
@@ -89,13 +101,14 @@ Template.poem.events({
       'change .opacity': function(event){
         var op = $(event.currentTarget).data("value");
         console.log(op);
-        curStyle = Styles.insert({poem_id: curPoem, layer_id: Session.get('curLayer'), opacity: op});
-        Selections.insert({poem_id: curPoem, style_id: curStyle, location: Session.get('curLayer').slice(-1)});
+        curStyle = Styles.insert({poem_id: Session.get('currentPoem'), layer_id: Session.get('curLayer'), opacity: op});
+        Session.set('curStyle', curStyle);
+        Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: Session.get('curLayer').slice(-1)});
       },
      //create new layer that allows highlighting
     'click .newColorLayer':function(event){
         var name = $(event.currentTarget).text();
-        var count=Layers.find({poem_id: curPoem, type:'rhyme'}).fetch().length;
+        var count=Layers.find({poem_id: Session.get('currentPoem'), type:'rhyme'}).fetch().length;
         if (name == "Other Coloring"){
             name='Click to name this layer!';
         }
