@@ -204,6 +204,7 @@ Deps.autorun(function () {
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
                 location = location.substr(1);
               $('.'+location).css('vertical-align','super');
+              $('.'+location).addClass('stressStyle');
             }
             }
           },
@@ -254,6 +255,7 @@ Deps.autorun(function () {
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
                  location = location.substr(1);
                 $('.'+location).css('vertical-align','baseline');
+                $('.'+location).removeClass('stressStyle');
             }
 
           }

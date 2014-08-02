@@ -76,6 +76,10 @@ grid = function(){
                   if ($('#char'+i).css('vertical-align')=='super'){
                       newLetter.css('vertical-align','super');
                   }
+                   newLetter.addClass($('#char'+i).attr("class"));
+                   newLetter.css('background-color', $('#char'+i).css('background-color'));
+                   newLetter.css('color', $('#char'+i).css('color'));
+                   newLetter.css('font-weight', $('#char'+i).css('font-weight'));
                   $(newSyl).append(newLetter);
                   if(i==beginning && i!==intervals[0]){
                     $(newLetter).css('border-left','3px solid red');
@@ -88,9 +92,15 @@ grid = function(){
             $(oldSyl).replaceWith($(moreSyls).html())
             }
         });
+        //fix on first try
         $('.syllable').each(function(){
             //if this isn't last child of word
-            if (!($(this).is('.syllable:last-child'))){
+            var word = $(this).closest('.word');
+            var sylArray = $(word).find('.syllable');
+            var lastIndex = sylArray.length - 1;
+            //if (!($(this).is('span .syllable:last-child'))){
+            //if (!(sylArray.indexOf($(this)) == lastIndex)){
+            if (!($(this).is('span .syllable:last-child'))){
                 var lett = $(this).find('.letter')[0];
                 if ($(lett).css('vertical-align')=='super'){
                     $(this).append('<span class=extraHyphen style="vertical-align: super;">-</span>');}
@@ -137,12 +147,15 @@ clickSyllable = function(thing) {
         $(thing).css('border-left', 'none');
         var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: Session.get('currentPoem')}).fetch(); 
         SyllableMarkers.remove(syl[0]._id);
+        $(thing).removeClass('syllableStyle');
+                               
     }
     else{
         //don't allow user to place marks 
         if ($(thing).prev().hasClass('letter')||$(thing).prev().prev().hasClass('letter')){
         $(thing).css('border-left', '3px solid red');
         SyllableMarkers.insert({location: $(thing).attr("id"), poem_id: Session.get('currentPoem')});}
+        $(thing).addClass('syllableStyle');
     }
 
 }  

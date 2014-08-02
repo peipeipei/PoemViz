@@ -65,7 +65,11 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'stressing',
         });
+        
+        var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
+        Layers.update(sel, {$set:{style:selStyle, keyword: key}});
     }
+
 })
 
 getRandomWord = function(){
