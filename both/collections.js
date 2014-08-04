@@ -10,8 +10,8 @@ Poems = new Meteor.Collection('poems');
          lines/words/letters in the poem.
 */
 
-LineCounts = new Meteor.Collection('lineCounts')
-/* A line count has:
+/*LineCounts = new Meteor.Collection('lineCounts')
+ A line count has:
     _id : identifier
     line: id of line span that starts the syllable, e.g. "line3"
     poem_id:which poem the line count is on
@@ -40,7 +40,6 @@ Styles = new Meteor.Collection('styles')
     font_color : string, CSS color for text in this style (OPTIONAL)
     background_color : string, CSS background color for text in this style (OPTIONAL) 
     bold : boolean, whether the text is bold or not (OPTIONAL)
-    opacity: opacity of background color (OPTIONAL)
     name : string, user-provided description of what the style means, e.g. "feminine rhyme" (OPTIONAL)
     verticalAlign: "super" when using stress marks; only used once in poem with stress marks (OPTIONAL)
 */
@@ -52,6 +51,7 @@ Layers = new Meteor.Collection('layers');
     poem_id : string, id of poem that this layer is in
     name : string, user-provided description of the layer, e.g. "Rhyming scheme"
     type: whether it is used for selections, markers, bold, or typing
+    opacity: opacity of background color (OPTIONAL)  
 */
 
 Colors = new Meteor.Collection('colors');

@@ -19,7 +19,7 @@ var layersHandle=Meteor.subscribe('layers');
 var selectionsHandle=Meteor.subscribe('selections');
 var stylesHandle=Meteor.subscribe('styles');
 var syllablesHandle=Meteor.subscribe('syllableMarkers');
-var linesHandle=Meteor.subscribe('lineCounts');
+//var linesHandle=Meteor.subscribe('lineCounts');
 var shoutkeysHandle=Meteor.subscribe('shoutkeys');
 var colorIndicesHandle=Meteor.subscribe('colorIndices');
 
