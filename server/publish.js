@@ -1,29 +1,28 @@
-Meteor.publish('poems', function () {
-  return Poems.find()
+Meteor.publish('poems', function (poemID) {
+  return Poems.find(poemID)
 });
 
-Meteor.publish('layers', function(){
-    return Layers.find()
+Meteor.publish('layers', function(poemID){
+    return Layers.find({poem_id: poemID})
 })
 
-Meteor.publish('selections', function () {
-  return Selections.find()
+Meteor.publish('selections', function (poemID) {
+  return Selections.find({poem_id: poemID})
 });
 
 
-Meteor.publish('styles', function () {
-  return Styles.find()
+Meteor.publish('styles', function (poemID) {
+  return Styles.find({poem_id: poemID})
 });
 
-Meteor.publish('syllableMarkers', function() {
-    return SyllableMarkers.find()
+Meteor.publish('syllableMarkers', function(poemID) {
+    return SyllableMarkers.find({poem_id: poemID})
 });
 
-Meteor.publish('lineCounts', function() {
+/*Meteor.publish('lineCounts', function() {
     return LineCounts.find()
-});
+});*/
 
 Meteor.publish('shoutkeys', function() {
     return Shoutkeys.find()
 });
-

@@ -4,7 +4,7 @@ Router.map(function () {
     path: '/poem/:id',
     template: 'poem',
     waitOn: function(){
-      return [Meteor.subscribe('poems'), Meteor.subscribe('selections'), Meteor.subscribe('layers'), Meteor.subscribe('styles'), Meteor.subscribe('syllableMarkers')]
+      return [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('selections', this.params.id), Meteor.subscribe('layers', this.params.id), Meteor.subscribe('styles', this.params.id), Meteor.subscribe('syllableMarkers', this.params.id)]
     },
     data: function(){
       var poem_id = this.params.id
@@ -37,7 +37,7 @@ Router.map(function () {
         path: '/:_word',
         notFoundTemplate: 'error',
         waitOn: function(){
-          return [Meteor.subscribe('poems'), Meteor.subscribe('shoutkeys')]
+          return [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('shoutkeys')]
         },
         data: function(){
             console.log(this);
