@@ -47,26 +47,10 @@ colorClick = function (thing){
         }
     });
     if (flag){
-        Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id')});
+        Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')});
         console.log("flag is true");
-        var op = $('.opacity:checked').data("value");
-        var opStyle = Styles.insert({poem_id: Session.get('currentPoem'), layer_id: Session.get('curLayer'), opacity: op});
-        Selections.insert({poem_id: Session.get('currentPoem'), style_id: opStyle, location: Session.get('curLayer').slice(-1)});
     }else{
-       var idR = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
-        var target = "";
-        _.each(idR, function(sel){
-            console.log(sel);
-            var styleR = sel.style_id;
-            var stylethis = Styles.findOne({_id: styleR});
-            if (stylethis !== undefined){
-            if (stylethis.layer_id == Session.get('curLayer')){
-                target = sel;
-            }
-            }
-        })
-//        console.log('remove', target._id)
-        Selections.remove(target._id);
+       Selections.remove({poem_id: Session.get('currentPoem'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')});
     }
 }
 
@@ -82,7 +66,6 @@ Template.poem.events({
         var a = $('<div class="colorBlock">').append(colorSquare);
         var b = a.append($('<span class="colorName" contenteditable=true >Color Label</span></div>'));
         rightlightColors.append(b);
-        // rightlightColors.append(colorSquare);
         if(ccount>=colors.length-1){
             $(event.target).css('display','none');
         }
@@ -99,11 +82,11 @@ Template.poem.events({
     },
     //when user clicks an opacity option, change the opacity of all lines/words/characters colored/bolded by certain layer
       'change .opacity': function(event){
+        var layerName = $(event.currentTarget).closest('.layer').attr('id');
+        Session.set('curLayer', layerName);
         var op = $(event.currentTarget).data("value");
-        console.log(op);
-        curStyle = Styles.insert({poem_id: Session.get('currentPoem'), layer_id: Session.get('curLayer'), opacity: op});
-        Session.set('curStyle', curStyle);
-        Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: Session.get('curLayer').slice(-1)});
+        var layerID = Layers.findOne({id: $(event.currentTarget).attr("name")})._id;
+        Layers.update(layerID, {$set:{opacity: op}});
       },
      //create new layer that allows highlighting
     'click .newColorLayer':function(event){
@@ -112,13 +95,15 @@ Template.poem.events({
         if (name == "Other Coloring"){
             name='Click to name this layer!';
         }
-        var divLayerID = 'color' + count;
+       var divLayerID = 'color' + count;
        var layerID = Layers.insert({
           name:name,
           id:divLayerID,
           poem_id:Session.get('currentPoem'),
           type:'rhyme',
+          opacity: 1,
       })
        Session.set("curLayer", divLayerID);
+       Session.set('highlightElement','line');
     }
 });

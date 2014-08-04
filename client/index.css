@@ -103,10 +103,7 @@ td{
  .syllableMarker {
     margin: 0px;
 }
-.layerName{
-    font-size:12pt;
-    font-weight:bold;
-}
+
 
 .addColor{
     height:20px;
@@ -413,13 +410,18 @@ td{
   border: dotted 1px;
 }
 
-
-.colorName{
-    border-style:dotted;
-    border-width:1px;
-    border-color:gray;
+.colorName:hover{
+  border: dotted 1px;
 }
 
+
+.colorName{
+}
+
+.layerName{
+    font-size:12pt;
+    font-weight:bold;
+}
 
 /*scroll bar*/
 ::-webkit-scrollbar {

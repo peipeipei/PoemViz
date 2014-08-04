@@ -14,6 +14,10 @@ lastID = '';
 doLast = '';
 
 //METEOR SETUP
+Handlebars.registerHelper("equals", function (a, b) {
+  return (a == b);
+});
+
 var poemsHandle = Meteor.subscribe('poems');
 var layersHandle=Meteor.subscribe('layers');
 var selectionsHandle=Meteor.subscribe('selections');
@@ -33,6 +37,7 @@ checkIsReady = function(){
 }
 
 Template.poem.isReady=function(){
+    return true;
     return checkIsReady();
 }
 
@@ -64,6 +69,8 @@ Deps.autorun(function () {
         }
     });
     if (Session.get('selectedType')=='bold'){
+        var dropdown = $(clickedLayer).find('.boldSelect:first');
+        Session.set('boldElement', $(dropdown).val());
         var colorSquares=$(clickedLayer).find('.colorSquare');
         var noneColored=true;
         //set default color if necessary (on the re-selection of layer)
@@ -75,10 +82,10 @@ Deps.autorun(function () {
         if (noneColored){
           chooseColor(colorSquares[0]);  
         }
-        //Session.set('boldElement', $(clickedLayer).find('.boldSelect').val());
-        //curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
     }
     else if (Session.get('selectedType')=='rhyme'){
+        var dropdown = $(clickedLayer).find('.rhymeSelect:first');
+        Session.set('highlightElement', $(dropdown).val());
         var colorSquares=$(clickedLayer).find('.colorSquare');
         var noneColored=true;
         //set default color if necessary (on the re-selection of layer)
@@ -122,6 +129,49 @@ Deps.autorun(function () {
          console.log("RENDER");
          displaySelections();
          syllableCounts();
+         $('.layer').each(function(){
+             if ($(this).attr('data-name') == 'rhyme'){
+                 var name = $(this).attr('id');
+                 var opacity = Layers.findOne({poem_id: Session.get('currentPoem'), id: name}).opacity;
+                 //sometimes string, sometimes number
+                 console.log(opacity);
+                 switch (opacity){
+                         case '1': 
+                         var num = 0;
+                         break;
+                         
+                         case 1: 
+                         var num = 0;
+                         break;
+                         
+                         case '.6': 
+                         var num = 1;
+                         break;
+                         
+                         case .6: 
+                         var num = 1;
+                         break;
+                         
+                         case '.2': 
+                         var num = 2;
+                         break;
+                         
+                         case .2: 
+                         var num = 2;
+                         break;
+
+                         case '0': 
+                         var num = 3;
+                         break;
+                         
+                         case 0: 
+                         var num = 3;
+                         break;
+                 }
+                 console.log("num"+num);
+                $('input:radio[name='+name+']:nth('+num+')').attr('checked',true);
+         }
+         });
      }
      
      //what to do upon rendering of poem
@@ -136,23 +186,21 @@ Deps.autorun(function () {
           added: function (selection, beforeIndex) {
             var location = selection.location;
             var styleID = selection.style_id;
-              console.log(Session.get('currentPoem'));
             var style = Styles.find({_id:styleID}).fetch();
-            console.log(styleID, style);
             //used to catch errors
             if (style.length > 0){
             var layerNodeID = style[0].layer_id;
-            console.log(layerNodeID);
             var layerID = Layers.findOne({poem_id: Session.get('currentPoem'), id: layerNodeID})._id;
             //if selection is from highlighting style/layer
             if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
-               var substring = style[0].background_color;
-                console.log("lines"+location);
+               var rgba = style[0].background_color;
+               var lastIndex = rgba.lastIndexOf(",");
+               var substring = rgba.substr(0, lastIndex+1);
+               var op = Layers.findOne(layerID).opacity;
                $("."+location).css(
                 {
-                    "background-color": substring
-                }
-               );
+                    "background": substring+op+")"
+                });
             }
             //if selection is from bolding style/layer
             if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
@@ -174,32 +222,6 @@ Deps.autorun(function () {
                 );
                 }
             }
-            //if selection is from changing opacity
-            if ((style[0].opacity !== null)&&(typeof style[0].opacity !== "undefined")) {
-                //must change opacity of ALL selections colored by layer
-                var allColorStylesofLayer = Styles.find({poem_id: Session.get('currentPoem'), layer_id: "color"+location}).fetch();
-                var allSelections = [];
-                _.each(allColorStylesofLayer, function(allColor){
-                    var piece = Selections.find({style_id: allColor._id}).fetch();
-                    allSelections = allSelections.concat(piece);
-                })
-                _.each(allSelections, function(sel){
-                    var thisID = sel.location;
-                    var thisStyleID = sel.style_id;
-                    var thisStyle = Styles.findOne({_id: thisStyleID});
-                    if (thisStyle.background_color !== undefined){
-                    //opacity of background color is changed by setting a part of rgba 
-                    var rgba = thisStyle.background_color;
-                    var lastIndex = rgba.lastIndexOf(",");
-                    var substring = rgba.substr(0, lastIndex+1);
-                    $("."+thisID).css( 
-                    {
-                      "background": substring+style[0].opacity+")"
-                    }
-                    );
-                    }
-                    })
-               }
             //if selection is from stressing style/layer
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
                 location = location.substr(1);
@@ -226,7 +248,9 @@ Deps.autorun(function () {
                   var piece = sel.style_id;  
                   var otherStyle = Styles.findOne({_id: piece});
                    if ((otherStyle !== undefined)){
+                        if ((otherStyle.background_color !== undefined)){
                        substring = otherStyle.background_color;
+                        }
                    }
                 });
                $("."+location).css(
@@ -305,4 +329,34 @@ Deps.autorun(function () {
              $(countSpan).text(wordCount+sylCount);
             },
           });
+        var layersCursor = Layers.find({poem_id:Session.get('currentPoem')});
+        layersCursor.observe({
+        added: function(layer, beforeIndex){
+            console.log('added');
+            console.log(layer.type);
+            if (layer.type == 'rhyme'){
+            $('input:radio[name='+layer.id+']:nth(1)').attr('checked',true);
+            }
+        },           
+        changed: function (newLayer, oldLayer) {
+            op = newLayer.opacity;
+            console.log("layer changed");
+            if ((op !== null)&&(typeof op !== "undefined")) {
+              var allSelections = Selections.find({poem_id: Session.get('currentPoem'), layerNode_id: Session.get('curLayer')}).fetch();  
+                _.each(allSelections, function(sel){
+                    var thisID = sel.location;
+                    var thisStyleID = sel.style_id;
+                    var thisStyle = Styles.findOne(thisStyleID);
+                    var rgba = thisStyle.background_color;
+                    var lastIndex = rgba.lastIndexOf(",");
+                    var substring = rgba.substr(0, lastIndex+1);
+                    $("."+thisID).css( 
+                    {
+                      "background": substring+op+")"
+                    }
+                    );
+                    });
+            }
+        } });
+
         };

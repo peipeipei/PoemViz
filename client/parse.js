@@ -155,7 +155,7 @@ createPoemObj = function(poemLines, natural, poemNaturalParse){
         var wordArray = line.split(' ');
         _.each(wordArray, function(word){
             if (natural){
-            var wordObj = {type:"word", word_id:"word"+wordCounter, class:"line"+lineCounter+" word"+wordCounter+" word", content:[]};}
+            var wordObj = {type:"word", word_id:"word"+wordCounter, class:" word"+wordCounter+" word", content:[]};}
             else{
                 var realLine = getNatNum(wordCounter, poemNaturalParse);
                 var wordObj = {type:"word", word_id:"word"+wordCounter, class:"line"+realLine+" word"+wordCounter+" word", content:[]};}
@@ -163,10 +163,10 @@ createPoemObj = function(poemLines, natural, poemNaturalParse){
             var letterArray = word.split('');
             _.each(letterArray, function(letter){
                 if (natural){
-                var letterObj = {type:"letter", letter_id: "char"+letterCounter, class: "line"+lineCounter+" word"+wordCounter+   
+                var letterObj = {type:"letter", letter_id: "char"+letterCounter, class: " word"+wordCounter+   
                                  " char"+letterCounter+" letter"+" char", content: letter};}
                 else{
-                   var letterObj = {type:"letter", letter_id: "char"+letterCounter, class: "line"+realLine+" word"+wordCounter+   
+                   var letterObj = {type:"letter", letter_id: "char"+letterCounter, class:    
                                  " char"+letterCounter+" letter"+" char", content: letter};} 
                 wordObj.content.push(letterObj); 
                 letterCounter++;

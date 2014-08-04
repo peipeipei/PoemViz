@@ -1,6 +1,7 @@
 
 Template.teacher.isReady = function(){
   return checkIsReady();  
+    //return true;
 }
 
 Template.teacher.events({
@@ -51,7 +52,8 @@ Template.teacher.events({
             name:'Sound',
             id:'color0',
             poem_id:newPoem,
-            type:'rhyme'
+            type:'rhyme',
+            opacity: 1,
         });
         Layers.insert({
             name:'Syllables',
