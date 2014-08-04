@@ -25,6 +25,7 @@ var stylesHandle=Meteor.subscribe('styles');
 var syllablesHandle=Meteor.subscribe('syllableMarkers');
 //var linesHandle=Meteor.subscribe('lineCounts');
 var shoutkeysHandle=Meteor.subscribe('shoutkeys');
+var colorIndicesHandle=Meteor.subscribe('colorIndices');
 
 Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
@@ -33,7 +34,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 //makes sure that all your collections are ready before loading the page
 checkIsReady = function(){
     console.log('ready!');
-  return  poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready();
+  return poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&linesHandle.ready()&&shoutkeysHandle.ready()&&colorIndicesHandle.ready();
 }
 
 Template.poem.isReady=function(){

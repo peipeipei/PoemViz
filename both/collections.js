@@ -68,6 +68,13 @@ Colors = new Meteor.Collection('colors');
 Shoutkeys = new Meteor.Collection('shoutkeys');
 /*
      _id: identifier
-     key: string, random shoutkey keyword 
      poem_id: string, id of the poem the key maps to
+     key: string, random shoutkey keyword 
+*/
+
+ColorIndices = new Meteor.Collection('indices');
+ /*
+    _id: identifier
+    poem_id: string, id of the corresponding Poems
+    index: number, increasing when you add more colors to the palette
 */

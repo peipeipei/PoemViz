@@ -15,7 +15,7 @@ Template.teacher.events({
             author:author,
             origObj: poemObjsArray[0],
             puncObj: poemObjsArray[1],
-            sentObj: poemObjsArray[2]
+            sentObj: poemObjsArray[2],
         })
         var key = getRandomWord()
         Shoutkeys.insert({
@@ -78,4 +78,19 @@ getRandomWord = function(){
   return pgpWordList[Math.floor(Math.random()*pgpWordList.length)][0]
 }
 
-    
+    //Meteor.startup(function () {
+//      if (Poems.find().count() == 0){
+//          Poems.insert({
+//            colorIndex: 0
+//          });
+//      }
+//      if (Colors.find().count() == 0){
+//        _.each(colors, function (c, i){
+//            Colors.insert({
+//                color:c,
+//                index:i
+//            });
+//            console.log(c);
+//        })
+//      }
+//  });

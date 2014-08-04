@@ -92,7 +92,17 @@
                                 </div>
                                 <div class="colorBlock">
                                     <span class='colorSquare' data-color='rgba(255,153,255,1)' style='background-color:rgba(255,153,255,1)'></span> 
+
                                     <span class="colorName" contenteditable=true>Editable Color Label</span>
+
+                                    <!--New Color Plan-->
+<!--
+                            {{#each colorOptions}}
+                                <span class = 'colorSquare'  style = 'background-color: {{this.color}}'></span>
+                                <span class = 'colorName' contenteditable=true>Color Label</span>
+                            {{/each}}
+-->
+
                                 </div>
                             </div>
                             <br>
@@ -119,6 +129,8 @@
                         <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
                             <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
+                            
+
                         </div>
                     </div>
                 {{/if}}

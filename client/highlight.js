@@ -29,7 +29,7 @@ chooseColor = function (thing){
         var curStyle = Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
         Session.set("curStyle", curStyle);
     }
-}
+};
 
 //how highlighting is stored/removed from Selections Collection
 colorClick = function (thing){
@@ -53,7 +53,21 @@ colorClick = function (thing){
        var selID = Selections.findOne({poem_id: Session.get('currentPoem'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')})._id;
         Selections.remove(selID);
     }
-}
+};
+
+Template.poem.colorOptions = function () { 
+//        console.log("FALSKDFJSLKDFJS")
+        
+//        var poemId = Poems.findOne()._id
+//        var colorIndex = Poems.findOne().colorIndex;
+//        
+////        console.log("colorIndex",colorIndex)
+//        
+//        return Colors.find({index:{$lt:colorIndex}})
+        
+        
+        
+  };
 
 //contains all the events that happen on the poem page
 Template.poem.events({
