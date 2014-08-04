@@ -26,4 +26,7 @@ Meteor.publish('lineCounts', function() {
 Meteor.publish('shoutkeys', function() {
     return Shoutkeys.find()
 });
+Meteor.publish('colorIndices', function() {
+    return ColorIndices.find()
+});
 
