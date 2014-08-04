@@ -58,6 +58,7 @@ typewatch = (function(){
 Deps.autorun(function () {
     var clickedLayerID = Session.get('curLayer');
     var clickedLayer = $('#' + clickedLayerID);
+    //for each layer, make the one the user has most recently created or selected light blue
     $('.layer').each(function(){
         var thisID = $(this).attr('id')
         if(thisID == clickedLayerID){
@@ -69,6 +70,7 @@ Deps.autorun(function () {
         }
     });
     if (Session.get('selectedType')=='bold'){
+        //make sure user selects element as indicated by the dropdown
         var dropdown = $(clickedLayer).find('.boldSelect:first');
         Session.set('boldElement', $(dropdown).val());
         var colorSquares=$(clickedLayer).find('.colorSquare');
@@ -84,6 +86,7 @@ Deps.autorun(function () {
         }
     }
     else if (Session.get('selectedType')=='rhyme'){
+         //make sure user selects element as indicated by the dropdown
         var dropdown = $(clickedLayer).find('.rhymeSelect:first');
         Session.set('highlightElement', $(dropdown).val());
         var colorSquares=$(clickedLayer).find('.colorSquare');
@@ -132,6 +135,7 @@ Deps.autorun(function () {
          $('.layer').each(function(){
              if ($(this).attr('data-name') == 'rhyme'){
                  var name = $(this).attr('id');
+                 //set opacity as left before refresh
                  var opacity = Layers.findOne({poem_id: Session.get('currentPoem'), id: name}).opacity;
                  //sometimes string, sometimes number
                  console.log(opacity);
@@ -196,6 +200,7 @@ Deps.autorun(function () {
                var rgba = style[0].background_color;
                var lastIndex = rgba.lastIndexOf(",");
                var substring = rgba.substr(0, lastIndex+1);
+               //check opacity of layer that made the selection
                var op = Layers.findOne(layerID).opacity;
                $("."+location).css(
                 {
@@ -259,7 +264,7 @@ Deps.autorun(function () {
                 }
                );
             }
-            //if removed is bolding
+            //if removed selection is bolding
             if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
                 $("."+location).css(
                 {
@@ -267,7 +272,7 @@ Deps.autorun(function () {
                 }
                );
             }
-            //if removed is bolding
+            //if removed selection is bolding
             if ((style[0].bold !== null)&&(typeof style[0].bold !== "undefined")) {
                 $("."+location).css(
                 {
@@ -275,7 +280,7 @@ Deps.autorun(function () {
                 }
                );
             }
-            //if removed is stressing
+            //if removed selection is stressing
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
                  location = location.substr(1);
                 $('.'+location).css('vertical-align','baseline');
@@ -329,15 +334,19 @@ Deps.autorun(function () {
              $(countSpan).text(wordCount+sylCount);
             },
           });
+        //handles additions/changes from Layers Collection
         var layersCursor = Layers.find({poem_id:Session.get('currentPoem')});
         layersCursor.observe({
         added: function(layer, beforeIndex){
-            console.log('added');
+            console.log('added layer');
             console.log(layer.type);
             if (layer.type == 'rhyme'){
-            $('input:radio[name='+layer.id+']:nth(1)').attr('checked',true);
+            var layerID = (layer.id).trim();
+            //automatically select default opacity; if no slight timeout, doesn't show
+            setTimeout(function() {$("input:radio[name="+layerID+"]:nth(0)").attr('checked',true)}, 500);
             }
         },           
+        //when opacity of layer is changed, all highlighting selections made by that layer must be changed
         changed: function (newLayer, oldLayer) {
             op = newLayer.opacity;
             console.log("layer changed");

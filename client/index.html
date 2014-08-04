@@ -41,8 +41,7 @@
                {{# each lines}}
                     <span class={{this.class}} id={{this.line_id}}>    
                     {{# each this.content}}
-                        <span id={{this.word_id}} class = {{this.class}}>
-        <span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span>{{/each}}</span><span class = "space">&nbsp;</span></span>{{/each}}
+                        <span id={{this.word_id}} class = {{this.class}}><span class = "space">&nbsp;</span><span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span>{{/each}}</span></span>{{/each}}
                     <span class='lineCount'></span>
                     </span>
                     <br>
@@ -89,11 +88,11 @@
                             <div class='highlightColors'>
                                 <div class="colorBlock">
                                     <span class='colorSquare' data-color='rgba(255,153,153,1)' style='background-color:rgba(255,153,153,1)'></span> 
-                                    <span class="colorName" contenteditable=true>Color Label</span>
+                                    <span class="colorName" contenteditable=true>Editable Color Label</span>
                                 </div>
                                 <div class="colorBlock">
                                     <span class='colorSquare' data-color='rgba(255,153,255,1)' style='background-color:rgba(255,153,255,1)'></span> 
-                                    <span class="colorName" contenteditable=true>Color Label</span>
+                                    <span class="colorName" contenteditable=true>Editable Color Label</span>
                                 </div>
                             </div>
                             <br>

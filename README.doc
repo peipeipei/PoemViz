@@ -6,6 +6,9 @@ with title "Syllable." 'Bold' is the bolding/font-color layer, and shows up as a
 see their annotations) and insert line breaks/automatically seperate the text by punctutation (partially
 implemented).
 
+FOR USERS* (Include in final)
+Sorting the poem by all punctuation marks or all sentence punctuation only checks for this punctuation at the ends of words.
+
 
 DESIGN ISSUES
 Allow poems to have a title and an author
