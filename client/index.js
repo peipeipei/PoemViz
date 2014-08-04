@@ -34,7 +34,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 //makes sure that all your collections are ready before loading the page
 checkIsReady = function(){
     console.log('ready!');
-  return poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&linesHandle.ready()&&shoutkeysHandle.ready()&&colorIndicesHandle.ready();
+  return poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&shoutkeysHandle.ready()&&colorIndicesHandle.ready();
 }
 
 Template.poem.isReady=function(){
