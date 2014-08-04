@@ -166,8 +166,7 @@ createPoemObj = function(poemLines, natural, poemNaturalParse){
                 var letterObj = {type:"letter", letter_id: "char"+letterCounter, class: " word"+wordCounter+   
                                  " char"+letterCounter+" letter"+" char", content: letter};}
                 else{
-                   var letterObj = {type:"letter", letter_id: "char"+letterCounter, class:    
-                                 " char"+letterCounter+" letter"+" char", content: letter};} 
+                   var letterObj = {type:"letter", letter_id: "char"+letterCounter, class: " char"+letterCounter+" letter"+" char", content: letter};} 
                 wordObj.content.push(letterObj); 
                 letterCounter++;
             });  
