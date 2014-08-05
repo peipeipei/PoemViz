@@ -88,24 +88,14 @@
                         </select>
                         <div class='highlighting'>
                             <div class='highlightColors'>
+                                    <!--NEW STUFF-->
+                            {{#each this.colorOptions}}
                                 <div class="colorBlock">
-                                    <span class='colorSquare' data-color='rgba(255,153,153,1)' style='background-color:rgba(255,153,153,1)'></span> 
-                                    <span class="colorName" contenteditable=true>Editable Color Label</span>
+                                    <span class = 'colorSquare'  style = 'background-color: {{this.color}}'></span>
+                                    <span class = 'colorName' contenteditable=true>{{this.colorName}}</span>
                                 </div>
-                                <div class="colorBlock">
-                                    <span class='colorSquare' data-color='rgba(255,153,255,1)' style='background-color:rgba(255,153,255,1)'></span> 
-
-                                    <span class="colorName" contenteditable=true>Editable Color Label</span>
-
-                                    <!--New Color Plan-->
-<!--
-                            {{#each colorOptions}}
-                                <span class = 'colorSquare'  style = 'background-color: {{this.color}}'></span>
-                                <span class = 'colorName' contenteditable=true>Color Label</span>
                             {{/each}}
--->
 
-                                </div>
                             </div>
                             <br>
                             <button class='addColor'>

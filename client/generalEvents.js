@@ -1,7 +1,7 @@
 //contains all the events that happen on the poem page
 Template.poem.events({
     'click .layer': function(event){
-        console.log($(event.currentTarget).attr('id'));
+//        console.log($(event.currentTarget).attr('id'));
         Session.set("curLayer", $(event.currentTarget).attr('id'));
         console.log('click layer is called');
     },

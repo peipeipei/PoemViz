@@ -17,6 +17,7 @@ Template.teacher.events({
             origObj: poemObjsArray[0],
             puncObj: poemObjsArray[1],
             sentObj: poemObjsArray[2],
+
         })
         var key = getRandomWord()
         Shoutkeys.insert({
@@ -48,13 +49,32 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'typing'
         });
-        Layers.insert({
+        var layer1id = Layers.insert({
             name:'Sound',
             id:'color0',
             poem_id:newPoem,
             type:'rhyme',
             opacity: 1,
         });
+        // NEW STUFF
+        Colors.insert({
+             poem_id:newPoem,
+             layer_id: layer1id,
+             color_value: colors[0], 
+             name: 'color label'
+        })
+        Colors.insert({
+             poem_id:newPoem,
+             layer_id: layer1id,
+             color_value: colors[1], 
+             name: 'color label'
+        })
+        // NOTE: Index only starts at two because two colors have already been assigned to the 'Sound' layer
+        ColorIndices.insert({
+            poem_id:newPoem,
+            index: 2
+        });
+        // END NEW STUFF
         Layers.insert({
             name:'Syllables',
             id:'syllable0',
@@ -81,3 +101,4 @@ getRandomWord = function(){
   }
   return shoutAttempt; 
 }
+

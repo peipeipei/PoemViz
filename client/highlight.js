@@ -55,35 +55,44 @@ colorClick = function (thing){
     }
 };
 
-Template.poem.colorOptions = function () { 
-//        console.log("FALSKDFJSLKDFJS")
-        
-//        var poemId = Poems.findOne()._id
-//        var colorIndex = Poems.findOne().colorIndex;
-//        
-////        console.log("colorIndex",colorIndex)
-//        
-//        return Colors.find({index:{$lt:colorIndex}})
-        
-        
-        
-  };
+addColor = function(){
+    // NEW STUFF
+        var poemID = Session.get('currentPoem');
+        console.log("poem id: " + poemID);
+        var layerIDHTML = Session.get('curLayer');
+        console.log("layerID in html:" + layerIDHTML);
+        var layerID = Layers.findOne({id:layerIDHTML})._id;
+        console.log("layer id: " + layerID);
+        var colorIndex = ColorIndices.findOne({poem_id: poemID}).index;
+        console.log("Color Index: " + colorIndex);
+        Colors.insert({
+             poem_id:poemID,
+             layer_id: layerID,
+             color_value: colors[colorIndex], 
+             name: 'color label'
+        })
+        var newColorIndex = colorIndex + 1;
+        console.log("new color index: " + newColorIndex);
+        var colorIndexID = ColorIndices.findOne({poem_id: poemID})._id;
+        ColorIndices.update(colorIndexID, {$set: {index: newColorIndex}});
+}
 
 //contains all the events that happen on the poem page
 Template.poem.events({
     //adds a highlight color to the available colors
     'click .addColor': function(event){
-        var colorSquare=$('<span class="colorSquare"></span>');
-        var rightlightColors=$($(event.target).parent()).find('.highlightColors');
-        var ccount=rightlightColors.find('.colorSquare').length;
-        colorSquare.data('color', colors[ccount]);
-        colorSquare.css('background-color', colors[ccount]);
-        var a = $('<div class="colorBlock">').append(colorSquare);
-        var b = a.append($('<span class="colorName" contenteditable=true >Editable Color Label</span></div>'));
-        rightlightColors.append(b);
-        if(ccount>=colors.length-1){
-            $(event.target).css('display','none');
-        }
+//        var colorSquare=$('<span class="colorSquare"></span>');
+//        var rightlightColors=$($(event.target).parent()).find('.highlightColors');
+//        var ccount=rightlightColors.find('.colorSquare').length;
+//        colorSquare.data('color', colors[ccount]);
+//        colorSquare.css('background-color', colors[ccount]);
+//        var a = $('<div class="colorBlock">').append(colorSquare);
+//        var b = a.append($('<span class="colorName" contenteditable=true >Editable Color Label</span></div>'));
+//        rightlightColors.append(b);
+//        if(ccount>=colors.length-1){
+//            $(event.target).css('display','none');
+//        }
+        addColor();
     },
     //updates highlighting/bolding color when user clicks a square
     'click .colorSquare':function(event){
@@ -105,20 +114,22 @@ Template.poem.events({
       },
      //create new layer that allows highlighting
     'click .newColorLayer':function(event){
+        console.log("new color layer created");
         var name = $(event.currentTarget).text();
         var count=Layers.find({poem_id: Session.get('currentPoem'), type:'rhyme'}).fetch().length;
         if (name == "Other Coloring"){
             name='Click to name this layer!';
         }
        var divLayerID = 'color' + count;
+       var poemID = Session.get('currentPoem');
        var layerID = Layers.insert({
           name:name,
           id:divLayerID,
-          poem_id:Session.get('currentPoem'),
+          poem_id:poemID,
           type:'rhyme',
           opacity: 1,
-      })
-       Session.set("curLayer", divLayerID);
+      });
+        Session.set("curLayer", divLayerID); 
        Session.set('highlightElement','line');
     }
 });

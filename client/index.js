@@ -38,6 +38,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 //var linesHandle=Meteor.subscribe('lineCounts');
 var shoutkeysHandle=Meteor.subscribe('shoutkeys');
 var colorIndicesHandle=Meteor.subscribe('colorIndices');
+var colorsHandle=Meteor.subscribe('colors');
 
 Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
@@ -49,7 +50,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 checkIsReady = function(){
     console.log('ready!');
     return true;
- /* return  poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&shoutkeysHandle.ready()&&colorIndicesHandle.ready();*/
+ /* return  poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&shoutkeysHandle.ready()&&colorIndicesHandle.ready()&&colorsHandle.ready();*/
 }
 
 Template.poem.isReady=function(){
@@ -59,7 +60,20 @@ Template.poem.isReady=function(){
 
 //returns all the layers in the database
 Template.poem.layer=function(){
-    return Layers.find({poem_id:Session.get('currentPoem')}).fetch();
+    // NEW STUFF
+    var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();
+    _.each(poemLayers, function(i){
+        if (i.type == "rhyme") {
+            var layerID = i._id;
+            var layerColors = Colors.find({layer_id:layerID}).fetch();
+            var visibleColors = []
+            for (var j = 0; j < layerColors.length; j++){
+                visibleColors.push({"color": layerColors[j].color_value , "colorName": "new name"});  
+            }
+            i['colorOptions'] = visibleColors;
+        }
+    })
+    return poemLayers;
 }
 
 typewatch = (function(){
@@ -72,8 +86,12 @@ typewatch = (function(){
 
 // Cool meteor thing that runs automatically whenever a variable it gets is reset (in this case, "curLayer")
 Deps.autorun(function () {
+    console.log("testing");
     var clickedLayerID = Session.get('curLayer');
     var clickedLayer = $('#' + clickedLayerID);
+    var layerWasClicked = (clickedLayer.position() != undefined);
+    console.log("Was layer clicked?");
+    console.log(layerWasClicked);
     //for each layer, make the one the user has most recently created or selected light blue
     $('.layer').each(function(){
         var thisID = $(this).attr('id')
@@ -102,6 +120,7 @@ Deps.autorun(function () {
         }
     }
     else if (Session.get('selectedType')=='rhyme'){
+        console.log("blah");
          //make sure user selects element as indicated by the dropdown
         var dropdown = $(clickedLayer).find('.rhymeSelect:first');
         Session.set('highlightElement', $(dropdown).val());
@@ -114,13 +133,24 @@ Deps.autorun(function () {
                 noneColored=false;
             } 
         })
+        if (layerWasClicked){
+            var layerID = Layers.findOne({id:clickedLayerID})._id;
+            console.log("Colors array");
+            console.log(layerID);
+            console.log(Colors.find({layer_id:layerID}).fetch());
+            console.log(Colors.find({layer_id:layerID}).fetch().length);
+            if (Colors.find({layer_id:layerID}).fetch().length === 0){
+                addColor();
+                addColor();
+            }
+        }
         if (noneColored){
           chooseColor(colorSquares[0]);  
         }
     }
     
     // Scrolls partial layers up or down. Also has means that when you create a new layer, it automatically scrolls to be on screen.
-    if (clickedLayer.position() != undefined){
+    if (layerWasClicked){
         var scrolledPos = $("#layers").scrollTop();
         var layerPos = clickedLayer.position().top;
         var layerHeight = clickedLayer.height();
