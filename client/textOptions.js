@@ -12,7 +12,35 @@ Template.poem.events({
             $('.wordOption').data('active', true);
         }
     },
-    
+    //gives user new shoutkey for same poem (that preserves annotations)
+    'click .newShoutKey': function(event){
+        Meteor.clearTimeout(handleid);
+        Shoutkeys.remove(curShoutKeyID);
+        var key = getRandomWord()
+        curShoutKeyID = Shoutkeys.insert({
+            key:key,
+            poem_id:Session.get('currentPoem'),
+        });
+        var $div = $('<div>'); 
+        $div.attr('title', 'Launch');
+        url = window.location.host + '/' + key;
+        $div.html('Your exercise is at <br>' + url + '<br>');
+        $div.dialog({
+          resizable: false,
+          height:250,
+          width:500,
+          modal: true,
+          buttons: {
+            "Go": function() {
+              $( this).dialog('close');
+               Router.go('/'+key, '_blank');
+            },
+            Cancel: function() {
+              $( this ).dialog( "close" );
+            }
+          }
+        })      
+    },
 //change how poem lines are displayed
 'change .optionSelect':function(event){
     Session.set('breaksOption',$(event.currentTarget).val());

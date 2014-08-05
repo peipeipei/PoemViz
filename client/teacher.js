@@ -1,7 +1,8 @@
 
+
 Template.teacher.isReady = function(){
-  return checkIsReady();  
-    //return true;
+  //return checkIsReady();  
+    return true;
 }
 
 Template.teacher.events({
@@ -18,15 +19,14 @@ Template.teacher.events({
             sentObj: poemObjsArray[2],
         })
         var key = getRandomWord()
-        Shoutkeys.insert({
+        curShoutKeyID = Shoutkeys.insert({
             key:key,
             poem_id:newPoem
         });
-        
         var $div = $('<div>'); 
         $div.attr('title', 'Launch');
         url = window.location.host + '/' + key;
-        $div.html('Your exercise is active for one hour at <br>' + url + '<br>');
+        $div.html('Your exercise is at <br>' + url + '<br>');
         $div.dialog({
           resizable: false,
           height:250,
@@ -77,20 +77,3 @@ Template.teacher.events({
 getRandomWord = function(){
   return pgpWordList[Math.floor(Math.random()*pgpWordList.length)][0]
 }
-
-    //Meteor.startup(function () {
-//      if (Poems.find().count() == 0){
-//          Poems.insert({
-//            colorIndex: 0
-//          });
-//      }
-//      if (Colors.find().count() == 0){
-//        _.each(colors, function (c, i){
-//            Colors.insert({
-//                color:c,
-//                index:i
-//            });
-//            console.log(c);
-//        })
-//      }
-//  });

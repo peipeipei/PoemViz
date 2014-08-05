@@ -9,6 +9,8 @@ implemented).
 FOR USERS* (Include in final)
 Sorting the poem by all punctuation marks or all sentence punctuation only checks for this punctuation at the ends of words.
 
+Shoutkey (what's after the poemviz.meteor.com/ in the pop-up message after you create the poem) expires after an hour, but the poem will permantly remain at the unique url the shoutkey redirects to (what's after the poemviz.meteor.com/ in the url bar above the created poem).
+
 
 DESIGN ISSUES
 Allow poems to have a title and an author

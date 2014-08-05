@@ -79,7 +79,7 @@ Template.poem.events({
         colorSquare.data('color', colors[ccount]);
         colorSquare.css('background-color', colors[ccount]);
         var a = $('<div class="colorBlock">').append(colorSquare);
-        var b = a.append($('<span class="colorName" contenteditable=true >Color Label</span></div>'));
+        var b = a.append($('<span class="colorName" contenteditable=true >Editable Color Label</span></div>'));
         rightlightColors.append(b);
         if(ccount>=colors.length-1){
             $(event.target).css('display','none');

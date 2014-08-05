@@ -18,11 +18,11 @@ Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
 });
 
-var poemsHandle = Meteor.subscribe('poems');
-var layersHandle=Meteor.subscribe('layers');
-var selectionsHandle=Meteor.subscribe('selections');
-var stylesHandle=Meteor.subscribe('styles');
-var syllablesHandle=Meteor.subscribe('syllableMarkers');
+//var poemsHandle = Meteor.subscribe('poems');
+//var layersHandle=Meteor.subscribe('layers');
+//var selectionsHandle=Meteor.subscribe('selections');
+//var stylesHandle=Meteor.subscribe('styles');
+//var syllablesHandle=Meteor.subscribe('syllableMarkers');
 //var linesHandle=Meteor.subscribe('lineCounts');
 var shoutkeysHandle=Meteor.subscribe('shoutkeys');
 var colorIndicesHandle=Meteor.subscribe('colorIndices');
@@ -31,10 +31,13 @@ Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
 });
 
+//console.log = function() {}
+
 //makes sure that all your collections are ready before loading the page
 checkIsReady = function(){
     console.log('ready!');
-  return poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&shoutkeysHandle.ready()&&colorIndicesHandle.ready();
+    return true;
+ /* return  poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&shoutkeysHandle.ready()&&colorIndicesHandle.ready();*/
 }
 
 Template.poem.isReady=function(){
@@ -131,6 +134,8 @@ Deps.autorun(function () {
     ///////////////////////////
      Template.poem.rendered=function(){
          console.log("RENDER");
+         //expire shoutkey after an hour
+         handleid = Meteor.setTimeout(function() {Shoutkeys.remove(curShoutKeyID); console.log('woohoo!');}, 60000);
          displaySelections();
          syllableCounts();
          $('.layer').each(function(){
