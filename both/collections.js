@@ -30,6 +30,7 @@ Selections = new Meteor.Collection('selections')
     poem_id : string, id of poem that this selection is in
     style_id : string, id of style in the layer that the selection belongs to
     location : string, id of span that the selection applies to, e.g. "word5" or "line9"
+    layerNode_id: string, id of layer (in html) that colored it
 */
 
 Styles = new Meteor.Collection('styles')

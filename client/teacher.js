@@ -1,6 +1,8 @@
 
+
 Template.teacher.isReady = function(){
-  return checkIsReady();  
+  //return checkIsReady();  
+    return true;
 }
 
 Template.teacher.events({
@@ -15,17 +17,17 @@ Template.teacher.events({
             origObj: poemObjsArray[0],
             puncObj: poemObjsArray[1],
             sentObj: poemObjsArray[2],
+
+        })
+        var key = getRandomWord()
+        curShoutKeyID = Shoutkeys.insert({
+            key:key,
+            poem_id:newPoem
         });
-        var key = getRandomWord();
-        Shoutkeys.insert({
-            poem_id:newPoem,
-            key:key
-        });
-        
         var $div = $('<div>'); 
         $div.attr('title', 'Launch');
         url = window.location.host + '/' + key;
-        $div.html('Your exercise is active for one hour at <br>' + url + '<br>');
+        $div.html('Your exercise is at <br>' + url + '<br>');
         $div.dialog({
           resizable: false,
           height:250,
@@ -51,7 +53,8 @@ Template.teacher.events({
             name:'Sound',
             id:'color0',
             poem_id:newPoem,
-            type:'rhyme'
+            type:'rhyme',
+            opacity: 1,
         });
         // NEW STUFF
         Colors.insert({

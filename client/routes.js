@@ -4,7 +4,8 @@ Router.map(function () {
     path: '/poem/:id',
     template: 'poem',
     waitOn: function(){
-      return [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('selections', this.params.id), Meteor.subscribe('layers', this.params.id), Meteor.subscribe('styles', this.params.id), Meteor.subscribe('syllableMarkers', this.params.id)]
+      var subscriptions = [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('selections', this.params.id), Meteor.subscribe('layers', this.params.id), Meteor.subscribe('styles', this.params.id), Meteor.subscribe('syllableMarkers', this.params.id)]
+      return subscriptions;
     },
     data: function(){
       var poem_id = this.params.id
@@ -41,8 +42,7 @@ Router.map(function () {
         },
         data: function(){
             console.log(this);
-            console.log(Shoutkeys.findOne({key:this.params._word}));
-            
+            console.log(Shoutkeys.findOne({key:this.params._word})); 
             return {"shoutkey":Shoutkeys.findOne({key:this.params._word})};
         },
         action: function(){
@@ -60,5 +60,6 @@ Template.redirect.redirect = function(){
 }
 
 Template.redirect.isReady = function(){
-  return checkIsReady();
+  //return checkIsReady();
+    return true;
 }
