@@ -14,6 +14,7 @@ Template.poem.events({
     },
     //gives user new shoutkey for same poem (that preserves annotations)
     'click .newShoutKey': function(event){
+        //automatically remove existing shoutkey
         Meteor.clearTimeout(handleid);
         Shoutkeys.remove(shoutkeyID);
         var key = getRandomWord()

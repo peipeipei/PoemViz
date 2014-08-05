@@ -17,6 +17,16 @@ Template.poem.events({
             console.log(curL_id);
         }, 1000);
     },
+    'keyup .colorName':function(event){
+        var layerNodeID=$(event.currentTarget).parent('.layer').attr('id');
+        var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerNodeID})._id;
+        var curColor = $(event.currentTarget).css('background-color');
+        typewatch(function () {
+            var newName=$(event.currentTarget).text();
+            Layers.update(curL_id, {$set: {name: newName}});
+            console.log(curL_id);
+        }, 1000);
+    },
     //when user clicks a line and the line mode of highlighting or bolding is selected 
     'click .line':function(event){
         if(Session.get('selectedType')=='rhyme' && Session.get('highlightElement')=='line'){

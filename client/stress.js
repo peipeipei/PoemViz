@@ -73,7 +73,7 @@ Template.poem.events({
       'click .stressClear': function(event){
         var selStyle=Layers.findOne({id:Session.get('curLayer'), poem_id:Session.get('currentPoem')}).style;
         $('.letter').each(function(){
-           if ($(thing).css('vertical-align') == 'super'){
+           if ($(this).css('vertical-align') == 'super'){
                 $(this).css('vertical-align','baseline');
                  $(this).removeClass('stressStyle')
                  var idR = Selections.find({poem_id: Session.get('currentPoem'), style_id: selStyle, location: '#'+ $(this).attr('id')}).fetch();
