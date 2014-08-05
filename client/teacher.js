@@ -19,7 +19,7 @@ Template.teacher.events({
             sentObj: poemObjsArray[2],
         })
         var key = getRandomWord()
-        curShoutKeyID = Shoutkeys.insert({
+        Shoutkeys.insert({
             key:key,
             poem_id:newPoem
         });
@@ -75,5 +75,9 @@ Template.teacher.events({
 })
 
 getRandomWord = function(){
-  return pgpWordList[Math.floor(Math.random()*pgpWordList.length)][0]
+  var shoutAttempt = pgpWordList[Math.floor(Math.random()*pgpWordList.length)][0];
+  while (Shoutkeys.find({key: shoutAttempt}).fetch().length > 0){
+      shoutAttempt = pgpWordList[Math.floor(Math.random()*pgpWordList.length)][0];
+  }
+  return shoutAttempt; 
 }

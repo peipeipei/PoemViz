@@ -42,7 +42,7 @@ Router.map(function () {
         },
         data: function(){
             console.log(this);
-            console.log(Shoutkeys.findOne({key:this.params._word})); 
+            console.log(Shoutkeys.findOne({key:this.params._word}));
             return {"shoutkey":Shoutkeys.findOne({key:this.params._word})};
         },
         action: function(){
