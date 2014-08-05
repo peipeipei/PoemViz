@@ -1,3 +1,13 @@
+//five aethestically pleasing sets of colors to use (six colors in each)
+colorsSailboat =["rgba(255,131,98,1)","rgba(187,115,101,1)","rgba(222,173,161,1)","rgba(255,255,204,1)","rgba(60,70,99,1)","rgba(109,116,140,1)"];
+colorsRainbow = ['rgba(241,103,69,1)', 'rgba(255,198,93,1)','rgba(123,200,164,1)','rgba(76,195,217,1)','rgba(147,100,141,1)','rgba(190,190,190,1)'];
+colorsPastelOcean = ['rgba(190,214,97,1)','rgba(137,232,148,1)','rgba(120,213,227,1)','rgba(122,245,245,1)','rgba(52,221,221,1)','rgba(147,226,213,1)'];
+colorsSciFiDream = ['rgba(209,232,238,1)', 'rgba(246,231,245,1)', 'rgba(255,211,224,1)', 'rgba(254,250,246,1)', 'rgba(214,223,226,1)', 'rgba(185,202,143,1)'];
+colorsSorbet = ['rgba(222,84,139,1)','rgba(222,138,171,1)','rgba(222,197,207,1)','rgba(240,197,170,1)','rgba(218,222,209,1)','rgba(118,222,182,1)'];   
+    
+//and a random one to keep cycling through as long as users continue to add layers (the old default)
+colorsGeneral = ['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)'];
+
 //default colors for highlighting (sound, words layers)
 colors=['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)'];
 //default colors for bolding (bolding layers)
@@ -12,6 +22,8 @@ num  = "";
 firstID= "";
 lastID = ''; 
 doLast = '';
+//one hour
+EXPIRATION_TIME = 1000*60*60;
 
 //METEOR SETUP
 Handlebars.registerHelper("equals", function (a, b) {
@@ -172,8 +184,11 @@ Deps.autorun(function () {
     ///////////////////////////
      Template.poem.rendered=function(){
          console.log("RENDER");
+         shoutkeyKey = Shoutkeys.findOne({poem_id: Session.get('currentPoem')}).key;
+         shoutkeyID = Shoutkeys.findOne({poem_id: Session.get('currentPoem')})._id;
+         $('#shoutkey').text("This poem can also be found at: poemviz.meteor.com/"+shoutkeyKey);
          //expire shoutkey after an hour
-         handleid = Meteor.setTimeout(function() {Shoutkeys.remove(curShoutKeyID); console.log('woohoo!');}, 60000);
+         handleid = Meteor.setTimeout(function() {Shoutkeys.remove(shoutkeyID); console.log('woohoo!');}, EXPIRATION_TIME);
          displaySelections();
          syllableCounts();
          $('.layer').each(function(){
