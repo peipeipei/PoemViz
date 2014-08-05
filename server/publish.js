@@ -29,4 +29,7 @@ Meteor.publish('shoutkeys', function() {
 Meteor.publish('colorIndices', function() {
     return ColorIndices.find()
 });
+Meteor.publish('colors', function() {
+    return Colors.find()
+});
 

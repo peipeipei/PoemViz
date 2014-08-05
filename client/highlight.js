@@ -70,36 +70,53 @@ colorClick = function (thing){
     }
 };
 
-Template.poem.colorOptions = function () { 
-//        console.log("FALSKDFJSLKDFJS")
-        
-//        var poemId = Poems.findOne()._id
-//        var colorIndex = Poems.findOne().colorIndex;
+//Template.poem.colorOptions = function () { 
+//    
+//    // NEW STUFF        
+//        var poemID = Session.get('currentPoem');
+//        var colorIndex = ColorIndices.find({poem_id: poemID}).index;   
+////        return Colors.find({layer_id:})
+//        console.log("color options index: " + colorIndex);
 //        
-////        console.log("colorIndex",colorIndex)
 //        
-//        return Colors.find({index:{$lt:colorIndex}})
-        
-        
-        
-  };
+//  };
 
 //contains all the events that happen on the poem page
 Template.poem.events({
     //adds a highlight color to the available colors
     'click .addColor': function(event){
-        var colorSquare=$('<span class="colorSquare"></span>');
-        var rightlightColors=$($(event.target).parent()).find('.highlightColors');
-        var ccount=rightlightColors.find('.colorSquare').length;
-        colorSquare.data('color', colors[ccount]);
-        colorSquare.css('background-color', colors[ccount]);
-        var a = $('<div class="colorBlock">').append(colorSquare);
-        var b = a.append($('<span class="colorName" contenteditable=true >Color Label</span></div>'));
-        rightlightColors.append(b);
-        // rightlightColors.append(colorSquare);
-        if(ccount>=colors.length-1){
-            $(event.target).css('display','none');
-        }
+//        var colorSquare=$('<span class="colorSquare"></span>');
+//        var rightlightColors=$($(event.target).parent()).find('.highlightColors');
+//        var ccount=rightlightColors.find('.colorSquare').length;
+//        colorSquare.data('color', colors[ccount]);
+//        colorSquare.css('background-color', colors[ccount]);
+//        var a = $('<div class="colorBlock">').append(colorSquare);
+//        var b = a.append($('<span class="colorName" contenteditable=true >Color Label</span></div>'));
+//        rightlightColors.append(b);
+//        // rightlightColors.append(colorSquare);
+//        if(ccount>=colors.length-1){
+//            $(event.target).css('display','none');
+//        }
+        // NEW STUFF
+        var poemID = Session.get('currentPoem');
+        console.log("poem id: " + poemID);
+        var layerIDHTML = Session.get('curLayer');
+        console.log("layerID in html:" + layerIDHTML);
+        var layerID = Layers.findOne({id:layerIDHTML})._id;
+        console.log("layer id: " + layerID);
+        var colorIndex = ColorIndices.findOne({poem_id: poemID}).index;
+        console.log("Color Index: " + colorIndex);
+        Colors.insert({
+             poem_id:poemID,
+             layer_id: layerID,
+             color_value: colors[colorIndex], 
+             name: 'color label'
+        })
+        var newColorIndex = colorIndex + 1;
+        console.log("new color index: " + newColorIndex);
+        var colorIndexID = ColorIndices.findOne({poem_id: poemID})._id;
+        ColorIndices.update(colorIndexID, {$set: {index: newColorIndex}});
+        
     },
     //updates highlighting/bolding color when user clicks a square
     'click .colorSquare':function(event){

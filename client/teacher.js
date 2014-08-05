@@ -15,11 +15,11 @@ Template.teacher.events({
             origObj: poemObjsArray[0],
             puncObj: poemObjsArray[1],
             sentObj: poemObjsArray[2],
-        })
-        var key = getRandomWord()
+        });
+        var key = getRandomWord();
         Shoutkeys.insert({
-            key:key,
-            poem_id:newPoem
+            poem_id:newPoem,
+            key:key
         });
         
         var $div = $('<div>'); 
@@ -47,12 +47,31 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'typing'
         });
-        Layers.insert({
+        var layer1id = Layers.insert({
             name:'Sound',
             id:'color0',
             poem_id:newPoem,
             type:'rhyme'
         });
+        // NEW STUFF
+        Colors.insert({
+             poem_id:newPoem,
+             layer_id: layer1id,
+             color_value: colors[0], 
+             name: 'color label'
+        })
+        Colors.insert({
+             poem_id:newPoem,
+             layer_id: layer1id,
+             color_value: colors[1], 
+             name: 'color label'
+        })
+        // NOTE: Index only starts at two because two colors have already been assigned to the 'Sound' layer
+        ColorIndices.insert({
+            poem_id:newPoem,
+            index: 2
+        });
+        // END NEW STUFF
         Layers.insert({
             name:'Syllables',
             id:'syllable0',
@@ -75,20 +94,3 @@ Template.teacher.events({
 getRandomWord = function(){
   return pgpWordList[Math.floor(Math.random()*pgpWordList.length)][0]
 }
-
-    //Meteor.startup(function () {
-//      if (Poems.find().count() == 0){
-//          Poems.insert({
-//            colorIndex: 0
-//          });
-//      }
-//      if (Colors.find().count() == 0){
-//        _.each(colors, function (c, i){
-//            Colors.insert({
-//                color:c,
-//                index:i
-//            });
-//            console.log(c);
-//        })
-//      }
-//  });
