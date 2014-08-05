@@ -71,15 +71,18 @@ getSyllable = function(location){
 Template.poem.events({
     //delete all stress annotates
       'click .stressClear': function(event){
-        var selStyle=Layers.findOne({id:Session.get('curLayer'), poem_id:Session.get('currentPoem')}).style;
-        $('.letter').each(function(){
-           if ($(this).css('vertical-align') == 'super'){
-                $(this).css('vertical-align','baseline');
-                 $(this).removeClass('stressStyle')
-                 var idR = Selections.find({poem_id: Session.get('currentPoem'), style_id: selStyle, location: '#'+ $(this).attr('id')}).fetch();
-                 var idRemove = idR[0]._id;
-                 Selections.remove(idRemove);
-            }
-          });
+        var confirmDelete=confirm("Are you sure you want to remove all stress marks?");
+        if (confirmDelete == true){
+            var selStyle=Layers.findOne({id:Session.get('curLayer'), poem_id:Session.get('currentPoem')}).style;
+            $('.letter').each(function(){
+               if ($(this).css('vertical-align') == 'super'){
+                    $(this).css('vertical-align','baseline');
+                     $(this).removeClass('stressStyle')
+                     var idR = Selections.find({poem_id: Session.get('currentPoem'), style_id: selStyle, location: '#'+ $(this).attr('id')}).fetch();
+                     var idRemove = idR[0]._id;
+                     Selections.remove(idRemove);
+                }
+              });
+        }
       },
 });
