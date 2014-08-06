@@ -18,13 +18,23 @@ Template.poem.events({
         }, 1000);
     },
     'keyup .colorName':function(event){
-        var layerNodeID=$(event.currentTarget).parent('.layer').attr('id');
+        var layerNodeID=$(event.currentTarget).closest('.layer').attr('id');
         var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerNodeID})._id;
-        var curColor = $(event.currentTarget).css('background-color');
+        console.log(curL_id);
+        var colorsquare = $(event.currentTarget).prev('.colorSquare');
+        console.log(colorsquare);
+        var curColor = $(colorsquare).css("backgroundColor").trim();
+        //curColor is rgb??
+        var substring = curColor.substr(4);
+        substring = substring.slice(0, -1);
+        var curRGBA = 'rgba('+substring+', 1)';
+        curRGBA = curRGBA.split(' ').join('');
+        console.log(curRGBA);
+        var colorID = Colors.findOne({layer_id: curL_id, color_value: curRGBA})._id;
+        console.log(colorID);
         typewatch(function () {
             var newName=$(event.currentTarget).text();
-            Layers.update(curL_id, {$set: {name: newName}});
-            console.log(curL_id);
+            Colors.update(colorID, {$set: {name: newName}});
         }, 1000);
     },
     //when user clicks a line and the line mode of highlighting or bolding is selected 
