@@ -1,6 +1,8 @@
 //choose the color you want to highlight or bold with
 chooseColor = function (thing){
+    console.log("thing: ");
     console.log(thing);
+    console.log("closest layer: ");
     console.log($(thing).closest('.layer'));
     var layerName = $(thing).closest('.layer').attr('id');
      Session.set('curLayer', layerName);
@@ -68,7 +70,7 @@ addColor = function(){
              poem_id:poemID,
              layer_id: layerID,
              color_value: colors[colorIndex], 
-             name: 'color label'
+             name: 'Editable Color Label'
         })
         var newColorIndex = colorIndex + 1;
         var colorIndexID = ColorIndices.findOne({poem_id: poemID})._id;
