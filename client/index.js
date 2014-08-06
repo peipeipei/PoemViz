@@ -9,7 +9,7 @@ colorsSorbet = ['rgba(222,84,139,1)','rgba(222,138,171,1)','rgba(222,197,207,1)'
 colorsGeneral = ['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)'];
 
 //default colors for highlighting (sound, words layers)
-colors=['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)'];
+colors=['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)', "rgba(255,131,98,1)","rgba(187,115,101,1)","rgba(222,173,161,1)","rgba(255,255,204,1)","rgba(60,70,99,1)","rgba(109,116,140,1)", 'rgba(241,103,69,1)', 'rgba(255,198,93,1)','rgba(123,200,164,1)','rgba(76,195,217,1)','rgba(147,100,141,1)','rgba(190,190,190,1)', 'rgba(190,214,97,1)','rgba(137,232,148,1)','rgba(120,213,227,1)','rgba(122,245,245,1)','rgba(52,221,221,1)','rgba(147,226,213,1)'];
 //default colors for bolding (bolding layers)
 darkColors=['rgba(0,0,0,1)','rgba(0,102,51,1)','rgba(0,0,153,1)','rgba(85,0,102,1)','rgba(102,0,34,1)'];
 //defaults
@@ -161,10 +161,11 @@ typewatch = (function(){
 
 // Cool meteor thing that runs automatically whenever a variable it gets is reset (in this case, "curLayer")
 Deps.autorun(function () {
-    console.log("testing");
     var clickedLayerID = Session.get('curLayer');
-    console.log(clickedLayerID);
+    console.log('clickedLayerID: '+clickedLayerID);
     var clickedLayer = $('#' + clickedLayerID);
+    console.log('clickedLayer: ')
+    console.log(clickedLayer);
     // differentiates between the page loading initially and the layer being clicked (either from physically clicking it or from autoclicking a new layer)
     var layerWasClicked = (clickedLayer.position() != undefined);
     //for each layer, make the one the user has most recently created or selected light blue
@@ -183,9 +184,7 @@ Deps.autorun(function () {
         var dropdown = $(clickedLayer).find('.boldSelect:first');
         Session.set('boldElement', $(dropdown).val());
         console.log("color squares");
-        var colorSquares=$(clickedLayer).find('.colorSquare');
-        console.log(colorSquares);
-        console.log(colorSquares[0]);
+        var colorSquares = $(clickedLayer).find('.colorSquare');
         var noneColored=true;
         //set default color if necessary (on the re-selection of layer)
         colorSquares.each(function(){
@@ -194,6 +193,9 @@ Deps.autorun(function () {
             }
         })
         if (noneColored){
+            console.log("noneColored");
+            console.log(colorSquares);
+            console.log(colorSquares[0]);
           chooseColor(colorSquares[0]);  
         }
     }
@@ -202,17 +204,6 @@ Deps.autorun(function () {
         var dropdown = $(clickedLayer).find('.rhymeSelect:first');
         Session.set('highlightElement', $(dropdown).val());
         console.log("color squares");
-        var colorSquares=$(clickedLayer).find('.colorSquare');
-        console.log(colorSquares);
-        console.log(colorSquares[0]);
-        var noneColored=true;
-        //set default color if necessary (on the re-selection of layer)
-        colorSquares.each(function(){
-          console.log($(this).hasClass('selectedColorSquare'));
-           if($(this).hasClass('selectedColorSquare')){
-                noneColored=false;
-            } 
-        })
         
         if (layerWasClicked){
             var layerID = Layers.findOne({id:clickedLayerID})._id;
@@ -220,14 +211,51 @@ Deps.autorun(function () {
             if (Colors.find({layer_id:layerID}).fetch().length === 0){
                 addColor();
                 addColor();
+            }  
+            var clickedLayerIDLong = Layers.findOne({id:clickedLayerID})._id
+            var newColorSquares = Colors.find({layer_id:clickedLayerIDLong}).fetch();
+            var newNoneColored = true;
+            var defaultSelect;
+            for (var i = 0; i < newColorSquares.length; i++){
+                console.log("new color square");
+                console.log(newColorSquares[i]);
+                var colorSquareID = newColorSquares[i]._id;
+                console.log(colorSquareID);
+                var colorSquareSpan = $('#' +colorSquareID);
+                if (i == 0) {
+                    defaultSelect = colorSquareSpan;
+                }
+                console.log(colorSquareSpan);
+                if(colorSquareSpan.hasClass('selectedColorSquare')){
+                    newNoneColored=false;
+                }
             }
-        
-        // if a layer is selected and no color is selected, autoselect the first color
+            console.log("new none colored");
+            console.log(newNoneColored);
+            console.log("default select");
+            console.log(defaultSelect);
             
-        }
-        if (noneColored){
-                console.log("noneColored");
-              chooseColor(colorSquares[0]);  
+            if (newNoneColored){
+                chooseColor(defaultSelect);   
+            }
+            
+//            var colorSquares=$(clickedLayer).find('.colorSquare');
+//            var noneColored=true;
+//            //set default color if necessary (on the re-selection of layer)
+//            colorSquares.each(function(){
+//                console.log($(this).hasClass('selectedColorSquare'));
+//                if($(this).hasClass('selectedColorSquare')){
+//                    noneColored=false;
+//                } 
+//            })
+        
+//            if (noneColored){
+//                console.log("noneColored");
+//                console.log(colorSquares);
+//                console.log(colorSquares[0]);
+//                
+//                chooseColor(colorSquares[0]);  
+//            }
         }
     }
     

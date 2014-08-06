@@ -118,7 +118,7 @@
                             <div class='highlightColors'>
                             {{#each this.colorOptions}}
                                 <div class="colorBlock">
-                                    <span class = 'colorSquare'  style = 'background-color: {{this.color_value}}'></span>
+                                    <span class = 'colorSquare' id = {{this._id}} style = 'background-color: {{this.color_value}}'></span>
                                     <span class = 'colorName' contenteditable=true>{{this.name}}</span>
                                 </div>
                             {{/each}}

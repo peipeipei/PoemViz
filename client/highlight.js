@@ -1,11 +1,19 @@
 //choose the color you want to highlight or bold with
 chooseColor = function (thing){
-    console.log("thing: ");
-    console.log(thing);
-    console.log("closest layer: ");
-    console.log($(thing).closest('.layer'));
+    if (thing == undefined){
+        console.log('chooseColor thing is undefined')
+        return
+    }
+    //console.log("thing: ");
+    //console.log(thing);
+    //console.log("closest layer: ");
+    //console.log($(thing).closest('.layer'));
     var layerName = $(thing).closest('.layer').attr('id');
-     Session.set('curLayer', layerName);
+    console.log("layer name: ");
+    console.log(layerName);
+    
+//     Session.set('curLayer', layerName);
+    
    if (layerName.substr(0,5) == 'color'){
        Session.set('selectedType', 'rhyme');
    }
@@ -24,7 +32,7 @@ chooseColor = function (thing){
         console.log(curStyle);
         Session.set("curStyle", curStyle);
     }
-    if (Session.get('selectedType')=='bold'){
+    else if (Session.get('selectedType')=='bold'){
         Session.set('boldColor',$(thing).data('color'));
         $('.colorSquare').each(function(){
             $(this).removeClass('selectedColorSquare');
@@ -55,6 +63,7 @@ colorClick = function (thing){
         Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')});
         console.log("flag is true");
     }else{
+        console.log(Selections.find().fetch());
        var selID = Selections.findOne({poem_id: Session.get('currentPoem'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')})._id;
         Selections.remove(selID);
     }
