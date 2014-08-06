@@ -64,6 +64,65 @@ Template.poem.layer=function(){
     var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();
     // for any layers with color options, display the color choices
     _.each(poemLayers, function(i){
+        console.log('layer is changed XXXXXXX')
+        var opacity = i.opacity;
+                switch (opacity){
+                         case '1': 
+                         i.isChecked100 = "checked"
+        i.isChecked60 = ""
+        i.isChecked20 = ""
+        i.isChecked0 = ""
+                         break;
+                         
+                         case 1: 
+                         i.isChecked100 = "checked"
+        i.isChecked60 = ""
+        i.isChecked20 = ""
+        i.isChecked0 = ""
+                         break;
+                         
+                         case '.6': 
+                         i.isChecked100 = ""
+        i.isChecked60 = "checked"
+        i.isChecked20 = ""
+        i.isChecked0 = ""
+                         break;
+                         
+                         case .6: 
+                         i.isChecked100 = ""
+        i.isChecked60 = "checked"
+        i.isChecked20 = ""
+        i.isChecked0 = ""
+                         break;
+                         
+                         case '.2': 
+                         i.isChecked100 = ""
+        i.isChecked60 = ""
+        i.isChecked20 = "checked"
+        i.isChecked0 = ""
+                         break;
+                         
+                         case .2: 
+                          i.isChecked100 = ""
+        i.isChecked60 = ""
+        i.isChecked20 = "checked"
+        i.isChecked0 = ""
+                         break;
+
+                         case '0': 
+                          i.isChecked100 = ""
+        i.isChecked60 = ""
+        i.isChecked20 = ""
+        i.isChecked0 = "checked"
+                         break;
+                         
+                         case 0: 
+                         i.isChecked100 = ""
+        i.isChecked60 = ""
+        i.isChecked20 = ""
+        i.isChecked0 = "checked"
+                         break;
+                 }
         if (i.type == "rhyme") {
             var layerID = i._id;
             var layerColors = Colors.find({layer_id:layerID}).fetch();
@@ -197,6 +256,7 @@ Deps.autorun(function () {
          handleid = Meteor.setTimeout(function() {Shoutkeys.remove(shoutkeyID); console.log('woohoo!');}, EXPIRATION_TIME);
          displaySelections();
          syllableCounts();
+         /*
          $('.layer').each(function(){
              if ($(this).attr('data-name') == 'rhyme'){
                  var name = $(this).attr('id');
@@ -241,6 +301,7 @@ Deps.autorun(function () {
                 $('input:radio[name='+name+']:nth('+num+')').attr('checked',true);
          }
          });
+         */
      }
      
      //what to do upon rendering of poem
@@ -414,48 +475,16 @@ Deps.autorun(function () {
         //handles additions/changes from Layers Collection
         var layersCursor = Layers.find({poem_id:Session.get('currentPoem')});
         layersCursor.observe({
-        added: function(layer, beforeIndex){
+       /* added: function(layer, beforeIndex){
             console.log(layer.type);
             if (layer.type == 'rhyme'){
             var layerID = (layer.id).trim();
             //automatically select default opacity; if no slight timeout, doesn't show
-            var opacity = Layers.findOne({poem_id: Session.get('currentPoem'), id: name}).opacity;
-                switch (opacity){
-                         case '1': 
-                         var num = 0;
-                         break;
-                         
-                         case 1: 
-                         var num = 0;
-                         break;
-                         
-                         case '.6': 
-                         var num = 1;
-                         break;
-                         
-                         case .6: 
-                         var num = 1;
-                         break;
-                         
-                         case '.2': 
-                         var num = 2;
-                         break;
-                         
-                         case .2: 
-                         var num = 2;
-                         break;
-
-                         case '0': 
-                         var num = 3;
-                         break;
-                         
-                         case 0: 
-                         var num = 3;
-                         break;
-                 }
+            
+            
             setTimeout(function() {$("input:radio[name="+layerID+"]:nth("+num+")").attr('checked',true)}, 500);
             }
-        },           
+        }, */          
         //when opacity of layer is changed, all highlighting selections made by that layer must be changed
         changed: function (newLayer, oldLayer) {
             op = newLayer.opacity;
