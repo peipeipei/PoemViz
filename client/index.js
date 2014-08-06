@@ -419,8 +419,41 @@ Deps.autorun(function () {
             if (layer.type == 'rhyme'){
             var layerID = (layer.id).trim();
             //automatically select default opacity; if no slight timeout, doesn't show
-            //WHY ARE WE ADDING???
-            setTimeout(function() {$("input:radio[name="+layerID+"]:nth(0)").attr('checked',true)}, 500);
+            var opacity = Layers.findOne({poem_id: Session.get('currentPoem'), id: name}).opacity;
+                switch (opacity){
+                         case '1': 
+                         var num = 0;
+                         break;
+                         
+                         case 1: 
+                         var num = 0;
+                         break;
+                         
+                         case '.6': 
+                         var num = 1;
+                         break;
+                         
+                         case .6: 
+                         var num = 1;
+                         break;
+                         
+                         case '.2': 
+                         var num = 2;
+                         break;
+                         
+                         case .2: 
+                         var num = 2;
+                         break;
+
+                         case '0': 
+                         var num = 3;
+                         break;
+                         
+                         case 0: 
+                         var num = 3;
+                         break;
+                 }
+            setTimeout(function() {$("input:radio[name="+layerID+"]:nth("+num+")").attr('checked',true)}, 500);
             }
         },           
         //when opacity of layer is changed, all highlighting selections made by that layer must be changed
