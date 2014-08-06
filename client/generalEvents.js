@@ -52,6 +52,7 @@ Template.poem.events({
         var visible=$(event.currentTarget).is(':checked');
         if($(event.currentTarget).data('layer') =='syllable'){
             if(visible){
+                Session.set('syllablesVisible', 'true');
                 $('.syllable').css('min-width', '65px');
                 $('.letter, .space').each(function(){
                     console.log('hi');
@@ -65,6 +66,7 @@ Template.poem.events({
                 $('#syllableCount').css('color','blue')
             }
             else{
+                Session.set('syllablesVisible', 'false');
                 $('#syllableCount').css('color','white')
                 $('.syllable').css('min-width', '0px');
                 $('.letter, .space').each(function(){
@@ -75,6 +77,7 @@ Template.poem.events({
         }
         if($(event.currentTarget).data('layer') =='stressing'){
             if(visible){
+                Session.set('stressVisible', 'true');
                 $('.letter, .word').each(function(){
                 //must make sure we give this data attribute to other users
                 if ($(this).hasClass('stressStyle') === true){
@@ -83,6 +86,7 @@ Template.poem.events({
                 });
             }
             else{
+                Session.set('stressVisible', 'false');
                 $('.letter, .word').each(function(){
                     $(this).css('vertical-align', 'baseline');
                 });

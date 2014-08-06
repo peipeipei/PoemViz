@@ -146,16 +146,13 @@ clickSyllable = function(thing) {
     if ($(thing).css('border-left-color') == "rgb(255, 0, 0)"){
         $(thing).css('border-left', 'none');
         var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: Session.get('currentPoem')}).fetch(); 
-        SyllableMarkers.remove(syl[0]._id);
-        $(thing).removeClass('syllableStyle');
-                               
+        SyllableMarkers.remove(syl[0]._id);                             
     }
     else{
         //don't allow user to place marks 
         if ($(thing).prev().hasClass('letter')||$(thing).prev().prev().hasClass('letter')){
         $(thing).css('border-left', '3px solid red');
         SyllableMarkers.insert({location: $(thing).attr("id"), poem_id: Session.get('currentPoem')});}
-        $(thing).addClass('syllableStyle');
     }
 
 }  

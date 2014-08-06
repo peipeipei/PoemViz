@@ -1,15 +1,12 @@
 //five aethestically pleasing sets of colors to use (six colors in each)
-colorsSailboat =["rgba(255,131,98,1)","rgba(187,115,101,1)","rgba(222,173,161,1)","rgba(255,255,204,1)","rgba(60,70,99,1)","rgba(109,116,140,1)"];
+colorsSailboat =["rgba(255,175,110,1)","rgba(187,115,101,1)","rgba(222,173,161,1)","rgba(255,255,204,1)","rgba(60,70,99,1)","rgba(109,116,140,1)"];
 colorsRainbow = ['rgba(241,103,69,1)', 'rgba(255,198,93,1)','rgba(123,200,164,1)','rgba(76,195,217,1)','rgba(147,100,141,1)','rgba(190,190,190,1)'];
 colorsPastelOcean = ['rgba(190,214,97,1)','rgba(137,232,148,1)','rgba(120,213,227,1)','rgba(122,245,245,1)','rgba(52,221,221,1)','rgba(147,226,213,1)'];
 colorsSciFiDream = ['rgba(209,232,238,1)', 'rgba(246,231,245,1)', 'rgba(255,211,224,1)', 'rgba(254,250,246,1)', 'rgba(214,223,226,1)', 'rgba(185,202,143,1)'];
-colorsSorbet = ['rgba(222,84,139,1)','rgba(222,138,171,1)','rgba(222,197,207,1)','rgba(240,197,170,1)','rgba(218,222,209,1)','rgba(118,222,182,1)'];   
-    
+colorsSorbet = ['rgba(222,84,139,1)','rgba(222,138,171,1)','rgba(222,197,207,1)','rgba(240,197,170,1)','rgba(218,222,209,1)','rgba(118,222,182,1)'];      
 //and a random one to keep cycling through as long as users continue to add layers (the old default)
 colorsGeneral = ['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)'];
 
-//default colors for highlighting (sound, words layers)
-colors=['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)'];
 //default colors for bolding (bolding layers)
 darkColors=['rgba(0,0,0,1)','rgba(0,102,51,1)','rgba(0,0,153,1)','rgba(85,0,102,1)','rgba(102,0,34,1)'];
 //defaults
@@ -45,6 +42,7 @@ Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
 });
 
+//when uncommented, nullifies all console.log's by redefining the function itself
 //console.log = function() {}
 
 //makes sure that all your collections are ready before loading the page
@@ -60,97 +58,67 @@ Template.poem.isReady=function(){
 }
 
 //returns all the layers in the database
+//called whenever layer is changed
 Template.poem.layer=function(){
     // array of all the current layers the poem has
     var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();
     // for any layers with color options, display the color choices
+    // i is a layer
     _.each(poemLayers, function(i){
         var opacity = i.opacity;
         switch (opacity){
-                         case '1': 
-                         i.isChecked100 = "checked"
-                        i.isChecked60 = ""
-                        i.isChecked20 = ""
-                        i.isChecked0 = ""
-                         break;
-                         
-                         case 1: 
-                         i.isChecked100 = "checked"
-        i.isChecked60 = ""
-        i.isChecked20 = ""
-        i.isChecked0 = ""
-                         break;
-                         
-                         case '.6': 
-                         i.isChecked100 = ""
-        i.isChecked60 = "checked"
-        i.isChecked20 = ""
-        i.isChecked0 = ""
-                         break;
-                         
-                         case .6: 
-                         i.isChecked100 = ""
-        i.isChecked60 = "checked"
-        i.isChecked20 = ""
-        i.isChecked0 = ""
-                         break;
-                         
-                         case '.2': 
-                         i.isChecked100 = ""
-        i.isChecked60 = ""
-        i.isChecked20 = "checked"
-        i.isChecked0 = ""
-                         break;
-                         
-                         case .2: 
-                          i.isChecked100 = ""
-        i.isChecked60 = ""
-        i.isChecked20 = "checked"
-        i.isChecked0 = ""
-                         break;
-
-                         case '0': 
-                          i.isChecked100 = ""
-        i.isChecked60 = ""
-        i.isChecked20 = ""
-        i.isChecked0 = "checked"
-                         break;
-                         
-                         case 0: 
-                         i.isChecked100 = ""
-        i.isChecked60 = ""
-        i.isChecked20 = ""
-        i.isChecked0 = "checked"
-                         break;
-                 }
+                case '1': i.isChecked100 = "checked" 
+                i.isChecked60 = ""
+                i.isChecked20 = ""
+                i.isChecked0 = ""
+                break;
+                case 1: i.isChecked100 = "checked" 
+                i.isChecked60 = ""
+                i.isChecked20 = ""
+                i.isChecked0 = ""
+                break;
+                case '.6': i.isChecked100 = "" 
+                i.isChecked60 = "checked"
+                i.isChecked20 = ""
+                i.isChecked0 = ""
+                break;
+                case .6: i.isChecked100 = "" 
+                i.isChecked60 = "checked"
+                i.isChecked20 = ""
+                i.isChecked0 = ""
+                break;
+                case '.2': i.isChecked100 = "" 
+                i.isChecked60 = ""
+                i.isChecked20 = "checked"
+                i.isChecked0 = ""
+                break;
+                case .2: i.isChecked100 = "" 
+                i.isChecked60 = ""
+                i.isChecked20 = "checked"
+                i.isChecked0 = ""
+                break;
+                case '0': i.isChecked100 = "" 
+                i.isChecked60 = ""
+                i.isChecked20 = ""
+                i.isChecked0 = "checked"
+                break;
+                case 0: i.isChecked100 = "" 
+                i.isChecked60 = ""
+                i.isChecked20 = ""
+                i.isChecked0 = "checked"
+                break;       
+          }
         if (i.type == "rhyme") {
             var layerID = i._id;
             var layerColors = Colors.find({layer_id:layerID}).fetch();
-            /*
-            var visibleColors = []
-            for (var j = 0; j < layerColors.length; j++){
-                visibleColors.push({"color": layerColors[j].color_value , "colorName": layerColors[j].name});  
-                
-            }
-            
-            i['colorOptions'] = visibleColors;
-            */
             i['colorOptions'] = layerColors
             
         }
-//        else if (i.type == "bold"){
-//            var layerID = i._id;
-//            var layerColors = Colors.find({layer_id:layerID}).fetch();
-//            var visibleColors = []
-//            for (var j = 0; j < layerColors.length; j++){
-//                visibleColors.push({"color": layerColors[j].color_value , "colorName": "new name"});  
-//            }
-//            i['colorOptions'] = visibleColors;
-//        }
     })
     return poemLayers;
 }
 
+//used to delay updates
 typewatch = (function(){
    var timer = 0;
    return function(callback, ms){
@@ -159,7 +127,7 @@ typewatch = (function(){
    }  
  })();
 
-// Cool meteor thing that runs automatically whenever a variable it gets is reset (in this case, "curLayer")
+// Runs automatically whenever a variable that it gets is reset (in this case, "curLayer")
 Deps.autorun(function () {
     console.log("testing");
     var clickedLayerID = Session.get('curLayer');
@@ -206,8 +174,7 @@ Deps.autorun(function () {
            if($(this).hasClass('selectedColorSquare')){
                 noneColored=false;
             } 
-        })
-        
+        })  
         if (layerWasClicked){
             console.log('doing well');
             var layerID = Layers.findOne({id:clickedLayerID})._id;
@@ -257,52 +224,6 @@ Deps.autorun(function () {
          handleid = Meteor.setTimeout(function() {Shoutkeys.remove(shoutkeyID); console.log('woohoo!');}, EXPIRATION_TIME);
          displaySelections();
          syllableCounts();
-         /*
-         $('.layer').each(function(){
-             if ($(this).attr('data-name') == 'rhyme'){
-                 var name = $(this).attr('id');
-                 //set opacity as left before refresh
-                 var opacity = Layers.findOne({poem_id: Session.get('currentPoem'), id: name}).opacity;
-                 //sometimes string, sometimes number
-                 console.log(opacity);
-                 switch (opacity){
-                         case '1': 
-                         var num = 0;
-                         break;
-                         
-                         case 1: 
-                         var num = 0;
-                         break;
-                         
-                         case '.6': 
-                         var num = 1;
-                         break;
-                         
-                         case .6: 
-                         var num = 1;
-                         break;
-                         
-                         case '.2': 
-                         var num = 2;
-                         break;
-                         
-                         case .2: 
-                         var num = 2;
-                         break;
-
-                         case '0': 
-                         var num = 3;
-                         break;
-                         
-                         case 0: 
-                         var num = 3;
-                         break;
-                 }
-                 console.log("num"+num);
-                $('input:radio[name='+name+']:nth('+num+')').attr('checked',true);
-         }
-         });
-         */
      }
      
      //what to do upon rendering of poem
@@ -311,6 +232,8 @@ Deps.autorun(function () {
         Session.set('breaksOption','origOption');
         Session.set('highlightElement','line');
         Session.set('boldElement','boldLine');
+        Session.set('syllablesVisible','true');
+        Session.set('stressVisible', 'true');
         var selectionsCursor = Selections.find({poem_id:Session.get('currentPoem')});
         selectionsCursor.observe({
           //when something is added to the Selections Collection
@@ -364,7 +287,9 @@ Deps.autorun(function () {
             //if selection is from stressing style/layer
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
                 location = location.substr(1);
+              if (Session.get('stressVisible')=="true"){
               $('.'+location).css('vertical-align','super');
+              }
               $('.'+location).addClass('stressStyle');
             }
             }
@@ -435,10 +360,13 @@ Deps.autorun(function () {
             added: function (selection, beforeIndex) {
             var location = selection.location;
             console.log($('#char138'));
+            if (Session.get('syllablesVisible')=="true"){
             $("."+location).css(
             {
                "border-left": "3px solid red"
             });
+            }
+            $("."+location).addClass('syllableStyle');
             console.log($('#'+location));
              //or unknown line
             var lineSpan = $('#'+location).closest('.line');
@@ -447,7 +375,7 @@ Deps.autorun(function () {
             var sylCount=0;
             $(lineSpan).find('.letter').each(function(){
                 console.log($(this).css("border-left"));
-            if ($(this).css("border-left-color")==="rgb(255, 0, 0)"){
+            if ($(this).hasClass("syllableStyle")){
                 sylCount++; 
             }
             })
@@ -459,6 +387,7 @@ Deps.autorun(function () {
             {
                "border-left": "none"
             });
+            $("."+location).removeClass('syllableStyle');
                 //or unknown line
             var lineSpan = $('#'+location).closest('.line');
             var countSpan = $(lineSpan).find('.lineCount');
@@ -466,7 +395,7 @@ Deps.autorun(function () {
             var sylCount=0;
             $(lineSpan).find('.letter').each(function(){
                 console.log($(this).css("border-left"));
-            if  ($(this).css("border-left-color")==="rgb(255, 0, 0)"){
+            if  ($(this).hasClass("syllableStyle")){
                 sylCount++; 
             }
             })
@@ -475,23 +404,13 @@ Deps.autorun(function () {
           });
         //handles additions/changes from Layers Collection
         var layersCursor = Layers.find({poem_id:Session.get('currentPoem')});
-        layersCursor.observe({
-       /* added: function(layer, beforeIndex){
-            console.log(layer.type);
-            if (layer.type == 'rhyme'){
-            var layerID = (layer.id).trim();
-            //automatically select default opacity; if no slight timeout, doesn't show
-            
-            
-            setTimeout(function() {$("input:radio[name="+layerID+"]:nth("+num+")").attr('checked',true)}, 500);
-            }
-        }, */          
+        layersCursor.observe({         
         //when opacity of layer is changed, all highlighting selections made by that layer must be changed
         changed: function (newLayer, oldLayer) {
             op = newLayer.opacity;
             console.log("layer changed");
             if ((op !== null)&&(typeof op !== "undefined")) {
-              var allSelections = Selections.find({poem_id: Session.get('currentPoem'), layerNode_id: Session.get('curLayer')}).fetch();  
+              var allSelections = Selections.find({poem_id: Session.get('currentPoem'), layerNode_id: newLayer.id}).fetch();  
                 _.each(allSelections, function(sel){
                     var thisID = sel.location;
                     console.log(thisID);
