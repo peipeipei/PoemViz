@@ -67,11 +67,17 @@ Template.poem.layer=function(){
         if (i.type == "rhyme") {
             var layerID = i._id;
             var layerColors = Colors.find({layer_id:layerID}).fetch();
+            /*
             var visibleColors = []
             for (var j = 0; j < layerColors.length; j++){
-                visibleColors.push({"color": layerColors[j].color_value , "colorName": "new name"});  
+                visibleColors.push({"color": layerColors[j].color_value , "colorName": layerColors[j].name});  
+                
             }
+            
             i['colorOptions'] = visibleColors;
+            */
+            i['colorOptions'] = layerColors
+            
         }
 //        else if (i.type == "bold"){
 //            var layerID = i._id;
