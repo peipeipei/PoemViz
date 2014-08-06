@@ -319,7 +319,7 @@ Deps.autorun(function () {
                 //must go through all selections that may have colored line/word/character to check and
                 //see if after one background-color is turned off, there is another (from another layer)
                 //still coloring that line/word/character
-                var substring = "transparent";
+                curRGBA = "transparent";
                 var allSelections = Selections.find({poem_id: Session.get('currentPoem'), location: location}).fetch();
                 _.each(allSelections, function(sel){
                   var piece = sel.style_id;  
@@ -331,13 +331,13 @@ Deps.autorun(function () {
                          rgb = otherStyle.background_color;
                          var substring = rgb.substr(4);
                          substring = substring.slice(0, -1);
-                         curRGBA = 'rgba('+substring+', ';
+                         curRGBA = 'rgba('+substring+', '+op+')';
                         }
                    }
                 });
                $("."+location).css(
                 {
-                    "background-color": curRGBA+op+")"
+                    "background-color": curRGBA
                 }
                );
             }
