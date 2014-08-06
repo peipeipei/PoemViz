@@ -55,24 +55,26 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'rhyme',
             opacity: 1,
+            layerArray: colorsSailboat,
         });
         // starts the "sound" layer with two default colors
         Colors.insert({
              poem_id:newPoem,
              layer_id: layer1id,
-             color_value: colors[0], 
+             color_value: colorsSailboat[0], 
              name: 'Editable Color Label'
         })
         Colors.insert({
              poem_id:newPoem,
              layer_id: layer1id,
-             color_value: colors[1], 
+             color_value: colorsSailboat[1], 
              name: 'Editable Color Label'
         })
         // NOTE: Index only starts at two because two colors have already been assigned to the 'Sound' layer
         ColorIndices.insert({
             poem_id:newPoem,
-            index: 2
+            index: 2,
+            layer: layer1id
         });
         Layers.insert({
             name:'Syllables',

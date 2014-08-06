@@ -53,6 +53,7 @@ Layers = new Meteor.Collection('layers');
     name : string, user-provided description of the layer, e.g. "Rhyming scheme"
     type: whether it is used for selections, markers, bold, or typing
     opacity: opacity of background color (OPTIONAL)
+    layerArray: the array of colors it is associated with
 */
 
 Colors = new Meteor.Collection('colors');
@@ -77,4 +78,5 @@ ColorIndices = new Meteor.Collection('indices');
     _id: identifier
     poem_id: string, id of the corresponding Poems
     index: number, increasing when you add more colors to the palette
+    layer: real id of layer with array that is being indexed
 */
