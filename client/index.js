@@ -73,15 +73,15 @@ Template.poem.layer=function(){
             }
             i['colorOptions'] = visibleColors;
         }
-        else if (i.type == "bold"){
-            var layerID = i._id;
-            var layerColors = Colors.find({layer_id:layerID}).fetch();
-            var visibleColors = []
-            for (var j = 0; j < layerColors.length; j++){
-                visibleColors.push({"color": layerColors[j].color_value , "colorName": "new name"});  
-            }
-            i['colorOptions'] = visibleColors;
-        }
+//        else if (i.type == "bold"){
+//            var layerID = i._id;
+//            var layerColors = Colors.find({layer_id:layerID}).fetch();
+//            var visibleColors = []
+//            for (var j = 0; j < layerColors.length; j++){
+//                visibleColors.push({"color": layerColors[j].color_value , "colorName": "new name"});  
+//            }
+//            i['colorOptions'] = visibleColors;
+//        }
     })
     return poemLayers;
 }

@@ -36,6 +36,7 @@ colorClick = function (thing){
     console.log('colorClick');
     var flag = true;
     var possibleSelections = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
+    console.log("possible selections:");
     console.log(possibleSelections);
     _.each(possibleSelections, function(sel){
         var stylePosID = sel.style_id;
@@ -70,7 +71,7 @@ addColor = function(){
         var newColorIndex = colorIndex + 1;
         var colorIndexID = ColorIndices.findOne({poem_id: poemID})._id;
         ColorIndices.update(colorIndexID, {$set: {index: newColorIndex}});
-}
+};
 
 //contains all the events that happen on the poem page
 Template.poem.events({
