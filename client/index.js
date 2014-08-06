@@ -43,7 +43,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 });
 
 //when uncommented, nullifies all console.log's by redefining the function itself
-//console.log = function() {}
+console.log = function() {}
 
 //makes sure that all your collections are ready before loading the page
 checkIsReady = function(){
@@ -399,6 +399,10 @@ Deps.autorun(function () {
             });
              $(countSpan1).text(wordCount1+sylCount1);
              $(countSpan2).text(wordCount2+sylCount2);
+             if ($('.syllablesGrid').data('gridded')===true){
+                 grid();
+                 grid();
+             }
             },
             removed: function (selection, beforeIndex) {
             var location = selection.location;
@@ -439,6 +443,10 @@ Deps.autorun(function () {
             });
              $(countSpan1).text(wordCount1+sylCount1);
              $(countSpan2).text(wordCount2+sylCount2);
+             if ($('.syllablesGrid').data('gridded')===true){
+                 grid();
+                 grid();
+             }
             },
           });
         //handles additions/changes from Layers Collection
