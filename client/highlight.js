@@ -11,13 +11,15 @@ chooseColor = function (thing){
          Session.set('selectedType', 'bold');
    }
     if(Session.get('selectedType')=='rhyme'){
-        Session.set('highlightColor',$(thing).data('color'));
+        color = $(thing).css('backgroundColor');
+        Session.set('highlightColor', color);
         $('.colorSquare').each(function(){
             $(this).removeClass('selectedColorSquare');
         })
         $(thing).addClass('selectedColorSquare');
         console.log('insert');
         var curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
+        console.log(curStyle);
         Session.set("curStyle", curStyle);
     }
     if (Session.get('selectedType')=='bold'){
@@ -96,9 +98,9 @@ Template.poem.events({
     },
     //updates highlighting/bolding color when user clicks a square
     'click .colorSquare':function(event){
-        console.log(event.currentTarget);
+        color = $(event.currentTarget).css('background-color');
         chooseColor(event.currentTarget);
-        console.log("hi");
+        
     },
     //when you change the dropdown menu in a color layer, it updates highlightElement
     'change .rhymeSelect':function(event){

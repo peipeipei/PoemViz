@@ -239,23 +239,30 @@ Deps.autorun(function () {
         selectionsCursor.observe({
           //when something is added to the Selections Collection
           added: function (selection, beforeIndex) {
+              console.log('added called');
             var location = selection.location;
             var styleID = selection.style_id;
             var style = Styles.find({_id:styleID}).fetch();
+              console.log(location);
+              console.log(style);
             //used to catch errors
             if (style.length > 0){
             var layerNodeID = style[0].layer_id;
             var layerID = Layers.findOne({poem_id: Session.get('currentPoem'), id: layerNodeID})._id;
             //if selection is from highlighting style/layer
             if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
-               var rgba = style[0].background_color;
-               var lastIndex = rgba.lastIndexOf(",");
-               var substring = rgba.substr(0, lastIndex+1);
+               var rgb = style[0].background_color;
+               var substring = rgb.substr(4);
+               substring = substring.slice(0, -1);
+               var curRGBA = 'rgba('+substring+', ';
+               console.log(curRGBA);
+               /*var lastIndex = rgba.lastIndexOf(",");
+               var substring = rgba.substr(0, lastIndex+1);*/
                //check opacity of layer that made the selection
                var op = Layers.findOne(layerID).opacity;
                $("."+location).css(
                 {
-                    "background": substring+op+")"
+                    "background": curRGBA+op+")"
                 });
             }
             //if selection is from bolding style/layer
@@ -305,13 +312,18 @@ Deps.autorun(function () {
                   var otherStyle = Styles.findOne({_id: piece});
                    if ((otherStyle !== undefined)){
                         if ((otherStyle.background_color !== undefined)){
-                       substring = otherStyle.background_color;
+                            console.log(otherStyle.layer_id);
+                         op = Layers.findOne({id:otherStyle.layer_id}).opacity;
+                         rgb = otherStyle.background_color;
+                         var substring = rgb.substr(4);
+                         substring = substring.slice(0, -1);
+                         curRGBA = 'rgba('+substring+', ';
                         }
                    }
                 });
                $("."+location).css(
                 {
-                    "background-color": substring
+                    "background-color": curRGBA+op+")"
                 }
                );
             }
@@ -394,6 +406,7 @@ Deps.autorun(function () {
             if (layer.type == 'rhyme'){
             var layerID = (layer.id).trim();
             //automatically select default opacity; if no slight timeout, doesn't show
+            //WHY ARE WE ADDING???
             setTimeout(function() {$("input:radio[name="+layerID+"]:nth(0)").attr('checked',true)}, 500);
             }
         },           
@@ -405,14 +418,17 @@ Deps.autorun(function () {
               var allSelections = Selections.find({poem_id: Session.get('currentPoem'), layerNode_id: Session.get('curLayer')}).fetch();  
                 _.each(allSelections, function(sel){
                     var thisID = sel.location;
+                    console.log(thisID);
                     var thisStyleID = sel.style_id;
                     var thisStyle = Styles.findOne(thisStyleID);
-                    var rgba = thisStyle.background_color;
-                    var lastIndex = rgba.lastIndexOf(",");
-                    var substring = rgba.substr(0, lastIndex+1);
+                    var rgb = thisStyle.background_color;
+                    var substring = rgb.substr(4);
+                    substring = substring.slice(0, -1);
+                    var curRGBA = 'rgba('+substring+', ';
+                    console.log(curRGBA);          
                     $("."+thisID).css( 
                     {
-                      "background": substring+op+")"
+                      "background": curRGBA+op+")"
                     }
                     );
                     });

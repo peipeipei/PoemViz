@@ -61,13 +61,13 @@ Template.teacher.events({
              poem_id:newPoem,
              layer_id: layer1id,
              color_value: colors[0], 
-             name: 'color label'
+             name: 'Editable Color Label'
         })
         Colors.insert({
              poem_id:newPoem,
              layer_id: layer1id,
              color_value: colors[1], 
-             name: 'color label'
+             name: 'Editable Color Label'
         })
         // NOTE: Index only starts at two because two colors have already been assigned to the 'Sound' layer
         ColorIndices.insert({
