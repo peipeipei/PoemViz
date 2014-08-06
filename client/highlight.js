@@ -57,16 +57,12 @@ colorClick = function (thing){
     }
 };
 
+// adds a color to the colors collection and assigns it to a layer, then preselects the index for the next color to add
 addColor = function(){
-    // NEW STUFF
         var poemID = Session.get('currentPoem');
-        console.log("poem id: " + poemID);
         var layerIDHTML = Session.get('curLayer');
-        console.log("layerID in html:" + layerIDHTML);
         var layerID = Layers.findOne({id:layerIDHTML})._id;
-        console.log("layer id: " + layerID);
         var colorIndex = ColorIndices.findOne({poem_id: poemID}).index;
-        console.log("Color Index: " + colorIndex);
         Colors.insert({
              poem_id:poemID,
              layer_id: layerID,
@@ -74,7 +70,6 @@ addColor = function(){
              name: 'color label'
         })
         var newColorIndex = colorIndex + 1;
-        console.log("new color index: " + newColorIndex);
         var colorIndexID = ColorIndices.findOne({poem_id: poemID})._id;
         ColorIndices.update(colorIndexID, {$set: {index: newColorIndex}});
 }

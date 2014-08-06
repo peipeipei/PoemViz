@@ -60,10 +60,20 @@ Template.poem.isReady=function(){
 
 //returns all the layers in the database
 Template.poem.layer=function(){
-    // NEW STUFF
+    // array of all the current layers the poem has
     var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();
+    // for any layers with color options, display the color choices
     _.each(poemLayers, function(i){
         if (i.type == "rhyme") {
+            var layerID = i._id;
+            var layerColors = Colors.find({layer_id:layerID}).fetch();
+            var visibleColors = []
+            for (var j = 0; j < layerColors.length; j++){
+                visibleColors.push({"color": layerColors[j].color_value , "colorName": "new name"});  
+            }
+            i['colorOptions'] = visibleColors;
+        }
+        else if (i.type == "bold"){
             var layerID = i._id;
             var layerColors = Colors.find({layer_id:layerID}).fetch();
             var visibleColors = []
@@ -89,9 +99,8 @@ Deps.autorun(function () {
     console.log("testing");
     var clickedLayerID = Session.get('curLayer');
     var clickedLayer = $('#' + clickedLayerID);
+    // differentiates between the page loading initially and the layer being clicked (either from physically clicking it or from autoclicking a new layer)
     var layerWasClicked = (clickedLayer.position() != undefined);
-    console.log("Was layer clicked?");
-    console.log(layerWasClicked);
     //for each layer, make the one the user has most recently created or selected light blue
     $('.layer').each(function(){
         var thisID = $(this).attr('id')
@@ -133,17 +142,16 @@ Deps.autorun(function () {
                 noneColored=false;
             } 
         })
+        
         if (layerWasClicked){
             var layerID = Layers.findOne({id:clickedLayerID})._id;
-            console.log("Colors array");
-            console.log(layerID);
-            console.log(Colors.find({layer_id:layerID}).fetch());
-            console.log(Colors.find({layer_id:layerID}).fetch().length);
+            // if a layer doesn't currently have any colors, give it two default colors
             if (Colors.find({layer_id:layerID}).fetch().length === 0){
                 addColor();
                 addColor();
             }
         }
+        // if a layer is selected and no color is selected, autoselect the first color
         if (noneColored){
           chooseColor(colorSquares[0]);  
         }
@@ -401,7 +409,6 @@ Deps.autorun(function () {
         var layersCursor = Layers.find({poem_id:Session.get('currentPoem')});
         layersCursor.observe({
         added: function(layer, beforeIndex){
-            console.log('added layer');
             console.log(layer.type);
             if (layer.type == 'rhyme'){
             var layerID = (layer.id).trim();

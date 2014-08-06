@@ -11,6 +11,7 @@
 #syllableCount {
     color: blue;
     float:right;
+    margin-top: 70px;
 }
 
 #poemTitle{
@@ -21,12 +22,10 @@
     font-size: 14pt;
 }
 
-/*
 #poemWrapper{
     overflow: auto;
     height: 600px;
 }
-*/
 
 .left{
     /*margin-top: 80px;*/

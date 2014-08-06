@@ -56,7 +56,7 @@ Template.teacher.events({
             type:'rhyme',
             opacity: 1,
         });
-        // NEW STUFF
+        // starts the "sound" layer with two default colors
         Colors.insert({
              poem_id:newPoem,
              layer_id: layer1id,
@@ -74,7 +74,6 @@ Template.teacher.events({
             poem_id:newPoem,
             index: 2
         });
-        // END NEW STUFF
         Layers.insert({
             name:'Syllables',
             id:'syllable0',
