@@ -120,6 +120,8 @@ Template.poem.events({
         if (name == "Other Coloring"){
             name='Click to name this layer!';
         }
+        console.log("count: ");
+        console.log(count);
        var divLayerID = 'color' + count;
        var poemID = Session.get('currentPoem');
        var layerID = Layers.insert({
@@ -129,7 +131,13 @@ Template.poem.events({
           type:'rhyme',
           opacity: 1,
       });
-        Session.set("curLayer", divLayerID); 
+        console.log("div layer id: ");
+        console.log(divLayerID);
+       Session.set("curLayer", divLayerID); 
        Session.set('highlightElement','line');
+        console.log("curlayer: ");
+        console.log(Session.get('curLayer'));
     }
+    
+    
 });

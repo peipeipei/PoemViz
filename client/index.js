@@ -104,6 +104,7 @@ typewatch = (function(){
 Deps.autorun(function () {
     console.log("testing");
     var clickedLayerID = Session.get('curLayer');
+    console.log(clickedLayerID);
     var clickedLayer = $('#' + clickedLayerID);
     // differentiates between the page loading initially and the layer being clicked (either from physically clicking it or from autoclicking a new layer)
     var layerWasClicked = (clickedLayer.position() != undefined);
@@ -122,7 +123,10 @@ Deps.autorun(function () {
         //make sure user selects element as indicated by the dropdown
         var dropdown = $(clickedLayer).find('.boldSelect:first');
         Session.set('boldElement', $(dropdown).val());
+        console.log("color squares");
         var colorSquares=$(clickedLayer).find('.colorSquare');
+        console.log(colorSquares);
+        console.log(colorSquares[0]);
         var noneColored=true;
         //set default color if necessary (on the re-selection of layer)
         colorSquares.each(function(){
@@ -135,11 +139,13 @@ Deps.autorun(function () {
         }
     }
     else if (Session.get('selectedType')=='rhyme'){
-        console.log("blah");
          //make sure user selects element as indicated by the dropdown
         var dropdown = $(clickedLayer).find('.rhymeSelect:first');
         Session.set('highlightElement', $(dropdown).val());
+        console.log("color squares");
         var colorSquares=$(clickedLayer).find('.colorSquare');
+        console.log(colorSquares);
+        console.log(colorSquares[0]);
         var noneColored=true;
         //set default color if necessary (on the re-selection of layer)
         colorSquares.each(function(){
@@ -156,10 +162,13 @@ Deps.autorun(function () {
                 addColor();
                 addColor();
             }
-        }
+        
         // if a layer is selected and no color is selected, autoselect the first color
+            
+        }
         if (noneColored){
-          chooseColor(colorSquares[0]);  
+                console.log("noneColored");
+              chooseColor(colorSquares[0]);  
         }
     }
     
