@@ -367,8 +367,7 @@ Deps.autorun(function () {
             });
             }
             $("."+location).addClass('syllableStyle');
-            console.log($('#'+location));
-             //or unknown line
+            //updates natural syllables
             var lineSpan = $('#'+location).closest('.line');
             var countSpan = $(lineSpan).find('.lineCount');
             var wordCount=$(lineSpan).find('.word').length;
@@ -380,6 +379,26 @@ Deps.autorun(function () {
             }
             })
              $(countSpan).text(wordCount+sylCount);
+            //updates other versions' syllable markers 
+            var lineSpanArray = $('.'+location).closest('.unnaturalLine');
+            var countSpan1 = $(lineSpanArray[0]).find('.lineCount');
+            var countSpan2 = $(lineSpanArray[1]).find('.lineCount');
+            var wordCount1=$(lineSpanArray[0]).find('.word').length;
+            var wordCount2=$(lineSpanArray[1]).find('.word').length;
+            var sylCount1=0;
+            var sylCount2=0;   
+            $(lineSpanArray[0]).find('.letter').each(function(){
+            if ($(this).hasClass("syllableStyle")){
+                sylCount1++; 
+            }
+            });
+            $(lineSpanArray[1]).find('.letter').each(function(){
+            if ($(this).hasClass("syllableStyle")){
+                sylCount2++; 
+            }
+            });
+             $(countSpan1).text(wordCount1+sylCount1);
+             $(countSpan2).text(wordCount2+sylCount2);
             },
             removed: function (selection, beforeIndex) {
             var location = selection.location;
@@ -400,6 +419,26 @@ Deps.autorun(function () {
             }
             })
              $(countSpan).text(wordCount+sylCount);
+            //updates other versions' syllable markers 
+            var lineSpanArray = $('.'+location).closest('.unnaturalLine');
+            var countSpan1 = $(lineSpanArray[0]).find('.lineCount');
+            var countSpan2 = $(lineSpanArray[1]).find('.lineCount');
+            var wordCount1=$(lineSpanArray[0]).find('.word').length;
+            var wordCount2=$(lineSpanArray[1]).find('.word').length;
+            var sylCount1=0;
+            var sylCount2=0;   
+            $(lineSpanArray[0]).find('.letter').each(function(){
+            if ($(this).hasClass("syllableStyle")){
+                sylCount1++; 
+            }
+            });
+            $(lineSpanArray[1]).find('.letter').each(function(){
+            if ($(this).hasClass("syllableStyle")){
+                sylCount2++; 
+            }
+            });
+             $(countSpan1).text(wordCount1+sylCount1);
+             $(countSpan2).text(wordCount2+sylCount2);
             },
           });
         //handles additions/changes from Layers Collection
