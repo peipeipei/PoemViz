@@ -254,7 +254,7 @@ Deps.autorun(function () {
          console.log("RENDER");
          shoutkeyKey = Shoutkeys.findOne({poem_id: Session.get('currentPoem')}).key;
          shoutkeyID = Shoutkeys.findOne({poem_id: Session.get('currentPoem')})._id;
-         $('#shoutkey').text("This poem can also be found at: poemviz.meteor.com/"+shoutkeyKey);
+         $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey);
          //expire shoutkey after an hour
          handleid = Meteor.setTimeout(function() {Shoutkeys.remove(shoutkeyID); console.log('woohoo!');}, EXPIRATION_TIME);
          displaySelections();
