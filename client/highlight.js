@@ -93,17 +93,6 @@ addColor = function(){
 Template.poem.events({
     //adds a highlight color to the available colors
     'click .addColor': function(event){
-//        var colorSquare=$('<span class="colorSquare"></span>');
-//        var rightlightColors=$($(event.target).parent()).find('.highlightColors');
-//        var ccount=rightlightColors.find('.colorSquare').length;
-//        colorSquare.data('color', colors[ccount]);
-//        colorSquare.css('background-color', colors[ccount]);
-//        var a = $('<div class="colorBlock">').append(colorSquare);
-//        var b = a.append($('<span class="colorName" contenteditable=true >Editable Color Label</span></div>'));
-//        rightlightColors.append(b);
-//        if(ccount>=colors.length-1){
-//            $(event.target).css('display','none');
-//        }
         Session.set('curLayer', $(event.currentTarget).closest('.layer').attr('id'));
         addColor();
     },
