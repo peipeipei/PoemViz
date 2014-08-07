@@ -4,7 +4,7 @@ stressClick = function(thing){
     console.log(firstID);
     console.log(lastID);
     console.log(doLast);
-    var selStyle=Layers.findOne({id:Session.get('curLayer'), poem_id:Session.get('currentPoem')}).style;
+    var selStyle=Layers.findOne({id:'stress0', poem_id:Session.get('currentPoem')}).style;
     if ($(thing).css('vertical-align') == 'super'){
       getSyllable($(thing).attr('id'));
       for (var i = lastID-1; i >= firstID; i--){
@@ -73,7 +73,7 @@ Template.poem.events({
       'click .stressClear': function(event){
         var confirmDelete=confirm("Are you sure you want to remove all stress marks?");
         if (confirmDelete == true){
-            var selStyle=Layers.findOne({id:Session.get('curLayer'), poem_id:Session.get('currentPoem')}).style;
+            var selStyle=Layers.findOne({id:'stress0', poem_id:Session.get('currentPoem')}).style;
             $('.letter').each(function(){
                if ($(this).css('vertical-align') == 'super'){
                     $(this).css('vertical-align','baseline');
