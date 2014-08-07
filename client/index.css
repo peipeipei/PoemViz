@@ -8,7 +8,7 @@
 .word{
     display: inline;
 }
-#syllableCount {
+.syllableCount {
     color: blue;
     float:right;
     margin-top: 70px;
@@ -399,7 +399,7 @@ td{
 }
 
 .extraHyphen{
-    color:red;
+    color:black;
     font-weight:bold;
 }
 

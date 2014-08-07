@@ -4,16 +4,7 @@ chooseColor = function (thing){
         console.log('chooseColor thing is undefined')
         return
     }
-    //console.log("thing: ");
-    //console.log(thing);
-    //console.log("closest layer: ");
-    //console.log($(thing).closest('.layer'));
-    var layerName = $(thing).closest('.layer').attr('id');
-    console.log("layer name: ");
-    console.log(layerName);
-    
-//     Session.set('curLayer', layerName);
-    
+   var layerName = $(thing).closest('.layer').attr('id');
    if (layerName.substr(0,5) == 'color'){
        Session.set('selectedType', 'rhyme');
    }
@@ -33,7 +24,7 @@ chooseColor = function (thing){
         Session.set("curStyle", curStyle);
     }
     else if (Session.get('selectedType')=='bold'){
-        Session.set('boldColor',$(thing).data('color'));
+        Session.set('boldColor',$(thing).css('backgroundColor'));
         $('.colorSquare').each(function(){
             $(this).removeClass('selectedColorSquare');
         })

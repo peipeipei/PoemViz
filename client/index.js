@@ -399,7 +399,7 @@ Deps.autorun(function () {
             if (Session.get('syllablesVisible')=="true"){
             $("."+location).css(
             {
-               "border-left": "3px solid red"
+               "border-left": "2px solid black"
             });
             }
             $("."+location).addClass('syllableStyle');
@@ -419,8 +419,25 @@ Deps.autorun(function () {
             var lineSpanArray = $('.'+location).closest('.unnaturalLine');
             var countSpan1 = $(lineSpanArray[0]).find('.lineCount');
             var countSpan2 = $(lineSpanArray[1]).find('.lineCount');
-            var wordCount1=$(lineSpanArray[0]).find('.word').length;
-            var wordCount2=$(lineSpanArray[1]).find('.word').length;
+            var wordArray1=$(lineSpanArray[0]).find('.word');
+            var wordArray2=$(lineSpanArray[1]).find('.word');
+            var wordCount1 = 0;
+            var wordCount2 = 0;
+            //don't count the awkward spaces created by new lines
+            _.each(wordArray1, function(elem) {
+                if ($(elem).text().trim() == ""){
+                }
+                else{
+                  wordCount1++;
+                }
+            });
+            _.each(wordArray2, function(elem) {
+                if ($(elem).text().trim() == ""){
+                }
+                else{
+                  wordCount2++;
+                }
+            });
             var sylCount1=0;
             var sylCount2=0;   
             $(lineSpanArray[0]).find('.letter').each(function(){
@@ -463,8 +480,25 @@ Deps.autorun(function () {
             var lineSpanArray = $('.'+location).closest('.unnaturalLine');
             var countSpan1 = $(lineSpanArray[0]).find('.lineCount');
             var countSpan2 = $(lineSpanArray[1]).find('.lineCount');
-            var wordCount1=$(lineSpanArray[0]).find('.word').length;
-            var wordCount2=$(lineSpanArray[1]).find('.word').length;
+            var wordArray1=$(lineSpanArray[0]).find('.word');
+            var wordArray2=$(lineSpanArray[1]).find('.word');
+            var wordCount1 = 0;
+            var wordCount2 = 0;
+            //don't count the awkward spaces created by new lines
+            _.each(wordArray1, function(elem) {
+                if ($(elem).text().trim() == ""){
+                }
+                else{
+                  wordCount1++;
+                }
+            });
+            _.each(wordArray2, function(elem) {
+                if ($(elem).text().trim() == ""){
+                }
+                else{
+                  wordCount2++;
+                }
+            });
             var sylCount1=0;
             var sylCount2=0;   
             $(lineSpanArray[0]).find('.letter').each(function(){

@@ -43,12 +43,6 @@ Template.teacher.events({
             }
           }
         })
-        Layers.insert({
-            name:'Text Options',
-            id:'typing0',
-            poem_id:newPoem,
-            type:'typing'
-        });
         var layer1id = Layers.insert({
             name:'Sound',
             id:'color0',
@@ -88,9 +82,14 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'stressing',
         });
-        
         var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
         Layers.update(sel, {$set:{style:selStyle, keyword: key}});
+        Layers.insert({
+            name:'Text Options',
+            id:'typing0',
+            poem_id:newPoem,
+            type:'typing'
+        });    
     }
 
 })

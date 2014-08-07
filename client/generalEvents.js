@@ -59,15 +59,15 @@ Template.poem.events({
                 //must make sure we give this data attribute to other users
                 if ($(this).hasClass('syllableStyle')){
                     console.log('syllable');
-                    $(this).css('border-left', '3px solid red');
+                    $(this).css('border-left', '2px solid black');
                 }
                 });
                 $('.lineCount').css('opacity','1.0');
-                $('#syllableCount').css('color','blue')
+                $('.syllableCount').css('color','blue')
             }
             else{
                 Session.set('syllablesVisible', 'false');
-                $('#syllableCount').css('color','white')
+                $('.syllableCount').css('color','white')
                 $('.syllable').css('min-width', '0px');
                 $('.letter, .space').each(function(){
                     $(this).css('border-left', 'none');

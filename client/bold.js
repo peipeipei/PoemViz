@@ -1,6 +1,5 @@
 //how bolding is stored/removed from Selections Collection
 boldClick = function(thing){
-    num = Session.get('curLayer').slice(-1);
     var flag = true;
     var possibleSelections = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
     _.each(possibleSelections, function(sel){
@@ -13,7 +12,7 @@ boldClick = function(thing){
         }
     });
     if (flag){
-        Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id')});
+        Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')});
     }else{
        var idR = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
         var target = "";
@@ -35,6 +34,7 @@ boldClick = function(thing){
 Template.poem.events({
     //same as addColor, but for the bold layer
     'click .addBoldColor': function(event){
+        Session.set('curLayer', $(event.currentTarget).closest('.layer').attr('id'));
         var colorSquare=$('<div class="colorSquare"></div>');
         var rightlightColors=$($(event.target).parent()).find('.boldColors');
         var ccount=rightlightColors.find('.colorSquare').length;
