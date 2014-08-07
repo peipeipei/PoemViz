@@ -8,7 +8,7 @@ Template.poem.events({
 
     //stores name of custom layer
     //updates the layer database with the new name after user stops typing
-    'keyup .layerName':function(event){
+   /* 'keyup .layerName':function(event){
         var layerID=$(event.currentTarget).parent().attr('id');
         var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
         typewatch(function () {
@@ -36,6 +36,31 @@ Template.poem.events({
             var newName=$(event.currentTarget).text();
             Colors.update(colorID, {$set: {name: newName}});
         }, 3000);
+    },*/
+    'blur .layerName':function(event){
+        console.log('blurred');
+        var layerID=$(event.currentTarget).parent().attr('id');
+        var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
+        var newName=$(event.currentTarget).text();
+        Layers.update(curL_id, {$set: {name: newName}});
+    },
+     'blur .colorName': function(event){
+        var layerNodeID=$(event.currentTarget).closest('.layer').attr('id');
+        var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerNodeID})._id;
+        console.log(curL_id);
+        var colorsquare = $(event.currentTarget).prev('.colorSquare');
+        console.log(colorsquare);
+        var curColor = $(colorsquare).css("backgroundColor").trim();
+        //curColor is rgb??
+        var substring = curColor.substr(4);
+        substring = substring.slice(0, -1);
+        var curRGBA = 'rgba('+substring+', 1)';
+        curRGBA = curRGBA.split(' ').join('');
+        console.log(curRGBA);
+        var colorID = Colors.findOne({poem_id: Session.get('currentPoem'), layer_id: curL_id, color_value: curRGBA})._id;
+        console.log(colorID);
+        var newName=$(event.currentTarget).text();
+        Colors.update(colorID, {$set: {name: newName}});    
     },
     //when user clicks a line and the line mode of highlighting or bolding is selected 
     'click .line':function(event){
