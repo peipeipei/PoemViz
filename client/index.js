@@ -58,6 +58,7 @@ Template.poem.isReady=function(){
 
 //returns all the layers in the database
 //called whenever layer is changed
+//populates 'layer' in html
 Template.poem.layer=function(){
     // array of all the current layers the poem has
     var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();

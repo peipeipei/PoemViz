@@ -55,8 +55,7 @@ Router.map(function () {
 
 
 Template.redirect.redirect = function(){
-
-    Router.go('poem', {"id":this.shoutkey.poem_id});
+     Router.go('poem', {"id":this.shoutkey.poem_id});
 }
 
 Template.redirect.isReady = function(){
