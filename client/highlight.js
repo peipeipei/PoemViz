@@ -76,7 +76,6 @@ addColor = function(){
         var layerID = Layers.findOne({poem_id: Session.get('currentPoem'), id:layerIDHTML})._id;
         var layerArray = Layers.findOne({poem_id: Session.get('currentPoem'), id:layerIDHTML}).layerArray;
         var colorIndex = ColorIndices.findOne({poem_id: Session.get('currentPoem'), layer:layerID}).index;
-        if (colorIndex < layerArray.length){
         Colors.insert({
              poem_id:poemID,
              layer_id: layerID,
@@ -86,15 +85,23 @@ addColor = function(){
         var newColorIndex = colorIndex + 1;
         var colorIndexID = ColorIndices.findOne({poem_id: Session.get('currentPoem'), layer:layerID})._id;
         ColorIndices.update(colorIndexID, {$set: {index: newColorIndex}});
-        }
 };
 
 //contains all the events that happen on the poem page
 Template.poem.events({
     //adds a highlight color to the available colors
     'click .addColor': function(event){
-        Session.set('curLayer', $(event.currentTarget).closest('.layer').attr('id'));
+        var poemID = Session.get('currentPoem');
+        var layerIDHTML = $(event.currentTarget).closest('.layer').attr('id')
+        Session.set('curLayer', layerIDHTML);
         addColor();
+        var layerIDHTML = Session.get('curLayer');
+        var layerID = Layers.findOne({poem_id: poemID, id:layerIDHTML})._id;
+        var layerArray = Layers.findOne({poem_id: poemID, id:layerIDHTML}).layerArray;
+        var colorIndex = ColorIndices.findOne({poem_id: poemID, layer:layerID}).index;
+        if (colorIndex >= layerArray.length){
+            $(event.target).css('display','none');
+        }
     },
     //updates highlighting/bolding color when user clicks a square
     'click .colorSquare':function(event){
