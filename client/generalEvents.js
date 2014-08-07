@@ -30,7 +30,7 @@ Template.poem.events({
         var curRGBA = 'rgba('+substring+', 1)';
         curRGBA = curRGBA.split(' ').join('');
         console.log(curRGBA);
-        var colorID = Colors.findOne({layer_id: curL_id, color_value: curRGBA})._id;
+        var colorID = Colors.findOne({poem_id: Session.get('currentPoem'), layer_id: curL_id, color_value: curRGBA})._id;
         console.log(colorID);
         typewatch(function () {
             var newName=$(event.currentTarget).text();

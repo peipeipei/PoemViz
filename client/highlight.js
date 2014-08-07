@@ -73,17 +73,20 @@ colorClick = function (thing){
 addColor = function(){
         var poemID = Session.get('currentPoem');
         var layerIDHTML = Session.get('curLayer');
-        var layerID = Layers.findOne({id:layerIDHTML})._id;
-        var colorIndex = ColorIndices.findOne({poem_id: poemID}).index;
+        var layerID = Layers.findOne({poem_id: Session.get('currentPoem'), id:layerIDHTML})._id;
+        var layerArray = Layers.findOne({poem_id: Session.get('currentPoem'), id:layerIDHTML}).layerArray;
+        var colorIndex = ColorIndices.findOne({poem_id: Session.get('currentPoem'), layer:layerID}).index;
+        if (colorIndex < layerArray.length){
         Colors.insert({
              poem_id:poemID,
              layer_id: layerID,
-             color_value: colors[colorIndex], 
+             color_value: layerArray[colorIndex], 
              name: 'Editable Color Label'
         })
         var newColorIndex = colorIndex + 1;
-        var colorIndexID = ColorIndices.findOne({poem_id: poemID})._id;
+        var colorIndexID = ColorIndices.findOne({poem_id: Session.get('currentPoem'), layer:layerID})._id;
         ColorIndices.update(colorIndexID, {$set: {index: newColorIndex}});
+        }
 };
 
 //contains all the events that happen on the poem page
@@ -101,6 +104,7 @@ Template.poem.events({
 //        if(ccount>=colors.length-1){
 //            $(event.target).css('display','none');
 //        }
+        Session.set('curLayer', $(event.currentTarget).closest('.layer').attr('id'));
         addColor();
     },
     //updates highlighting/bolding color when user clicks a square
@@ -129,9 +133,19 @@ Template.poem.events({
         if (name == "Other Coloring"){
             name='Click to name this layer!';
         }
-        console.log("count: ");
-        console.log(count);
        var divLayerID = 'color' + count;
+       switch (count){
+               case 1: var array = colorsRainbow;
+               break;
+               case 2: var array = colorsPastelOcean;
+               break;
+               case 3: var array = colorsSciFiDream;
+               break;
+               case 4: var array = colorsSorbet;
+               break;
+               default: var array = colorsGeneral;
+               break;
+       }
        var poemID = Session.get('currentPoem');
        var layerID = Layers.insert({
           name:name,
@@ -139,13 +153,15 @@ Template.poem.events({
           poem_id:poemID,
           type:'rhyme',
           opacity: 1,
+          layerArray: array
       });
-        console.log("div layer id: ");
-        console.log(divLayerID);
-       Session.set("curLayer", divLayerID); 
-       Session.set('highlightElement','line');
-        console.log("curlayer: ");
-        console.log(Session.get('curLayer'));
+        ColorIndices.insert({
+            poem_id: poemID,
+            index: 0,
+            layer: layerID
+        });
+        Session.set("curLayer", divLayerID); 
+        Session.set('highlightElement','line');
     }
     
     

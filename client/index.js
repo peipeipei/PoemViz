@@ -36,6 +36,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 //var stylesHandle=Meteor.subscribe('styles');
 //var syllablesHandle=Meteor.subscribe('syllableMarkers');
 //var linesHandle=Meteor.subscribe('lineCounts');
+//NEED TO FILTER SUBSCRIPTIONS!!!!!!
 var shoutkeysHandle=Meteor.subscribe('shoutkeys');
 var colorIndicesHandle=Meteor.subscribe('colorIndices');
 var colorsHandle=Meteor.subscribe('colors');
@@ -64,14 +65,13 @@ Template.poem.layer=function(){
     var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();
     // for any layers with color options, display the color choices
     _.each(poemLayers, function(i){
-        console.log('layer is changed XXXXXXX')
         var opacity = i.opacity;
-                switch (opacity){
+        switch (opacity){
                          case '1': 
                          i.isChecked100 = "checked"
-        i.isChecked60 = ""
-        i.isChecked20 = ""
-        i.isChecked0 = ""
+                        i.isChecked60 = ""
+                        i.isChecked20 = ""
+                        i.isChecked0 = ""
                          break;
                          
                          case 1: 
@@ -206,6 +206,7 @@ Deps.autorun(function () {
         console.log("color squares");
         
         if (layerWasClicked){
+            console.log('doing well');
             var layerID = Layers.findOne({id:clickedLayerID})._id;
             // if a layer doesn't currently have any colors, give it two default colors
             if (Colors.find({layer_id:layerID}).fetch().length === 0){
