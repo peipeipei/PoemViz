@@ -35,10 +35,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 //var stylesHandle=Meteor.subscribe('styles');
 //var syllablesHandle=Meteor.subscribe('syllableMarkers');
 //var linesHandle=Meteor.subscribe('lineCounts');
-//NEED TO FILTER SUBSCRIPTIONS!!!!!!
-var shoutkeysHandle=Meteor.subscribe('shoutkeys');
-var colorIndicesHandle=Meteor.subscribe('colorIndices');
-var colorsHandle=Meteor.subscribe('colors');
+
 
 Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);

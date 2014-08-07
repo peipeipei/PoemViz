@@ -4,7 +4,7 @@ Router.map(function () {
     path: '/poem/:id',
     template: 'poem',
     waitOn: function(){
-      var subscriptions = [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('selections', this.params.id), Meteor.subscribe('layers', this.params.id), Meteor.subscribe('styles', this.params.id), Meteor.subscribe('syllableMarkers', this.params.id)]
+      var subscriptions = [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('selections', this.params.id), Meteor.subscribe('layers', this.params.id), Meteor.subscribe('styles', this.params.id), Meteor.subscribe('syllableMarkers', this.params.id), Meteor.subscribe('shoutkeys', this.params.id), Meteor.subscribe('colorIndices', this.params.id), Meteor.subscribe('colors', this.params.id)];
       return subscriptions;
     },
     data: function(){
