@@ -15,7 +15,7 @@ Template.poem.events({
             var newName=$(event.currentTarget).text();
             Layers.update(curL_id, {$set: {name: newName}});
             console.log(curL_id);
-        }, 1000);
+        }, 3000);
     },
     'keyup .colorName':function(event){
         var layerNodeID=$(event.currentTarget).closest('.layer').attr('id');
@@ -35,7 +35,7 @@ Template.poem.events({
         typewatch(function () {
             var newName=$(event.currentTarget).text();
             Colors.update(colorID, {$set: {name: newName}});
-        }, 1000);
+        }, 3000);
     },
     //when user clicks a line and the line mode of highlighting or bolding is selected 
     'click .line':function(event){
