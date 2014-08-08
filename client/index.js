@@ -246,6 +246,8 @@ Deps.autorun(function () {
         $('#origOption').css('visibility','visible');
         $('#puncOption').css('visibility','hidden');
         $('#sentOption').css('visibility','hidden');
+         //set the tab name to that of the poem
+         document.title = Poems.findOne(Session.get('currentPoem')).title;
          displaySelections();
          syllableCounts();
      }

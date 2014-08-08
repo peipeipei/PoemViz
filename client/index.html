@@ -34,8 +34,9 @@
             <div class='col-md-8 left bigCol' id='leftSide'>
 <!--                Poem wrapper exists so that the whole block can get a scroll bar-->
                 <div id = 'poemWrapper'>
-                <div id = 'shoutkey'><br></div>
-                 <span><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span><br>
+                <div class="helpBox"><button type="button" class="btn btn-default instructions" data-active=false><img  id="questionMark" src="question.png" alt="Instructions"></button></div>
+                <div class = "helpBox"><span id = 'shoutkey'></span><span><br><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span></div>
+        
                 <div class = 'poemIdentifiers' id = 'poemTitle'><br>{{poemTitle}}</div>
                 <div class = 'poemIdentifiers' id = 'poemAuthor'>By {{poemAuthor}}</div>
                  
