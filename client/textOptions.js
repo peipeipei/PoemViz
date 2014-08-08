@@ -45,6 +45,21 @@ Template.poem.events({
 //change how poem lines are displayed
 'change .optionSelect':function(event){
     Session.set('breaksOption',$(event.currentTarget).val());
+    if (Session.get('breaksOption') == 'origOption'){
+        $('#sentPunct').css('opacity', '0');
+        $('#allPunct').css('opacity', '0'); 
+        $('#original').css('opacity', '1');
+    }
+    if (Session.get('breaksOption') == 'puncOption'){
+        $('#original').css('opacity', '0');
+        $('#sentPunct').css('opacity', '0');  
+        $('#allPunct').css('opacity', '1'); 
+    }
+    if (Session.get('breaksOption') == 'sentOption'){
+        $('#original').css('opacity', '0');
+        $('#allPunct').css('opacity', '0');
+         $('#sentPunct').css('opacity', '1'); 
+    }
     /*if (Session.get('breaksOption') == 'origOption'){
     }
     if (Session.get('breaksOption') == 'puncOption'){

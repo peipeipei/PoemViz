@@ -4,7 +4,7 @@ Router.map(function () {
     path: '/poem/:id',
     template: 'poem',
     waitOn: function(){
-      var subscriptions = [Meteor.subscribe('poemGroups', this.params.id), Meteor.subscribe('poems', this.params.id), Meteor.subscribe('selections', this.params.id), Meteor.subscribe('layers', this.params.id), Meteor.subscribe('styles', this.params.id), Meteor.subscribe('syllableMarkers', this.params.id), Meteor.subscribe('shoutkeys', this.params.id), Meteor.subscribe('colorIndices', this.params.id), Meteor.subscribe('colors', this.params.id)];
+      var subscriptions = [Meteor.subscribe('poemGroups', this.params.id), Meteor.subscribe('poems', this.params.id), Meteor.subscribe('selections', this.params.id), Meteor.subscribe('layers', this.params.id), Meteor.subscribe('styles', this.params.id), Meteor.subscribe('syllableMarkers', this.params.id), Meteor.subscribe('shoutkeys'), Meteor.subscribe('colorIndices', this.params.id), Meteor.subscribe('colors', this.params.id)];
       return subscriptions;
     },
     data: function(){
@@ -33,7 +33,13 @@ Router.map(function () {
         } 
     }    
     })
-    this.route('teacher', {path:'/create'})
+  //make sure to subscribe to shoutkeys so that they may be checked to prevent repeats
+    this.route('teacher', {
+        path:'/create',
+        waitOn: function(){
+            return [Meteor.subscribe('shoutkeys')]
+        },  
+    })
     this.route('redirect',{
         path: '/:_word',
         notFoundTemplate: 'error',
@@ -41,8 +47,6 @@ Router.map(function () {
           return [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('shoutkeys')]
         },
         data: function(){
-            console.log(this);
-            console.log(Shoutkeys.findOne({key:this.params._word}));
             return {"shoutkey":Shoutkeys.findOne({key:this.params._word})};
         },
         action: function(){

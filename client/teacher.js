@@ -107,7 +107,7 @@ Template.teacher.events({
             sentObj: poemObjsArray[2],
 
         });
-        var key = getRandomWord()
+       var key = getRandomWord()
         Shoutkeys.insert({
             key:key,
             poem_id:newPoem
@@ -194,10 +194,23 @@ Template.teacher.events({
 })
 
 getRandomWord = function(){
-  var shoutAttempt = pgpWordList[Math.floor(Math.random()*pgpWordList.length)][0];
-  while (Shoutkeys.find({key: shoutAttempt}).fetch().length > 0){
-      shoutAttempt = pgpWordList[Math.floor(Math.random()*pgpWordList.length)][0];
-  }
-  return shoutAttempt; 
+    var numshoutkeys = pgpWordList.length;
+    //will be an integer between 0 (inclusive) and numshoutkeys (exclusive)
+    //fun to keep iteration random
+    var offset = Math.floor(Math.random()*numshoutkeys);
+    var shoutkeyAvailable = false;
+    for (var i = 0; i < numshoutkeys; i++){
+        var shoutAttempt = pgpWordList[(i+(offset)) % numshoutkeys][0];
+        if (Shoutkeys.find({key: shoutAttempt}).fetch().length == 0){
+            shoutkeyAvailable = true;
+            break;
+        }
+    }
+    if (shoutkeyAvailable){
+    return shoutAttempt; 
+    }
+    else{
+     return "no shoutkeys available!"
+    }
 }
 
