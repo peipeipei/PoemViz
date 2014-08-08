@@ -33,7 +33,20 @@
             
             <div class='col-md-8 left bigCol' id='leftSide'>
                 <div id = 'poemWrapper'>
-                 <div id = 'shoutkey'><br></div>
+                    <div id = 'shoutkey'><br></div>
+                 <span><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span><br>
+                <div class = 'poemIdentifiers' id = 'poemTitle'><br>{{poemTitle}}</div>
+                <div class = 'poemIdentifiers' id = 'poemAuthor'>By {{poemAuthor}}</div>
+                    <div class = 'syllableCount'>Syllable Count</div>
+                   {{# each lines}}
+                        <span class={{this.class}} id={{this.line_id}}>    
+                        {{# each this.content}}
+                            <span id={{this.word_id}} class = {{this.class}}><span class = "space">&nbsp;</span><span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span>{{/each}}</span></span>{{/each}}
+                        <span class="lineCount"></span>
+                        </span>
+                        <br>
+                    {{/each}}
+                <!-- <div id = 'shoutkey'><br></div>
                  <span><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span><br>
                 <div class = 'poemIdentifiers' id = 'poemTitle'><br>{{poemTitle}}</div>
                 <div class = 'poemIdentifiers' id = 'poemAuthor'>By {{poemAuthor}}</div>
@@ -75,7 +88,7 @@
                     <span class='lineCount'></span>
                     </span>
                     <br>
-                    {{/each}}
+                    {{/each}}-->
                 </div>
             
             </div>
