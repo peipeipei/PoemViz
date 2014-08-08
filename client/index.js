@@ -262,7 +262,7 @@ Deps.autorun(function () {
         selectionsCursor.observe({
           //when something is added to the Selections Collection
           added: function (selection, beforeIndex) {
-              console.log('added called');
+              console.log(selection);
             var location = selection.location;
             var styleID = selection.style_id;
             var style = Styles.find({_id:styleID}).fetch();
@@ -325,6 +325,7 @@ Deps.autorun(function () {
             var styleID = selection.style_id;
             var curLayerNodeID = selection.layerNode_id;
             var style = Styles.find({_id:styleID}).fetch();
+            console.log(style);
             //used to catch errors
             if (style.length > 0){
            //if removed is highlighting

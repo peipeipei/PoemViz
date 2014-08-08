@@ -130,13 +130,15 @@ grid = function(){
 
 //must update syllableMarkers
 ghostMarker = function(thing) {
-       if ($(thing).css('border-left-color') == 'rgb(0, 0, 0)'){}
+       //if ($(thing).css('border-left-color') == 'rgb(0, 0, 0)'){}
+       if ($(thing).hasClass('syllableStyle')){}
        else{
        $(thing).css('border-left', '2px solid gray');} 
 }
 //must update syllableMarkers
 noghostMarker = function(thing) {
-       if ($(thing).css('border-left-color') =='rgb(0, 0, 0)'){}
+       //if ($(thing).css('border-left-color') =='rgb(0, 0, 0)'){}
+       if ($(thing).hasClass('syllableStyle')){}
       else{ 
       $(thing).css('border-left', 'none');} 
 }
@@ -170,7 +172,8 @@ syllableCounts = function(){
             var existingCounter = 0;
             var letterArray = $(this).find('.letter');
             _.each(letterArray, function(elem) {
-            if ($(elem).css('border-left-color') == 'rgb(0, 0, 0)'){
+           // if ($(elem).css('border-left-color') == 'rgb(0, 0, 0)'){
+            if ($(elem).hasClass("syllableStyle")){
                 existingCounter++;
             }
         });
