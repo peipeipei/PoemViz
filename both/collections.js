@@ -1,6 +1,16 @@
+PoemGroups = new Meteor.Collection('poemGroups');
+/*
+A poem group has these fields:
+    _id : identifier
+    numPoems: integer, number of poem sections in a PoemGroup
+
+*/
+
 Poems = new Meteor.Collection('poems');
 /* A poem has these fields:
     _id : identifier
+    poemGroup: id of the poem group the poem is a part of
+    poemGroupIndex: integer, corresponds to the poem being the nth section of a poemgroup
     title : give by user, string
     author : given by user, string
     htmlContent : string of HTML for the poem.
@@ -77,6 +87,6 @@ ColorIndices = new Meteor.Collection('indices');
  /*
     _id: identifier
     poem_id: string, id of the corresponding Poems
-    index: number, increasing when you add more colors to the palette
+    index: integer, increasing when you add more colors to the palette
     layer: real id of layer with array that is being indexed
 */

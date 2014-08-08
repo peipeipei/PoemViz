@@ -9,7 +9,15 @@ html,body, .container, .row{
     height:100%;
 }
 
+/*
 #createPoem{
+    width:60%;
+    height:300px;
+    margin:20px;
+}
+*/
+
+.poemSection{
     width:60%;
     height:300px;
     margin:20px;

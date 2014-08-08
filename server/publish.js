@@ -1,3 +1,6 @@
+Meteor.publish('poemGroups', function() {
+    return PoemGroups.find()
+});
 Meteor.publish('poems', function (poemID) {
   return Poems.find(poemID)
 });
@@ -32,4 +35,5 @@ Meteor.publish('colorIndices', function() {
 Meteor.publish('colors', function() {
     return Colors.find()
 });
+
 
