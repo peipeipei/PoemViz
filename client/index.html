@@ -35,12 +35,12 @@
 <!--                Poem wrapper exists so that the whole block can get a scroll bar-->
                 <div id = 'poemWrapper'>
                  <div id = 'shoutkey'><br></div>
-                 <span><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New ShoutKey</button></span><br>
+                 <span><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span><br>
                 <div class = 'poemIdentifiers' id = 'poemTitle'><br>{{poemTitle}}</div>
                 <div class = 'poemIdentifiers' id = 'poemAuthor'>By {{poemAuthor}}</div>
                 
                 
-                    <div id = 'syllableCount'>Syllable Count</div>
+                    <div class = 'syllableCount'>Syllable Count</div>
                    {{# each lines}}
                         <span class={{this.class}} id={{this.line_id}}>    
                         {{# each this.content}}
@@ -50,7 +50,7 @@
                         <br>
                     {{/each}}
                     
-                    <div id = 'syllableCount'>Syllable Count</div>
+                    <div class = 'syllableCount'>Syllable Count</div>
                     {{# each lines1}}
                     <span class={{this.class}} id={{this.line_id}}>    
                     {{# each this.content}}
@@ -64,7 +64,7 @@
                     <br>
                     {{/each}}
                     
-                    <div id = 'syllableCount'>Syllable Count</div>
+                    <div class = 'syllableCount'>Syllable Count</div>
                     {{# each lines2}}
                     <span class={{this.class}} id={{this.line_id}}>    
                     {{# each this.content}}
@@ -82,30 +82,6 @@
             </div>
             <div class='col-md-4 right bigCol' id='layers'> 
             {{# each layer}}
-                {{# if equals type 'typing'}}
-                    <div class="layer" data-name="typing" id={{this.id}}>
-                        <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
-                        <div class="btn-group" id="toggle">
-                           <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span><br>
-                       
-                        Line Breaks by: <select class='optionSelect'>
-                            <option value='origOption'>Original</option>
-                            <option value='puncOption'>All Punctuation</option>
-                            <option value='sentOption'>Sentence Punctuation</option>
-                        </select>
-                        </div>
-                    </div>
-                {{/if}}
-                {{# if equals type 'stressing'}}
-                    <div class="layer" data-name="stressing" id={{this.id}}>
-                    <div class="layerName" contenteditable=true>{{this.name}}</div>
-                    <div class='info'> <i>Click to show stress.</i></div>
-                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
-                    <div class="btn-group" id="toggle">
-                            <span><button type="button" class="btn btn-default stressClear">Clear All Stress Marks</button></span>
-                        </div>
-                    </div>
-                {{/if}}
                 {{# if equals type 'rhyme'}}
                     <div class='layer' data-name='rhyme' id={{this.id}}>
                         <div class="layerName" contenteditable=true>{{this.name}}</div>
@@ -141,7 +117,7 @@
                         </span>    
                     </div>
                 {{/if}}
-                    {{# if equals type 'syllable'}}
+                {{# if equals type 'syllable'}}
                     <div class='layer' data-name='syllable' id={{this.id}}>
                         <div class="layerName" contenteditable=true>{{this.name}}</div>
                         <div class='info'> <i>Click to show syllable breaks.</i><br>Please click WITHIN words, the breaks between words have already been counted.</div>
@@ -151,6 +127,30 @@
                             <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
                             
 
+                        </div>
+                    </div>
+                {{/if}}
+                {{# if equals type 'stressing'}}
+                    <div class="layer" data-name="stressing" id={{this.id}}>
+                    <div class="layerName" contenteditable=true>{{this.name}}</div>
+                    <div class='info'> <i>Click to show stress.</i></div>
+                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
+                    <div class="btn-group" id="toggle">
+                            <span><button type="button" class="btn btn-default stressClear">Clear All Stress Marks</button></span>
+                        </div>
+                    </div>
+                {{/if}}
+                {{# if equals type 'typing'}}
+                    <div class="layer" data-name="typing" id={{this.id}}>
+                        <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
+                        <div class="btn-group" id="toggle">
+                           <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span><br>
+                       
+                        Line Breaks by: <select class='optionSelect'>
+                            <option value='origOption'>Original</option>
+                            <option value='puncOption'>All Punctuation</option>
+                            <option value='sentOption'>Sentence Punctuation</option>
+                        </select>
                         </div>
                     </div>
                 {{/if}}
