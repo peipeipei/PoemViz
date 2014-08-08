@@ -130,10 +130,7 @@ typewatch = (function(){
 // Runs automatically whenever a variable that it gets is reset (in this case, "curLayer")
 Deps.autorun(function () {
     var clickedLayerID = Session.get('curLayer');
-    console.log('clickedLayerID: '+clickedLayerID);
     var clickedLayer = $('#' + clickedLayerID);
-    console.log('clickedLayer: ')
-    console.log(clickedLayer);
     // differentiates between the page loading initially and the layer being clicked (either from physically clicking it or from autoclicking a new layer)
     var layerWasClicked = (clickedLayer.position() != undefined);
     //for each layer, make the one the user has most recently created or selected light blue
@@ -151,7 +148,6 @@ Deps.autorun(function () {
         //make sure user selects element as indicated by the dropdown
         var dropdown = $(clickedLayer).find('.boldSelect:first');
         Session.set('boldElement', $(dropdown).val());
-        console.log("color squares");
         var colorSquares = $(clickedLayer).find('.colorSquare');
         var noneColored=true;
         //set default color if necessary (on the re-selection of layer)
@@ -161,9 +157,6 @@ Deps.autorun(function () {
             }
         })
         if (noneColored){
-            console.log("noneColored");
-            console.log(colorSquares);
-            console.log(colorSquares[0]);
           chooseColor(colorSquares[0]);  
         }
     }
@@ -184,23 +177,15 @@ Deps.autorun(function () {
             var newNoneColored = true;
             var defaultSelect;
             for (var i = 0; i < newColorSquares.length; i++){
-                console.log("new color square");
-                console.log(newColorSquares[i]);
                 var colorSquareID = newColorSquares[i]._id;
-                console.log(colorSquareID);
                 var colorSquareSpan = $('#' +colorSquareID);
                 if (i == 0) {
                     defaultSelect = colorSquareSpan;
                 }
-                console.log(colorSquareSpan);
                 if(colorSquareSpan.hasClass('selectedColorSquare')){
                     newNoneColored=false;
                 }
             }
-            console.log("new none colored");
-            console.log(newNoneColored);
-            console.log("default select");
-            console.log(defaultSelect);
             
             if (newNoneColored){
                 chooseColor(defaultSelect);   

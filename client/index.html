@@ -32,6 +32,7 @@
     <div class='container'>
             
             <div class='col-md-8 left bigCol' id='leftSide'>
+<!--                Poem wrapper exists so that the whole block can get a scroll bar-->
                 <div id = 'poemWrapper'>
                     <div id = 'shoutkey'><br></div>
                  <span><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span><br>
@@ -202,40 +203,6 @@
                     </ul>
                 </div>
             </div>
-        
-<!--
-        <div class='col-md-8 left bigCol' id='puncSide'>
-            <div id = 'syllableCount'>Syllable Count</div>
-                {{# each lines1}}
-                <span class={{this.class}} id={{this.line_id}}>    
-                {{# each this.content}}
-                    <span id={{this.word_id}} class = {{this.class}}>
-    <span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span>{{/each}}</span>
-                        <span class = "space">&nbsp;</span>
-                    </span>
-                {{/each}}
-                <span class='lineCount'></span>
-                </span>
-                <br>
-            {{/each}}
-            </div>
-        
-        <div class='col-md-8 left bigCol' id='sentSide'>
-            <div id = 'syllableCount'>Syllable Count</div>
-                {{# each lines2}}
-                <span class={{this.class}} id={{this.line_id}}>    
-                {{# each this.content}}
-                    <span id={{this.word_id}} class = {{this.class}}>
-    <span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span>{{/each}}</span>
-                        <span class = "space">&nbsp;</span>
-                    </span>
-                {{/each}}
-                <span class='lineCount'></span>
-                </span>
-                <br>
-            {{/each}}
-            </div>
--->
         
     </div>
     {{/if}}
