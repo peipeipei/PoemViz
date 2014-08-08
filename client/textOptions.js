@@ -44,43 +44,55 @@ Template.poem.events({
     },
 //change how poem lines are displayed
 'change .optionSelect':function(event){
+    var pastConfig = Session.get('breaksOption');
     Session.set('breaksOption',$(event.currentTarget).val());
     if (Session.get('breaksOption') == 'origOption'){
-        $('#sentPunct').css('opacity', '0');
-        $('#allPunct').css('opacity', '0'); 
-        $('#original').css('opacity', '1');
+        switching($('#'+pastConfig), $('#origOption'));
+        $('#origOption').css('visibility','visible');
+        $('#puncOption').css('visibility','hidden');
+        $('#sentOption').css('visibility','hidden');
+        $('#addLayer').css('visibility','visible');
+        $('.layer').css('visibility','visible');
+        switching($('#color0'), $('#typing0'));
     }
     if (Session.get('breaksOption') == 'puncOption'){
-        $('#original').css('opacity', '0');
-        $('#sentPunct').css('opacity', '0');  
-        $('#allPunct').css('opacity', '1'); 
+        switching($('#'+pastConfig), $('#puncOption'));
+        $('#origOption').css('visibility','hidden');
+        $('#puncOption').css('visibility','visible');
+        $('#sentOption').css('visibility','hidden');
+        $('.layer').css('visibility','hidden');
+        $('#addLayer').css('visibility','hidden');
+        $('#typing0').css('visibility','visible');
+        if (pastConfig == 'origOption'){
+        switching($('#color0'), $('#typing0'));
+        $("#layers").animate({ scrollTop: 0}, "fast");
+        }
+        $('.optionSelect').val(Session.get('breaksOption'));
     }
     if (Session.get('breaksOption') == 'sentOption'){
-        $('#original').css('opacity', '0');
-        $('#allPunct').css('opacity', '0');
-         $('#sentPunct').css('opacity', '1'); 
+        switching($('#'+pastConfig), $('#sentOption'));
+        $('#origOption').css('visibility','hidden');
+        $('#puncOption').css('visibility','hidden');
+        $('#sentOption').css('visibility','visible');
+        $('.layer').css('visibility','hidden');
+        $('#addLayer').css('visibility','hidden');
+        $('#typing0').css('visibility','visible');
+        if (pastConfig == 'origOption'){
+        switching($('#color0'), $('#typing0'));
+        $("#layers").animate({ scrollTop: 0}, "fast");
+        }
+        $('.optionSelect').val(Session.get('breaksOption'));
     }
-    /*if (Session.get('breaksOption') == 'origOption'){
-    }
-    if (Session.get('breaksOption') == 'puncOption'){
-        $('#poemWrapper').html("<div class = 'poemIdentifiers' id = 'poemTitle'><br>{{poemTitle}}</div>"+
-               "<div class = 'poemIdentifiers' id = 'poemAuthor'>By {{poemAuthor}}</div>"+
-                "<div class = 'syllableCount'>Syllable Count</div>"+
-                    "{{# each lines1}}"+
-                    "<span class={{this.class}} id={{this.line_id}}>"+    
-                    "{{# each this.content}}"+
-                    "<span id={{this.word_id}} class = {{this.class}}>"+
-        "<span class='syllable'>{{# each this.content}}<span id={{this.letter_id}}  class={{this.class}}>{{this.content}}</span> {{/each}}</span>"+
-                            "<span class = 'space'>&nbsp;</span>"+
-                        "</span>"+
-                   "{{/each}}"+
-                   "<span class='lineCount'></span>"+
-                    "</span>"+
-                    "<br>"+
-                    "{{/each}}");
-    }
-    if (Session.get('breaksOption') == 'sentOption'){
-    }*/
-}
+}    
 });
+
+switching = function(div1, div2){
+                tdiv1 = div1.clone();
+                tdiv2 = div2.clone(); 
+                if(!div2.is(':empty')){
+                     div1.replaceWith(tdiv2);
+                      div2.replaceWith(tdiv1);
+                 }               
+}
+
   

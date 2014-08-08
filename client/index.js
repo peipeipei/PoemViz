@@ -243,6 +243,9 @@ Deps.autorun(function () {
          $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey);
          //expire shoutkey after an hour
          handleid = Meteor.setTimeout(function() {Shoutkeys.remove(shoutkeyID); console.log('woohoo!');}, EXPIRATION_TIME);
+        $('#origOption').css('visibility','visible');
+        $('#puncOption').css('visibility','hidden');
+        $('#sentOption').css('visibility','hidden');
          displaySelections();
          syllableCounts();
      }
@@ -317,8 +320,10 @@ Deps.autorun(function () {
           },
           //when something is removed from the Selections Collection
             removed: function (selection, beforeIndex) {
+            console.log('removed is called');
             var location = selection.location;
             var styleID = selection.style_id;
+            var curLayerNodeID = selection.layerNode_id;
             var style = Styles.find({_id:styleID}).fetch();
             //used to catch errors
             if (style.length > 0){
@@ -327,6 +332,7 @@ Deps.autorun(function () {
                 //must go through all selections that may have colored line/word/character to check and
                 //see if after one background-color is turned off, there is another (from another layer)
                 //still coloring that line/word/character
+                console.log(location);
                 curRGBA = "transparent";
                 var allSelections = Selections.find({poem_id: Session.get('currentPoem'), location: location}).fetch();
                 _.each(allSelections, function(sel){
@@ -339,7 +345,9 @@ Deps.autorun(function () {
                          rgb = otherStyle.background_color;
                          var substring = rgb.substr(4);
                          substring = substring.slice(0, -1);
+                         if (otherStyle.layer_id != curLayerNodeID){
                          curRGBA = 'rgba('+substring+', '+op+')';
+                          }
                         }
                    }
                 });
