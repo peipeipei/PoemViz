@@ -18,10 +18,16 @@ Template.poem.events({
         Meteor.clearTimeout(handleid);
         Shoutkeys.remove(shoutkeyID);
         var key = getRandomWord()
+        // New Poem Group Implementation
         Shoutkeys.insert({
             key:key,
-            poem_id:Session.get('currentPoem'),
+            poem_group_id:Poems.findOne({_id: Session.get('currentPoem')}).poemGroup,
         });
+//        Shoutkeys.insert({
+//            key:key,
+//            poem_id:Session.get('currentPoem'),
+//        });
+        
         var $div = $('<div>'); 
         $div.attr('title', 'Launch');
         url = window.location.host + '/' + key;

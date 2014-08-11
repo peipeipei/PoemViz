@@ -10,14 +10,19 @@ Template.teacher.events({
         var title = $('#title').val();
         var author = $('#author').val();
         var newPoemGroup = PoemGroups.insert({});
-//        var key = getRandomWord()
-////        Shoutkeys.insert({
-////            key:key,
-////            poem_group_id:newPoemGroup
-////        });
-//        var poemSectionDivs = $('#poemSections').children('.poemSection');
-//        for (var i = 1; i <= poemSectionDivs.length; i++){
+//         New Poem Group Implementation
+        var key = getRandomWord()
+        var poemSectionDivs = $('#poemSections').children('.poemSection');
+//        for (var i = 0; i < poemSectionDivs.length; i++){
+//            Shoutkeys.insert({
+//                key:key,
+//                index: i,
+//                poem_id:newPoem,
+//            });
+//            console.log("loop");
+//            var poemSectionDiv = poemSectionDivs[i];
 //            var raw = $(poemSectionDiv).val();
+//            console.log(raw);
 //            var poemObjsArray = parseHTML(raw);
 //            var newPoem = Poems.insert({
 //                poemGroup: newPoemGroup,
@@ -28,6 +33,7 @@ Template.teacher.events({
 //                puncObj: poemObjsArray[1],
 //                sentObj: poemObjsArray[2],
 //            });
+//            console.log(Poems.find().fetch());
 //            Layers.insert({
 //                name:'Text Options',
 //                id:'typing0',
@@ -73,6 +79,12 @@ Template.teacher.events({
 //                poem_id:newPoem,
 //                type:'stressing',
 //            });
+//            Layers.insert({
+//            name:'Text Options',
+//            id:'typing0',
+//            poem_id:newPoem,
+//            type:'typing'
+//        }); 
 //        }
 //        var $div = $('<div>'); 
 //        $div.attr('title', 'Launch');
@@ -86,7 +98,7 @@ Template.teacher.events({
 //          buttons: {
 //            "Go": function() {
 //              $( this).dialog('close');
-//               Router.go('/'+key, '_blank');
+//               Router.go('/'+key + '/' + i, '_blank');
 //            },
 //            Cancel: function() {
 //              $( this ).dialog( "close" );
@@ -94,12 +106,14 @@ Template.teacher.events({
 //          }
 //        })
         
-        
+        //End New Poem Group Implementation
         
         var raw=$('#createPoem').val();
+        var newPoemIndex = 0;
         var poemObjsArray = parseHTML(raw);
         var newPoem = Poems.insert({
             poemGroup: newPoemGroup,
+            poemGroupIndex: newPoemIndex,
             title:title,
             author:author,
             origObj: poemObjsArray[0],
@@ -110,8 +124,15 @@ Template.teacher.events({
         var key = getRandomWord()
         Shoutkeys.insert({
             key:key,
-            poem_id:newPoem
+            index: newPoemIndex,
+            poem_id:newPoem,
         });
+//        var key = getRandomWord()
+//        Shoutkeys.insert({
+//            key:key,
+//            poem_group_id:newPoemGroup,
+////            index: newPoemIndex
+//        });
         var $div = $('<div>'); 
         $div.attr('title', 'Launch');
         url = window.location.host + '/' + key;
@@ -124,7 +145,8 @@ Template.teacher.events({
           buttons: {
             "Go": function() {
               $( this).dialog('close');
-               Router.go('/'+key, '_blank');
+               Router.go('/'+key + '/' + newPoemIndex, '_blank');
+//               Router.go('/'+key, '_blank');
             },
             Cancel: function() {
               $( this ).dialog( "close" );
@@ -170,14 +192,15 @@ Template.teacher.events({
             poem_id:newPoem,
             type:'stressing',
         });
-        var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
-        Layers.update(sel, {$set:{style:selStyle, keyword: key}});
         Layers.insert({
             name:'Text Options',
             id:'typing0',
             poem_id:newPoem,
             type:'typing'
-        });   
+        }); 
+        var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
+        Layers.update(sel, {$set:{style:selStyle, keyword: key}});
+          
     },
     
     'click #newPoemSection':function(){

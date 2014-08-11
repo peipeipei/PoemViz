@@ -238,6 +238,11 @@ Deps.autorun(function () {
     ///////////////////////////
      Template.poem.rendered=function(){
          console.log("RENDER");
+         // NEW POEM GROUP IMPLEMENTATION
+//         var currentPoemGroup = Poems.findOne({_id: Session.get('currentPoem')}).poemGroup;
+//         shoutkeyKey = Shoutkeys.findOne({poem_group_id: currentPoemGroup}).key;
+//         shoutkeyID = Shoutkeys.findOne({poem_group_id: currentPoemGroup})._id;
+//         $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey + '/' +Poems.findOne({_id: Session.get('currentPoem')}).poemGroupIndex);
          shoutkeyKey = Shoutkeys.findOne({poem_id: Session.get('currentPoem')}).key;
          shoutkeyID = Shoutkeys.findOne({poem_id: Session.get('currentPoem')})._id;
          $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey);

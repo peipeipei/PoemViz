@@ -10,9 +10,9 @@ Router.map(function () {
     data: function(){
       var poem_id = this.params.id
       console.log("poemid: ",poem_id)
-      console.log( Poems.findOne(poem_id) );
-      var poemTitle = Poems.findOne({_id:poem_id}).title
-      var poemAuthor = Poems.findOne({_id:poem_id}).author
+//      console.log( Poems.findOne(poem_id) );
+      var poemTitle = Poems.findOne({_id:poem_id}).title;
+      var poemAuthor = Poems.findOne({_id:poem_id}).author;
       var lines = Poems.findOne({_id:poem_id}).origObj;
       var lines1 = Poems.findOne({_id:poem_id}).puncObj;
       var lines2 = Poems.findOne({_id:poem_id}).sentObj;
@@ -35,15 +35,31 @@ Router.map(function () {
     })
     this.route('teacher', {path:'/create'})
     this.route('redirect',{
-        path: '/:_word',
+        path: '/:_word/:_index',
+//        path: '/:_word/',
         notFoundTemplate: 'error',
         waitOn: function(){
-          return [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('shoutkeys')]
+            //console.log("id:",this.params.id)
+//          return [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('shoutkeys')]
+            return [Meteor.subscribe('poems'), Meteor.subscribe('shoutkeys')]
         },
         data: function(){
-            console.log(this);
-            console.log(Shoutkeys.findOne({key:this.params._word}));
-            return {"shoutkey":Shoutkeys.findOne({key:this.params._word})};
+//            console.log("this");
+//            console.log(this);
+////            console.log(Shoutkeys.findOne({key:this.params._word}));
+//            //var index = this.params._index
+//            console.log("shoutkey");
+//            console.log(Shoutkeys.findOne({key:this.params._word}));
+//            console.log("poem id");
+//            console.log(Shoutkeys.findOne({key:this.params._word}).poem_id);
+            return {"poem_id": Shoutkeys.findOne({key:this.params._word}).poem_id};
+//            return {"poem_id": Shoutkeys.findOne({key:this.params._word})};
+//            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index: this.params._index})}
+//            var poemGroupID = Shoutkeys.findOne({key:this.params._word}).poem_group_id;
+//            console.log("poem group id: ");
+//            console.log(poemGroupID);
+//            console.log(Poems.findOne({poemGroup:poemGroupID, poemGroupIndex:this.params._index}));
+//            return Poems.findOne({poemGroup:poemGroupID, poemGroupIndex:this.params._index});
         },
         action: function(){
         if (this.ready()) {
@@ -55,7 +71,17 @@ Router.map(function () {
 
 
 Template.redirect.redirect = function(){
-     Router.go('poem', {"id":this.shoutkey.poem_id});
+    // New Poem Group Implementation
+    console.log("this:");
+    
+    console.log(this);
+    console.log(this.poem_id);
+//    Router.go('/poem/'+this.poem_id, '_blank');
+//    Router.go('poem', {"id":this});
+//    console.log(this)
+//    console.log("this . poem id");
+//    console.log(this.poem_id);
+    Router.go('poem', {"id":this.poem_id});
 }
 
 Template.redirect.isReady = function(){
