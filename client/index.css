@@ -9,6 +9,10 @@
 #questionMark{
    height: 50px;
    width: 50px;
+/*   font-size: 30pt;    */
+}
+#questionMarkButton{
+    font-size: 25pt;
 }
 
 .word{

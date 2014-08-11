@@ -105,7 +105,6 @@ Template.teacher.events({
 //            }
 //          }
 //        })
-        
         //End New Poem Group Implementation
         
         var raw=$('#createPoem').val();
@@ -127,12 +126,6 @@ Template.teacher.events({
             index: newPoemIndex,
             poem_id:newPoem,
         });
-//        var key = getRandomWord()
-//        Shoutkeys.insert({
-//            key:key,
-//            poem_group_id:newPoemGroup,
-////            index: newPoemIndex
-//        });
         var $div = $('<div>'); 
         $div.attr('title', 'Launch');
         url = window.location.host + '/' + key;
