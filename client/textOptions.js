@@ -50,8 +50,55 @@ Template.poem.events({
     },
 //change how poem lines are displayed
 'change .optionSelect':function(event){
+    var pastConfig = Session.get('breaksOption');
     Session.set('breaksOption',$(event.currentTarget).val());
-    //setTimeout(function() {syllableCounts()}, 1000);
-}
+    if (Session.get('breaksOption') == 'origOption'){
+        switching($('#'+pastConfig), $('#origOption'));
+        $('#origOption').css('visibility','visible');
+        $('#puncOption').css('visibility','hidden');
+        $('#sentOption').css('visibility','hidden');
+        $('#addLayer').css('visibility','visible');
+        $('.layer').css('visibility','visible');
+        switching($('#color0'), $('#typing0'));
+    }
+    if (Session.get('breaksOption') == 'puncOption'){
+        switching($('#'+pastConfig), $('#puncOption'));
+        $('#origOption').css('visibility','hidden');
+        $('#puncOption').css('visibility','visible');
+        $('#sentOption').css('visibility','hidden');
+        $('.layer').css('visibility','hidden');
+        $('#addLayer').css('visibility','hidden');
+        $('#typing0').css('visibility','visible');
+        if (pastConfig == 'origOption'){
+        switching($('#color0'), $('#typing0'));
+        $("#layers").animate({ scrollTop: 0}, "fast");
+        }
+        $('.optionSelect').val(Session.get('breaksOption'));
+    }
+    if (Session.get('breaksOption') == 'sentOption'){
+        switching($('#'+pastConfig), $('#sentOption'));
+        $('#origOption').css('visibility','hidden');
+        $('#puncOption').css('visibility','hidden');
+        $('#sentOption').css('visibility','visible');
+        $('.layer').css('visibility','hidden');
+        $('#addLayer').css('visibility','hidden');
+        $('#typing0').css('visibility','visible');
+        if (pastConfig == 'origOption'){
+        switching($('#color0'), $('#typing0'));
+        $("#layers").animate({ scrollTop: 0}, "fast");
+        }
+        $('.optionSelect').val(Session.get('breaksOption'));
+    }
+}    
 });
+
+switching = function(div1, div2){
+                tdiv1 = div1.clone();
+                tdiv2 = div2.clone(); 
+                if(!div2.is(':empty')){
+                     div1.replaceWith(tdiv2);
+                      div2.replaceWith(tdiv1);
+                 }               
+}
+
   

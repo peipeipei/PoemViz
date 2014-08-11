@@ -3,7 +3,13 @@
     overflow-x: auto !important;
 }*/
    
-    
+.helpBox{
+    display: inline-block;
+}
+#questionMark{
+   height: 50px;
+   width: 50px;
+}
 
 .word{
     display: inline;

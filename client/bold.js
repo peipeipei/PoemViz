@@ -12,22 +12,12 @@ boldClick = function(thing){
         }
     });
     if (flag){
+        console.log("selection inserted");
         Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')});
     }else{
-       var idR = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
-        var target = "";
-        _.each(idR, function(sel){
-            var styleR = sel.style_id;
-            var stylethis = Styles.findOne({_id: styleR});
-            if (stylethis !== undefined){
-            if (stylethis.layer_id == Session.get('curLayer')){
-                target = sel;
-            }
-            }
-        })
-        Selections.remove(target._id);
+       var selID = Selections.findOne({poem_id: Session.get('currentPoem'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')})._id;
+        Selections.remove(selID);
     }
-
 }
 
 //contains all the events that happen on the poem page

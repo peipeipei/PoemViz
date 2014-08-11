@@ -34,13 +34,14 @@
             <div class='col-md-8 left bigCol' id='leftSide'>
 <!--                Poem wrapper exists so that the whole block can get a scroll bar-->
                 <div id = 'poemWrapper'>
-                 <div id = 'shoutkey'><br></div>
-                 <span><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span><br>
+                <div class="helpBox"><button type="button" class="btn btn-default instructions" data-active=false><img  id="questionMark" src='question.gif' alt="Instructions"></button></div>
+                <div class = "helpBox"><span id = 'shoutkey'></span><span><br><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span></div>
+        
                 <div class = 'poemIdentifiers' id = 'poemTitle'><br>{{poemTitle}}</div>
                 <div class = 'poemIdentifiers' id = 'poemAuthor'>By {{poemAuthor}}</div>
-                
-                
-                    <div class = 'syllableCount'>Syllable Count</div>
+                 
+                <div id = "origOption">
+                <div class = 'syllableCount'>Syllable Count</div>
                    {{# each lines}}
                         <span class={{this.class}} id={{this.line_id}}>    
                         {{# each this.content}}
@@ -49,7 +50,9 @@
                         </span>
                         <br>
                     {{/each}}
+                 </div>
                     
+                    <div id = "puncOption">
                     <div class = 'syllableCount'>Syllable Count</div>
                     {{# each lines1}}
                     <span class={{this.class}} id={{this.line_id}}>    
@@ -63,7 +66,9 @@
                     </span>
                     <br>
                     {{/each}}
+                    </div>
                     
+                    <div id = "sentOption">
                     <div class = 'syllableCount'>Syllable Count</div>
                     {{# each lines2}}
                     <span class={{this.class}} id={{this.line_id}}>    
@@ -77,8 +82,10 @@
                     </span>
                     <br>
                     {{/each}}
+                    </div>
+                    
                 </div>
-            
+                
             </div>
             <div class='col-md-4 right bigCol' id='layers'> 
             {{# each layer}}
@@ -178,7 +185,7 @@
             {{/each}}
             
                 
-                <div class="dropdown btn-group">
+                <div class="dropdown btn-group" id="addLayer">
                     <a class="btn dropdown-toggle layers-menu" data-toggle="dropdown" href="#">
                         Add Layer
                         <span class="caret"></span>

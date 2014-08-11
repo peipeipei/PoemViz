@@ -19,7 +19,16 @@ chooseColor = function (thing){
         })
         $(thing).addClass('selectedColorSquare');
         console.log('insert');
+        
+        //only add if no style already added
+        if (Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')}) == undefined){
+        console.log("curStyle is undefined");
         var curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
+        }  
+        else{
+            console.log("curStyle is undefined");
+            var curStyle = Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')})._id;
+        }
         console.log(curStyle);
         Session.set("curStyle", curStyle);
     }
@@ -29,7 +38,15 @@ chooseColor = function (thing){
             $(this).removeClass('selectedColorSquare');
         })
         $(thing).addClass('selectedColorSquare');
-        var curStyle = Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+        //only add if no style already added
+        if (Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true}) == undefined){
+        console.log("curStyle is undefined");
+        var curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
+        }  
+        
+        else{
+            var curStyle = Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true})._id;
+        }
         Session.set("curStyle", curStyle);
     }
 };
@@ -52,9 +69,7 @@ colorClick = function (thing){
     });
     if (flag){
         Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')});
-        console.log("flag is true");
     }else{
-        console.log(Selections.find().fetch());
        var selID = Selections.findOne({poem_id: Session.get('currentPoem'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')})._id;
         Selections.remove(selID);
     }
@@ -85,12 +100,14 @@ Template.poem.events({
         var poemID = Session.get('currentPoem');
         var layerIDHTML = $(event.currentTarget).closest('.layer').attr('id')
         Session.set('curLayer', layerIDHTML);
-        addColor();
         var layerIDHTML = Session.get('curLayer');
         var layerID = Layers.findOne({poem_id: poemID, id:layerIDHTML})._id;
         var layerArray = Layers.findOne({poem_id: poemID, id:layerIDHTML}).layerArray;
         var colorIndex = ColorIndices.findOne({poem_id: poemID, layer:layerID}).index;
-        if (colorIndex >= layerArray.length){
+        if (colorIndex < layerArray.length){
+            addColor();
+        }
+        if (colorIndex >= layerArray.length - 1){
             $(event.target).css('display','none');
         }
     },
