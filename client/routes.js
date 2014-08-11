@@ -50,22 +50,9 @@ Router.map(function () {
             return [Meteor.subscribe('poems'), Meteor.subscribe('shoutkeys')]
         },
         data: function(){
-//            console.log("this");
-//            console.log(this);
-////            console.log(Shoutkeys.findOne({key:this.params._word}));
-//            //var index = this.params._index
-//            console.log("shoutkey");
-//            console.log(Shoutkeys.findOne({key:this.params._word}));
-//            console.log("poem id");
-//            console.log(Shoutkeys.findOne({key:this.params._word}).poem_id);
-            return {"poem_id": Shoutkeys.findOne({key:this.params._word}).poem_id};
-//            return {"poem_id": Shoutkeys.findOne({key:this.params._word})};
-//            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index: this.params._index})}
-//            var poemGroupID = Shoutkeys.findOne({key:this.params._word}).poem_group_id;
-//            console.log("poem group id: ");
-//            console.log(poemGroupID);
-//            console.log(Poems.findOne({poemGroup:poemGroupID, poemGroupIndex:this.params._index}));
-//            return Poems.findOne({poemGroup:poemGroupID, poemGroupIndex:this.params._index});
+            console.log("index");
+            console.log(this.params._index);
+            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:this.params._index}).poem_id};
         },
         action: function(){
         if (this.ready()) {
