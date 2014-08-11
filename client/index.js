@@ -251,7 +251,7 @@ Deps.autorun(function () {
          displaySelections();
          syllableCounts();
         // $( ".line" ).tooltip({ content: Selections.find({layerNode_id });
-          $( ".line" ).tooltip({ content: "this is a line!"});
+        //  $( ".line" ).tooltip({ content: "this is a line!"});
      }
      
      //what to do upon rendering of poem
