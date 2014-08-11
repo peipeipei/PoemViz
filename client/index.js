@@ -250,6 +250,8 @@ Deps.autorun(function () {
          document.title = Poems.findOne(Session.get('currentPoem')).title;
          displaySelections();
          syllableCounts();
+        // $( ".line" ).tooltip({ content: Selections.find({layerNode_id });
+          $( ".line" ).tooltip({ content: "this is a line!"});
      }
      
      //what to do upon rendering of poem
@@ -370,11 +372,14 @@ Deps.autorun(function () {
             }
             //if removed selection is bolding
             if ((style[0].bold !== null)&&(typeof style[0].bold !== "undefined")) {
-                $("."+location).css(
+               /* $("."+location).css(
                 {
                     "font-weight": "normal"
                 }
-               );
+               );*/
+               //so that word can be bolded if line is bolded
+               $("."+location).css("font-weight","");
+               $("."+location).css("color","");
             }
             //if removed selection is stressing
             if((style[0].verticalAlign !== null)&&(typeof style[0].verticalAlign !== "undefined")){
