@@ -238,16 +238,15 @@ Deps.autorun(function () {
     ///////////////////////////
      Template.poem.rendered=function(){
          console.log("RENDER");
-         // NEW POEM GROUP IMPLEMENTATION
-//         var currentPoemGroup = Poems.findOne({_id: Session.get('currentPoem')}).poemGroup;
-//         shoutkeyKey = Shoutkeys.findOne({poem_group_id: currentPoemGroup}).key;
-//         shoutkeyID = Shoutkeys.findOne({poem_group_id: currentPoemGroup})._id;
-//         $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey + '/' +Poems.findOne({_id: Session.get('currentPoem')}).poemGroupIndex);
-         shoutkeyKey = Shoutkeys.findOne({poem_id: Session.get('currentPoem')}).key;
-         shoutkeyID = Shoutkeys.findOne({poem_id: Session.get('currentPoem')})._id;
-         $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey);
+         //display current shoutkey information
+         var curPoem = Session.get('currentPoem')
+         shoutkeyKey = Shoutkeys.findOne({poem_id: curPoem}).key;
+         shoutkeyIndex = Shoutkeys.findOne({poem_id: curPoem}).index;
+         shoutkeyID = Shoutkeys.findOne({poem_id: curPoem})._id;
+         $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey + '/' + shoutkeyIndex);
          //expire shoutkey after an hour
          handleid = Meteor.setTimeout(function() {Shoutkeys.remove(shoutkeyID); console.log('woohoo!');}, EXPIRATION_TIME);
+         
         $('#origOption').css('visibility','visible');
         $('#puncOption').css('visibility','hidden');
         $('#sentOption').css('visibility','hidden');

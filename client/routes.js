@@ -50,9 +50,7 @@ Router.map(function () {
             return [Meteor.subscribe('poems'), Meteor.subscribe('shoutkeys')]
         },
         data: function(){
-            console.log("index");
-            console.log(this.params._index);
-            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:this.params._index}).poem_id};
+            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:parseInt(this.params._index)}).poem_id};
         },
         action: function(){
         if (this.ready()) {
