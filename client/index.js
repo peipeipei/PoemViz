@@ -1,5 +1,5 @@
 //five aethestically pleasing sets of colors to use (six colors in each)
-colorsSailboat =["rgba(255,175,110,1)","rgba(187,115,101,1)","rgba(222,173,161,1)","rgba(255,255,204,1)","rgba(60,70,99,1)","rgba(109,116,140,1)"];
+colorsSailboat =["rgba(255,175,110,1)","rgba(187,115,101,1)","rgba(222,173,161,1)","rgba(255,255,204,1)","rgba(153,230,255,1)","'rgba(200,223,226,1)'"];
 colorsRainbow = ['rgba(241,103,69,1)', 'rgba(255,198,93,1)','rgba(123,200,164,1)','rgba(76,195,217,1)','rgba(147,100,141,1)','rgba(190,190,190,1)'];
 colorsPastelOcean = ['rgba(190,214,97,1)','rgba(137,232,148,1)','rgba(120,213,227,1)','rgba(122,245,245,1)','rgba(52,221,221,1)','rgba(147,226,213,1)'];
 colorsSciFiDream = ['rgba(209,232,238,1)', 'rgba(246,231,245,1)', 'rgba(255,211,224,1)', 'rgba(254,250,246,1)', 'rgba(214,223,226,1)', 'rgba(185,202,143,1)'];
@@ -31,7 +31,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 });
 
 //when uncommented, nullifies all console.log's by redefining the function itself
-//console.log = function() {}
+console.log = function() {}
 
 //makes sure that all your collections are ready before loading the page
 checkIsReady = function(){
