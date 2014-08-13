@@ -5,7 +5,12 @@ Template.poem.events({
     if($('.wordOption').data('active')){
            // $('#leftSide').css('color', 'rgba(0,0,0,1)');
            // $('.word').css('color', 'rgba(0,0,0,1)');
-           $('.letter').each(function() {
+           $('.line .word .letter').each(function() {
+               if ($(this).hasClass('noStyling')){
+                    $(this).removeAttr("style"); 
+                    $(this).removeClass('noStyling');
+               }
+               else{
                var letterColor = $(this).css('color').trim();
                 console.log(letterColor);
                if (letterColor.substring(0,4) == "rgb("){
@@ -23,14 +28,15 @@ Template.poem.events({
                     console.log(transparentColor);
                     $(this).css('color', transparentColor);
                 }
-                    
+               }           
            });
             $('.wordOption').text('Turn Text Off');
             $('.wordOption').data('active', false);
         }else{
            // $('#leftSide').css('color', 'rgba(0,0,0,0)');
            // $('.word').css('color', 'rgba(0,0,0,0)');
-            $('.letter').each(function() {
+            $('.line .word .letter').each(function() {
+                if ($(this).attr('style') != undefined){
                var letterColor = $(this).css('color').trim();
                 console.log(letterColor);
                if (letterColor.substring(0,4) == "rgb("){
@@ -48,7 +54,11 @@ Template.poem.events({
                     console.log(transparentColor);
                     $(this).css('color', transparentColor);
                 }
-                    
+                }
+                else{
+                  $(this).css('color', 'rgba(0,0,0,0)'); 
+                  $(this).addClass("noStyling");
+                }       
            });
             $('.wordOption').text('Turn Text On');
             $('.wordOption').data('active', true);
@@ -102,7 +112,7 @@ Template.poem.events({
 //       $('#origOption').css('visibility','visible');
 //        $('#puncOption').css('visibility','hidden');
 //        $('#sentOption').css('visibility','hidden');
-        $('#addLayer').css('display','visible');
+        $('#addLayer').css('visibility','visible');
         $('.layer').css('display','block');
    //     switching($('#color0'), $('#typing0'));
     }

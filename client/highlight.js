@@ -128,11 +128,11 @@ Template.poem.events({
         }
        var divLayerID = 'color' + count;
        switch (count){
-               case 1: var array = colorsRainbow;
+               case 1: var array = colorsSciFiDream;
                break;
                case 2: var array = colorsPastelOcean;
                break;
-               case 3: var array = colorsSciFiDream;
+               case 3: var array = colorsSailboat;
                break;
                case 4: var array = colorsSorbet;
                break;
