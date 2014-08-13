@@ -20,19 +20,17 @@ Template.poem.events({
         Meteor.clearTimeout(handleid);
         Shoutkeys.remove(shoutkeyID);
         var key = getRandomWord()
-        // New Poem Group Implementation
+        var curPoem = Session.get('currentPoem')
+        var curPoemIndex = Poems.findOne({_id: curPoem}).poemGroupIndex
         Shoutkeys.insert({
             key:key,
-            poem_group_id:Poems.findOne({_id: Session.get('currentPoem')}).poemGroup,
+            index: curPoemIndex,
+            poem_id: curPoem,
         });
-//        Shoutkeys.insert({
-//            key:key,
-//            poem_id:Session.get('currentPoem'),
-//        });
         
         var $div = $('<div>'); 
         $div.attr('title', 'Launch');
-        url = window.location.host + '/' + key;
+        url = window.location.host + '/' + key + '/' + curPoemIndex;
         $div.html('Your exercise is at <br>' + url + '<br>');
         $div.dialog({
           resizable: false,
@@ -42,7 +40,7 @@ Template.poem.events({
           buttons: {
             "Go": function() {
               $( this).dialog('close');
-               Router.go('/'+key, '_blank');
+               Router.go('/'+key+'/'+curPoemIndex, '_blank');
             },
             Cancel: function() {
               $( this ).dialog( "close" );

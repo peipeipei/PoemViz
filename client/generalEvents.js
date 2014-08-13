@@ -16,7 +16,32 @@ Template.poem.events({
           modal: true,
         })
     },
-    //sync layer labels
+
+    'click #nextPoemSection':function(event){     
+        var poemID = Session.get('currentPoem');
+        var poemGroupID = Poems.findOne({_id: poemID}).poemGroup;
+        var poemsArray = PoemGroups.findOne({_id: poemGroupID}).poems;
+        var nextPoemIndex = poemsArray.indexOf(poemID) + 1;
+        console.log(nextPoemIndex-1);
+        console.log(nextPoemIndex);
+        if (nextPoemIndex >= poemsArray.length) return;
+        var nextPoemID = poemsArray[nextPoemIndex];
+        Router.go('/poem/' + nextPoemID);
+        
+    },
+    'click #previousPoemSection':function(event){
+        var poemID = Session.get('currentPoem');
+        var poemGroupID = Poems.findOne({_id: poemID}).poemGroup;
+        var poemsArray = PoemGroups.findOne({_id: poemGroupID}).poems;
+        var previousPoemIndex = poemsArray.indexOf(poemID) - 1;
+        console.log(previousPoemIndex+1);
+        console.log(previousPoemIndex);
+        if (previousPoemIndex < 0) return;
+        var previousPoemID = poemsArray[previousPoemIndex];
+        Router.go('/poem/' + previousPoemID);
+    },
+
+
     'blur .layerName':function(event){
         var layerID=$(event.currentTarget).parent().attr('id');
         var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
