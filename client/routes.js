@@ -39,7 +39,7 @@ Router.map(function () {
         waitOn: function(){
             return [Meteor.subscribe('shoutkeys')]
         },  
-    })
+    });
     this.route('redirect',{
         path: '/:_word/:_index',
 //        path: '/:_word/',
@@ -57,6 +57,16 @@ Router.map(function () {
             this.render();
         } 
         }
+    });
+    this.route('teacher', {
+        path:'/:_word/',
+        waitOn: function(){
+            return [Meteor.subscribe('shoutkeys'), Meteor.subscribe('poemGroups')]
+        },
+        data: function(){
+//            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:parseInt(this.params._index)}).poem_id};
+        },
+        
     });
 });   
 
