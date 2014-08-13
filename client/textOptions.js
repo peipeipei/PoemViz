@@ -54,23 +54,23 @@ Template.poem.events({
     Session.set('breaksOption',$(event.currentTarget).val());
     if (Session.get('breaksOption') == 'origOption'){
         switching($('#'+pastConfig), $('#origOption'));
-        $('#origOption').css('visibility','visible');
+       $('#origOption').css('visibility','visible');
         $('#puncOption').css('visibility','hidden');
         $('#sentOption').css('visibility','hidden');
-        $('#addLayer').css('visibility','visible');
-        $('.layer').css('visibility','visible');
-        switching($('#color0'), $('#typing0'));
+        $('#addLayer').css('display','visible');
+        $('.layer').css('display','block');
+   //     switching($('#color0'), $('#typing0'));
     }
     if (Session.get('breaksOption') == 'puncOption'){
         switching($('#'+pastConfig), $('#puncOption'));
         $('#origOption').css('visibility','hidden');
         $('#puncOption').css('visibility','visible');
         $('#sentOption').css('visibility','hidden');
-        $('.layer').css('visibility','hidden');
+        $('.layer').css('display','none');
         $('#addLayer').css('visibility','hidden');
-        $('#typing0').css('visibility','visible');
+        $('#typing0').css('display','block');
         if (pastConfig == 'origOption'){
-        switching($('#color0'), $('#typing0'));
+       // switching($('#color0'), $('#typing0'));
         $("#layers").animate({ scrollTop: 0}, "fast");
         }
         $('.optionSelect').val(Session.get('breaksOption'));
@@ -80,11 +80,11 @@ Template.poem.events({
         $('#origOption').css('visibility','hidden');
         $('#puncOption').css('visibility','hidden');
         $('#sentOption').css('visibility','visible');
-        $('.layer').css('visibility','hidden');
+        $('.layer').css('display','none');
         $('#addLayer').css('visibility','hidden');
-        $('#typing0').css('visibility','visible');
+        $('#typing0').css('display','block');
         if (pastConfig == 'origOption'){
-        switching($('#color0'), $('#typing0'));
+       // switching($('#color0'), $('#typing0'));
         $("#layers").animate({ scrollTop: 0}, "fast");
         }
         $('.optionSelect').val(Session.get('breaksOption'));
