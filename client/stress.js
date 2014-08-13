@@ -33,18 +33,19 @@ getSyllable = function(location){
   console.log('getSyllable called');
     if ($('.syllablesGrid').data('gridded') == false){
         doLast = false;
-        if ($("#"+location).css('border-left-color')=='rgb(0, 0, 0)'){
+        //if ($("#"+location).css('border-left-color')=='rgb(0, 0, 0)'){
+        if ($("#"+location).hasClass('syllableStyle')){
          var firstLetter = $("#"+location);}
         else{
-        //var firstLetter = $("#"+location).prevAll('.syllableStyle')[0];}
-        var firstLetter = $("#"+location).prevAll('span[style*="border-left-color: black"]')[0];}
+        var firstLetter = $("#"+location).prevAll('.syllableStyle')[0];}
+       // var firstLetter = $("#"+location).prevAll('span[style*="border-left-color: black"]')[0];}
         console.log(firstLetter);
         if (firstLetter == undefined){
             firstLetter = $("#"+location).closest('.word').children(".syllable:first").children('.letter');
            // firstLetter = $("#"+location).closest('.word').children('.letter');
         }
-        //var lastLetter = $("#"+location).nextAll('.syllableStyle')[0];
-        var lastLetter = $("#"+location).nextAll('span[style*="border-left-color: black"]')[0];
+        var lastLetter = $("#"+location).nextAll('.syllableStyle')[0];
+        //var lastLetter = $("#"+location).nextAll('span[style*="border-left-color: black"]')[0];
         if (lastLetter == undefined){
             lastLetter = $("#"+location).closest('.word').children(".syllable:first").children('.letter').last();
            // lastLetter = $("#"+location).closest('.word').children('.letter').last();
@@ -56,7 +57,8 @@ getSyllable = function(location){
     }
     else{
         doLast = true;
-        if ($("#"+location).css('border-left-color')=='rgb(0, 0, 0)'){
+        //if ($("#"+location).css('border-left-color')=='rgb(0, 0, 0)'){
+        if ($("#"+location).hasClass('syllableStyle')){
          var firstLetter = $("#"+location);}
         else{
             console.log($("#"+location).closest('.syllable'));
@@ -67,7 +69,7 @@ getSyllable = function(location){
     }
 }
 
-//contains all the events that happen on the poem page
+
 Template.poem.events({
     //delete all stress annotates
       'click .stressClear': function(event){

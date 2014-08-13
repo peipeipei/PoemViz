@@ -1,8 +1,9 @@
-/*.bigCol {
-    white-space:nowrap !important;
-    overflow-x: auto !important;
-}*/
-   
+
+div.selectedLayer{
+    background-color: lightblue;   
+}
+
+
 .helpBox{
     display: inline-block;
 }
@@ -115,6 +116,12 @@ td{
 
 
 .addColor{
+    height:20px;
+    width:20px;
+    padding:0px;
+}
+
+.addBoldColor{
     height:20px;
     width:20px;
     padding:0px;

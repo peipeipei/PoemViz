@@ -167,6 +167,11 @@ Template.teacher.events({
              color_value: colorsSailboat[1], 
              name: 'Editable Color Label'
         })
+        
+        Styles.insert({poem_id: newPoem, layer_id: 'color0', background_color: colorsSailboat[0]});
+        
+        Styles.insert({poem_id: newPoem, layer_id: 'color0', background_color: colorsSailboat[1]});
+        
         // NOTE: Index only starts at two because two colors have already been assigned to the 'Sound' layer
         ColorIndices.insert({
             poem_id:newPoem,

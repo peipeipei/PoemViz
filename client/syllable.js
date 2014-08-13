@@ -5,7 +5,8 @@ Template.poem.events({
             var confirmDelete=confirm("Are you sure you want to remove all syllable marks?");
             if (confirmDelete == true){
                 $('.letter, .space').each(function(){
-                    if ($(this).css('border-left-color')=='rgb(0,0,0)'){
+                   // if ($(this).css('border-left-color')=='rgb(0,0,0)'){
+                    if ($(this).hasClass("syllableStyle")){
                         $(this).css('border-left', 'none');
                     }
                 });
@@ -51,7 +52,8 @@ grid = function(){
             var intervals=[];
             letters.each(function(){
                 console.log($(this).css('border-left-color'))
-                if ($(this).css('border-left-color')=='rgb(0, 0, 0)' || $(this).css('border-left-color')=='black'){
+               // if ($(this).css('border-left-color')=='rgb(0, 0, 0)' || $(this).css('border-left-color')=='black'){
+                if ($(this).hasClass("syllableStyle")){
                     intervals.push(parseInt($(this).attr('id').slice(4),10));
                     console.log('hi');
                 }
@@ -92,7 +94,6 @@ grid = function(){
             $(oldSyl).replaceWith($(moreSyls).html())
             }
         });
-        //fix on first try
         $('.syllable').each(function(){
             //if this isn't last child of word
             var word = $(this).closest('.word');
@@ -145,7 +146,8 @@ noghostMarker = function(thing) {
 
 //must update syllableMarkers
 clickSyllable = function(thing) {
-    if ($(thing).css('border-left-color') == "rgb(0, 0, 0)"){
+    //if ($(thing).css('border-left-color') == "rgb(0, 0, 0)"){
+    if ($(thing).hasClass("syllableStyle")){
         $(thing).css('border-left', 'none');
         var syl = SyllableMarkers.find({location: $(thing).attr("id"), poem_id: Session.get('currentPoem')}).fetch(); 
         SyllableMarkers.remove(syl[0]._id);                             

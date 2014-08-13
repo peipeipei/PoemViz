@@ -4,10 +4,12 @@ Template.poem.events({
   'click .wordOption': function(event){
     if($('.wordOption').data('active')){
             $('#leftSide').css('color', 'rgba(0,0,0,1)');
+            $('.word').css('color', 'rgba(0,0,0,1)');
             $('.wordOption').text('Turn Text Off');
             $('.wordOption').data('active', false);
         }else{
             $('#leftSide').css('color', 'rgba(0,0,0,0)');
+            $('.word').css('color', 'rgba(0,0,0,0)');
             $('.wordOption').text('Turn Text On');
             $('.wordOption').data('active', true);
         }

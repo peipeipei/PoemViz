@@ -7,16 +7,13 @@ colorsSorbet = ['rgba(222,84,139,1)','rgba(222,138,171,1)','rgba(222,197,207,1)'
 //and a random one to keep cycling through as long as users continue to add layers (the old default)
 colorsGeneral = ['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)'];
 
-//default colors for highlighting (sound, words layers)
-colors=['rgba(255,153,153,1)','rgba(255,153,255,1)','rgba(221,153,255,1)','rgba(170,153,255,1)', "rgba(153,204,255,1)",'rgba(153,255,255,1)', 'rgba(153, 255, 170,1)','rgba(204,255,153,1)', 'rgba(255,255,153,1)', 'rgba(255,204,153,1)', "rgba(255,131,98,1)","rgba(187,115,101,1)","rgba(222,173,161,1)","rgba(255,255,204,1)","rgba(60,70,99,1)","rgba(109,116,140,1)", 'rgba(241,103,69,1)', 'rgba(255,198,93,1)','rgba(123,200,164,1)','rgba(76,195,217,1)','rgba(147,100,141,1)','rgba(190,190,190,1)', 'rgba(190,214,97,1)','rgba(137,232,148,1)','rgba(120,213,227,1)','rgba(122,245,245,1)','rgba(52,221,221,1)','rgba(147,226,213,1)'];
 //default colors for bolding (bolding layers)
 darkColors=['rgba(0,0,0,1)','rgba(0,102,51,1)','rgba(0,0,153,1)','rgba(85,0,102,1)','rgba(102,0,34,1)'];
+
 //defaults
 Session.set('highlightElement','line');
 Session.set('boldElement','boldLine');
-//used to store the current style
-//used to store the current layer (the number of the layer ID)
-num  = "";
+
 //used to get current clicked syllable
 firstID= "";
 lastID = ''; 
@@ -29,14 +26,6 @@ Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
 });
 
-//var poemsHandle = Meteor.subscribe('poems');
-//var layersHandle=Meteor.subscribe('layers');
-//var selectionsHandle=Meteor.subscribe('selections');
-//var stylesHandle=Meteor.subscribe('styles');
-//var syllablesHandle=Meteor.subscribe('syllableMarkers');
-//var linesHandle=Meteor.subscribe('lineCounts');
-
-
 Handlebars.registerHelper("equals", function (a, b) {
   return (a == b);
 });
@@ -46,9 +35,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 
 //makes sure that all your collections are ready before loading the page
 checkIsReady = function(){
-    //console.log('ready!');
     return true;
- /* return  poemsHandle.ready()&&layersHandle.ready()&&selectionsHandle.ready()&&stylesHandle.ready()&&syllablesHandle.ready()&&shoutkeysHandle.ready()&&colorIndicesHandle.ready()&&colorsHandle.ready();*/
 }
 
 Template.poem.isReady=function(){
@@ -59,7 +46,76 @@ Template.poem.isReady=function(){
 //returns all the layers in the database
 //called whenever layer is changed
 //populates 'layer' in html
-Template.poem.layer=function(){
+Template.layers.layer=function(){
+    // array of all the current layers the poem has
+    var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();
+    // for any layers with color options, display the color choices
+    // i is a layer
+    _.each(poemLayers, function(i){
+        var opacity = i.opacity;
+        switch (opacity){
+                case '1': i.isChecked100 = "checked" 
+                i.isChecked60 = ""
+                i.isChecked20 = ""
+                i.isChecked0 = ""
+                break;
+                case 1: i.isChecked100 = "checked" 
+                i.isChecked60 = ""
+                i.isChecked20 = ""
+                i.isChecked0 = ""
+                break;
+                case '.6': i.isChecked100 = "" 
+                i.isChecked60 = "checked"
+                i.isChecked20 = ""
+                i.isChecked0 = ""
+                break;
+                case .6: i.isChecked100 = "" 
+                i.isChecked60 = "checked"
+                i.isChecked20 = ""
+                i.isChecked0 = ""
+                break;
+                case '.2': i.isChecked100 = "" 
+                i.isChecked60 = ""
+                i.isChecked20 = "checked"
+                i.isChecked0 = ""
+                break;
+                case .2: i.isChecked100 = "" 
+                i.isChecked60 = ""
+                i.isChecked20 = "checked"
+                i.isChecked0 = ""
+                break;
+                case '0': i.isChecked100 = "" 
+                i.isChecked60 = ""
+                i.isChecked20 = ""
+                i.isChecked0 = "checked"
+                break;
+                case 0: i.isChecked100 = "" 
+                i.isChecked60 = ""
+                i.isChecked20 = ""
+                i.isChecked0 = "checked"
+                break;       
+          }
+        if (i.type == "rhyme") {
+            var layerID = i._id;
+            var layerColors = Colors.find({layer_id:layerID}).fetch();
+            i['colorOptions'] = layerColors
+            
+        }
+        if (i.type == "bold") {
+            var layerID = i._id;
+            var layerColors = Colors.find({layer_id:layerID}).fetch();
+            i['colorOptions'] = layerColors   
+        }
+    })
+    return poemLayers;
+}
+
+Template.layers.rendered = function(){
+    console.log("LAYERS RENDERED")   
+}
+
+
+/*Template.poem.layer=function(){
     // array of all the current layers the poem has
     var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();
     // for any layers with color options, display the color choices
@@ -115,121 +171,129 @@ Template.poem.layer=function(){
             
         }
     })
-    return poemLayers;
+    //return poemLayers;
+}*/
+
+
+Template.poem.events({
+    //adds a highlight color to the available colors
+    'click .layer': function(event){
+        var layerID = Layers.findOne({id: $(event.currentTarget).attr('id')})._id;
+        selectLayer(layerID);
+    }
+    
+});
+
+//called whenever Session.get('curLayer') is changed
+Template.layers.isSelectedLayer = function() {
+    console.log(this.id);
+    if (this.id == Session.get('curLayer')){
+        console.log("this is selected");
+        return "selectedLayer";
+    }
+    else{
+        return "";
+    }   
 }
 
-//used to delay updates
-typewatch = (function(){
-   var timer = 0;
-   return function(callback, ms){
-     clearTimeout (timer);
-     timer = setTimeout(callback, ms);
-   }  
- })();
+//called whenever Session.get('curLayer') is changed
+Template.layers.moreColors = function() {
+    if (Session.get('curLayer') != undefined){
+    var layerArray = Layers.findOne({id: Session.get('curLayer')}).layerArray;
+    var layerID = Layers.findOne({id: Session.get('curLayer')})._id;
+    if (ColorIndices.findOne({layer: layerID}) != undefined){
+    var colorPointer = ColorIndices.findOne({layer: layerID}).index;
+    console.log(layerArray.length, colorPointer);
+    if (layerArray.length > colorPointer){
+        return true;
+    }
+    else{
+        return false;
+    } 
+    }
+    }
+}
 
-// Runs automatically whenever a variable that it gets is reset (in this case, "curLayer")
-Deps.autorun(function () {
-    var clickedLayerID = Session.get('curLayer');
-    var clickedLayer = $('#' + clickedLayerID);
-    // differentiates between the page loading initially and the layer being clicked (either from physically clicking it or from autoclicking a new layer)
-    var layerWasClicked = (clickedLayer.position() != undefined);
-    //for each layer, make the one the user has most recently created or selected light blue
-    $('.layer').each(function(){
-        var thisID = $(this).attr('id')
-        if(thisID == clickedLayerID){
-            $(this).css('background-color', 'lightblue');
-            Session.set('selectedType',$(this).data('name'));
+//called whenever Session.get('curStyle') is changed
+Template.layers.isColorSquareSelected = function(){
+    var colorValue = this.color_value    
+    var curStyleID = Session.get('curStyle')
+
+    if(curStyleID != undefined){
+        if (colorValue == Styles.findOne(curStyleID).background_color || colorValue == Styles.findOne(curStyleID).font_color){
+            return "selectedColorSquare"
         }
         else{
-           $(this).css('background-color', '#dddddd'); 
+            return ""
         }
-    });
+    }else{
+        return ""   
+    }
+}
+
+//called when a layer is clicked
+//sets default color if necessary
+selectLayer = function(layerID) {
+    var layerName = Layers.findOne(layerID).id
+    var clickedLayer = $('#' + layerName);
+    
+    Session.set('curLayer', layerName);
+    Session.set('selectedType',Layers.findOne(layerID).type);
+
     if (Session.get('selectedType')=='bold'){
         //make sure user selects element as indicated by the dropdown
         var dropdown = $(clickedLayer).find('.boldSelect:first');
         Session.set('boldElement', $(dropdown).val());
-        var colorSquares = $(clickedLayer).find('.colorSquare');
-        var noneColored=true;
-        //set default color if necessary (on the re-selection of layer)
-        colorSquares.each(function(){
-            if($(this).hasClass('selectedColorSquare')){
-                noneColored=false;
-            }
-        })
-        if (noneColored){
-          chooseColor(colorSquares[0]);  
+        if (Session.get('curStyle') == undefined){
+           Session.set('curStyle', Styles.findOne({layer_id: layerName})._id); 
+        }
+        else{
+        var styleNodeLayer = Styles.findOne(Session.get('curStyle')).layer_id;
+        var styleLayer = Layers.findOne({id: styleNodeLayer})._id;
+        if (styleLayer !== layerID){
+            Session.set('curStyle', Styles.findOne({layer_id: layerName})._id);
+         }
         }
     }
     else if (Session.get('selectedType')=='rhyme'){
-         //make sure user selects element as indicated by the dropdown
-        var dropdown = $(clickedLayer).find('.rhymeSelect:first');
-        Session.set('highlightElement', $(dropdown).val());
-        if (layerWasClicked){
-            console.log('doing well');
-            var layerID = Layers.findOne({id:clickedLayerID})._id;
-            // if a layer doesn't currently have any colors, give it two default colors
-            if (Colors.find({layer_id:layerID}).fetch().length === 0){
-                addColor();
-                addColor();
-            }  
-            var clickedLayerIDLong = Layers.findOne({id:clickedLayerID})._id
-            var newColorSquares = Colors.find({layer_id:clickedLayerIDLong}).fetch();
-            var newNoneColored = true;
-            var defaultSelect;
-            for (var i = 0; i < newColorSquares.length; i++){
-                var colorSquareID = newColorSquares[i]._id;
-                var colorSquareSpan = $('#' +colorSquareID);
-                if (i == 0) {
-                    defaultSelect = colorSquareSpan;
-                }
-                if(colorSquareSpan.hasClass('selectedColorSquare')){
-                    newNoneColored=false;
-                }
-            }
-            
-            if (newNoneColored){
-                chooseColor(defaultSelect);   
-            }
-            
-//            var colorSquares=$(clickedLayer).find('.colorSquare');
-//            var noneColored=true;
-//            //set default color if necessary (on the re-selection of layer)
-//            colorSquares.each(function(){
-//                console.log($(this).hasClass('selectedColorSquare'));
-//                if($(this).hasClass('selectedColorSquare')){
-//                    noneColored=false;
-//                } 
-//            })
-        
-//            if (noneColored){
-//                console.log("noneColored");
-//                console.log(colorSquares);
-//                console.log(colorSquares[0]);
-//                
-//                chooseColor(colorSquares[0]);  
-//            }
+        //make sure user selects element as indicated by the dropdown
+        var dropdown = $(clickedLayer).find('.rhymeSelect:first');       
+        Session.set('highlightElement', $(dropdown).val());   
+        if (Session.get('curStyle') == undefined){
+           Session.set('curStyle', Styles.findOne({layer_id: layerName})._id); 
+        }
+        else{
+        var styleNodeLayer = Styles.findOne(Session.get('curStyle')).layer_id;
+        var styleLayer = Layers.findOne({id: styleNodeLayer})._id;
+        if (styleLayer !== layerID){
+            Session.set('curStyle', Styles.findOne({layer_id: layerName})._id);
+         }
         }
     }
-    
-    // Scrolls partial layers up or down. Also has means that when you create a new layer, it automatically scrolls to be on screen.
-    if (layerWasClicked){
-        var scrolledPos = $("#layers").scrollTop();
-        var layerPos = clickedLayer.position().top;
-        var layerHeight = clickedLayer.height();
-        var parentPadding = clickedLayer.parent().innerWidth() - clickedLayer.parent().width();
-        var parentHeight = clickedLayer.parent().height() - parentPadding;
-        
-        // if a layer is partially out of view from above, bring it down when you select it
-        if (layerPos < 0){
-            $("#layers").scrollTop(scrolledPos + layerPos);
-        }
-        // if a layer is partially out of view from below, bring it up when you select it
-        else if (layerPos + layerHeight > parentHeight){
-            $("#layers").scrollTop(scrolledPos + layerPos - parentHeight + layerHeight);
-        }
+    else {
+        Session.set('curStyle', undefined);
     }
-    
-});
+}
+
+//auto-scrolls to newly created layer
+function scrollForNewLayer(layerId){
+    var targetLayer = $('#' + layerID);
+    var scrolledPos = $("#layers").scrollTop();
+    var layerPos = targetLayer.position().top;
+    var layerHeight = targetLayer.height();
+    var parentPadding = targetLayer.parent().innerWidth() - targetLayer.parent().width();
+    var parentHeight = targetLayer.parent().height() - parentPadding;
+
+    // if a layer is partially out of view from above, bring it down when you select it
+    if (layerPos < 0){
+        $("#layers").scrollTop(scrolledPos + layerPos);
+    }
+    // if a layer is partially out of view from below, bring it up when you select it
+    else if (layerPos + layerHeight > parentHeight){
+        $("#layers").scrollTop(scrolledPos + layerPos - parentHeight + layerHeight);
+    }         
+}
+
     
     ///////////////////////////
     // Once the poem is rendered, run a query for all selections
@@ -238,11 +302,6 @@ Deps.autorun(function () {
     ///////////////////////////
      Template.poem.rendered=function(){
          console.log("RENDER");
-         // NEW POEM GROUP IMPLEMENTATION
-//         var currentPoemGroup = Poems.findOne({_id: Session.get('currentPoem')}).poemGroup;
-//         shoutkeyKey = Shoutkeys.findOne({poem_group_id: currentPoemGroup}).key;
-//         shoutkeyID = Shoutkeys.findOne({poem_group_id: currentPoemGroup})._id;
-//         $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey + '/' +Poems.findOne({_id: Session.get('currentPoem')}).poemGroupIndex);
          shoutkeyKey = Shoutkeys.findOne({poem_id: Session.get('currentPoem')}).key;
          shoutkeyID = Shoutkeys.findOne({poem_id: Session.get('currentPoem')})._id;
          $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey);
@@ -283,18 +342,17 @@ Deps.autorun(function () {
             var layerID = Layers.findOne({poem_id: Session.get('currentPoem'), id: layerNodeID})._id;
             //if selection is from highlighting style/layer
             if ((style[0].background_color !== null)&&(typeof style[0].background_color !== "undefined")) {
-               var rgb = style[0].background_color;
-               var substring = rgb.substr(4);
-               substring = substring.slice(0, -1);
-               var curRGBA = 'rgba('+substring+', ';
-               console.log(curRGBA);
-               /*var lastIndex = rgba.lastIndexOf(",");
-               var substring = rgba.substr(0, lastIndex+1);*/
+               var rgba = style[0].background_color;
+               var lastIndex = rgba.lastIndexOf(",");
+               var substring = rgba.substr(0, lastIndex+1);
                //check opacity of layer that made the selection
+               var curRGBA = substring+' ';
                var op = Layers.findOne(layerID).opacity;
+               var newRGBA = curRGBA+op+")";
+                console.log(newRGBA);
                $("."+location).css(
                 {
-                    "background": curRGBA+op+")"
+                    "background": newRGBA
                 });
             }
             //if selection is from bolding style/layer
@@ -343,24 +401,29 @@ Deps.autorun(function () {
                 //see if after one background-color is turned off, there is another (from another layer)
                 //still coloring that line/word/character
                 console.log(location);
-                curRGBA = "transparent";
+                var curRGBA = "transparent";
                 var allSelections = Selections.find({poem_id: Session.get('currentPoem'), location: location}).fetch();
+                console.log(allSelections);
                 _.each(allSelections, function(sel){
                   var piece = sel.style_id;  
                   var otherStyle = Styles.findOne({_id: piece});
                    if ((otherStyle !== undefined)){
                         if ((otherStyle.background_color !== undefined)){
-                            console.log(otherStyle.layer_id);
                          op = Layers.findOne({id:otherStyle.layer_id}).opacity;
-                         rgb = otherStyle.background_color;
-                         var substring = rgb.substr(4);
-                         substring = substring.slice(0, -1);
+                        var rgba = otherStyle.background_color;
+                        var lastIndex = rgba.lastIndexOf(",");
+                        var substring = rgba.substr(0, lastIndex+1);
+                        //check opacity of layer that made the selection
+                        curRGBA = substring;
+                        var newRGBA = curRGBA+op+")";
                          if (otherStyle.layer_id != curLayerNodeID){
-                         curRGBA = 'rgba('+substring+', '+op+')';
+                             curRGBA = newRGBA;
+                             console.log(curRGBA);
                           }
                         }
                    }
                 });
+                console.log(curRGBA);
                $("."+location).css(
                 {
                     "background-color": curRGBA
@@ -525,13 +588,13 @@ Deps.autorun(function () {
              }
             },
           });
-        //handles additions/changes from Layers Collection
+        //handles changes from Layers Collection
         var layersCursor = Layers.find({poem_id:Session.get('currentPoem')});
-        layersCursor.observe({         
+        layersCursor.observe({       
         //when opacity of layer is changed, all highlighting selections made by that layer must be changed
         changed: function (newLayer, oldLayer) {
             op = newLayer.opacity;
-            console.log("layer changed");
+            console.log("layer changed", op);
             if ((op !== null)&&(typeof op !== "undefined")) {
               var allSelections = Selections.find({poem_id: Session.get('currentPoem'), layerNode_id: newLayer.id}).fetch();  
                 _.each(allSelections, function(sel){
@@ -539,14 +602,16 @@ Deps.autorun(function () {
                     console.log(thisID);
                     var thisStyleID = sel.style_id;
                     var thisStyle = Styles.findOne(thisStyleID);
-                    var rgb = thisStyle.background_color;
-                    var substring = rgb.substr(4);
-                    substring = substring.slice(0, -1);
-                    var curRGBA = 'rgba('+substring+', ';
-                    console.log(curRGBA);          
+                    var rgba = thisStyle.background_color;
+                    var lastIndex = rgba.lastIndexOf(",");
+                    var substring = rgba.substr(0, lastIndex+1);
+                    //check opacity of layer that made the selection
+                    var curRGBA = substring+' ';
+                    var newRGBA = curRGBA+op+")";     
+                    console.log(newRGBA);
                     $("."+thisID).css( 
                     {
-                      "background": curRGBA+op+")"
+                      "background": newRGBA
                     }
                     );
                     });

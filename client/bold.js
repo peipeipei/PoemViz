@@ -1,8 +1,12 @@
 //how bolding is stored/removed from Selections Collection
+//called when line, word, letter clicked
 boldClick = function(thing){
-    var flag = true;
-    var possibleSelections = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
-    _.each(possibleSelections, function(sel){
+        console.log('boldClick');
+        var flag = true;
+        var possibleSelections = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
+        console.log("possible selections:");
+        console.log(possibleSelections);
+        _.each(possibleSelections, function(sel){
         var stylePosID = sel.style_id;
         var stylePos = Styles.findOne({_id:stylePosID});
         if (stylePos !== undefined){
@@ -12,7 +16,6 @@ boldClick = function(thing){
         }
     });
     if (flag){
-        console.log("selection inserted");
         Selections.insert({poem_id: Session.get('currentPoem'), style_id: Session.get('curStyle'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')});
     }else{
        var selID = Selections.findOne({poem_id: Session.get('currentPoem'), location: $(thing).attr('id'), layerNode_id: Session.get('curLayer')})._id;
@@ -20,41 +23,62 @@ boldClick = function(thing){
     }
 }
 
-//contains all the events that happen on the poem page
 Template.poem.events({
-    //same as addColor, but for the bold layer
+    //same as click .addColor, but for the bold layer
+    //calls addColor
     'click .addBoldColor': function(event){
-        Session.set('curLayer', $(event.currentTarget).closest('.layer').attr('id'));
-        var colorSquare=$('<div class="colorSquare"></div>');
-        var rightlightColors=$($(event.target).parent()).find('.boldColors');
-        var ccount=rightlightColors.find('.colorSquare').length;
-        colorSquare.data('color', darkColors[ccount]);
-        colorSquare.css('background-color', darkColors[ccount]);
-        rightlightColors.append(colorSquare);
-        $('.colorSquare').on('click',chooseColor);
-        if(ccount>=darkColors.length-1){
-            $(event.target).css('display','none');
-        }
+        var poemID = Session.get('currentPoem');
+        var layerIDHTML = $(event.currentTarget).closest('.layer').attr('id')
+        var layerID = Layers.findOne({id: layerIDHTML})._id;
+        Session.set('selectedType', 'bold');
+        var newStyleID = addColor(layerID);
+        Session.set('curStyle', newStyleID)
     },
     //same as rhymeSelect, but for bold
     'change .boldSelect':function(event){
         Session.set('boldElement',$(event.currentTarget).val());
     },
-        //create new layer that allows bolding
+     //create new layer that allows bolding
     'click .newBoldLayer':function(event){
         var name = $(event.currentTarget).text();
         var count=Layers.find({poem_id: Session.get('currentPoem'), type:'bold'}).fetch().length;
-        console.log(count);
         if (name == "Other Bolding"){
             name='Click to name this layer!';
         }
         var divLayerID = 'bold' + count;
-        Layers.insert({
+        var layerID = Layers.insert({
           name:name,
           id:divLayerID,
           poem_id:Session.get('currentPoem'),
           type:'bold',
+          layerArray: darkColors,
       })
+        // starts the "sound" layer with two default colors
+        Colors.insert({
+             poem_id:Session.get('currentPoem'),
+             layer_id: layerID,
+             color_value: darkColors[0], 
+             name: 'Editable Color Label'
+        })
+        Colors.insert({
+             poem_id:Session.get('currentPoem'),
+             layer_id: layerID,
+             color_value: darkColors[1], 
+             name: 'Editable Color Label'
+        })
+        
+        // NOTE: Index only starts at two because two colors have already been assigned to the 'Sound' layer
+        ColorIndices.insert({
+            poem_id:Session.get('currentPoem'),
+            index: 2,
+            layer: layerID
+        });
+        var newStyle = Styles.insert({poem_id: Session.get('currentPoem'), layer_id: divLayerID, font_color: darkColors[0], bold: true});    
+        Styles.insert({poem_id: Session.get('currentPoem'), layer_id: divLayerID,  font_color: darkColors[1], bold: true});
+        
         Session.set("curLayer", divLayerID);  
+        Session.set('boldElement','boldLine');
+        Session.set('selectedType','bold');
+        Session.set('curStyle', newStyle)   
     }
 });

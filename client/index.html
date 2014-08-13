@@ -88,6 +88,8 @@
                 
             </div>
             <div class='col-md-4 right bigCol' id='layers'> 
+               {{>layers}}    <br>
+            <!--
             {{# each layer}}
                 {{# if equals type 'rhyme'}}
                     <div class='layer' data-name='rhyme' id={{this.id}}>
@@ -182,7 +184,7 @@
                         
                     </div>
                 {{/if}}
-            {{/each}}
+            {{/each}}-->
             
                 
                 <div class="dropdown btn-group" id="addLayer">
@@ -200,4 +202,111 @@
         
     </div>
     {{/if}}
+</template>
+
+
+
+
+
+<template name="layers">
+     {{# each layer}}
+                {{# if equals type 'rhyme'}}
+                    <div class='layer {{isSelectedLayer}}' data-name='rhyme' id={{this.id}}>
+                        <div class="layerName" contenteditable=true>{{this.name}}</div>
+                        Highlight:
+                        <select class='rhymeSelect'>
+                            <option value='line'>Line</option>
+                            <option value='word'>Word</option>
+                            <option value='letter'>Letter</option>
+                        </select>
+                        <div class='highlighting'>
+                            <div class='highlightColors'>
+                            {{#each this.colorOptions}}
+                                <div class="colorBlock">
+                                    <span class = 'colorSquare {{isColorSquareSelected}}' id = {{this._id}} style = 'background-color: {{this.color_value}}'></span>
+                                    <span class = 'colorName' contenteditable=true>{{this.name}}</span>
+                                </div>
+                            {{/each}}
+
+                            </div>
+                            <br>
+                            {{#if moreColors}}
+                            <button class='addColor'>
+                                +
+                            </button>
+                            {{/if}}
+                        </div>
+                         <span class="opacities">
+                            <form action="">
+                                Opacity:
+                                <input type="radio" class="opacity" name={{this.id}} id="opacity100" data-value=1 {{isChecked100}}>100%
+                                <input type="radio" class="opacity" name={{this.id}} id="opacity60" data-value=.6 {{isChecked60}}>60%
+                                <input type="radio" class="opacity" name={{this.id}} id="opacity20" data-value=.2 {{isChecked20}}>20%
+                                <input type="radio" class="opacity" name={{this.id}} id="opacity20" data-value=0 {{isChecked0}}>0%
+                            </form>    
+                        </span>    
+                    </div>
+                {{/if}}
+                {{# if equals type 'syllable'}}
+                    <div class='layer {{isSelectedLayer}}' data-name='syllable' id={{this.id}}>
+                        <div class="layerName" contenteditable=true>{{this.name}}</div>
+                        <div class='info'> <i>Click to show syllable breaks.</i><br>Please click WITHIN words, the breaks between words have already been counted.</div>
+                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
+                        <div class="btn-group" id="toggle">
+                            <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
+                            <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
+                            
+
+                        </div>
+                    </div>
+                {{/if}}
+                {{# if equals type 'stressing'}}
+                    <div class="layer {{isSelectedLayer}}" data-name="stressing" id={{this.id}}>
+                    <div class="layerName" contenteditable=true>{{this.name}}</div>
+                    <div class='info'> <i>Click to show stress.</i></div>
+                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
+                    <div class="btn-group" id="toggle">
+                            <span><button type="button" class="btn btn-default stressClear">Clear All Stress Marks</button></span>
+                        </div>
+                    </div>
+                {{/if}}
+                {{# if equals type 'typing'}}
+                    <div class="layer {{isSelectedLayer}}" data-name="typing" id={{this.id}}>
+                        <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
+                        <div class="btn-group" id="toggle">
+                           <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span><br>
+                       
+                        Line Breaks by: <select class='optionSelect'>
+                            <option value='origOption'>Original</option>
+                            <option value='puncOption'>All Punctuation</option>
+                            <option value='sentOption'>Sentence Punctuation</option>
+                        </select>
+                        </div>
+                    </div>
+                {{/if}}
+                {{# if equals type 'bold'}}
+                    <div class='layer {{isSelectedLayer}}' data-name='bold' id={{this.id}}>
+                        <div class="layerName" contenteditable=true>{{this.name}}</div>
+                        Bold:
+                        <select class='boldSelect'>
+                            <option value='boldLine'>Line</option>
+                            <option value='boldWord'>Word</option>
+                            <option value='boldLetter'>Letter</option>
+                        </select>
+                        <div class='bolding'>
+                            {{#each this.colorOptions}}
+                                <div class="colorBlock">
+                                <span class = 'colorSquare {{isColorSquareSelected}}' id = {{this._id}} style = 'background-color: {{this.color_value}}'></span>
+                                <span class = 'colorName' contenteditable=true>{{this.name}}</span>
+                                </div>
+                            {{/each}}
+                            </div>
+                            {{#if moreColors}}
+                            <button class='addBoldColor'>
+                                +
+                            </button>
+                            {{/if}}
+                        </div>
+                {{/if}}
+            {{/each}}
 </template>

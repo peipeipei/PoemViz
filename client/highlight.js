@@ -1,59 +1,32 @@
-//choose the color you want to highlight or bold with
-chooseColor = function (thing){
-    if (thing == undefined){
-        console.log('chooseColor thing is undefined')
-        return
-    }
-   var layerName = $(thing).closest('.layer').attr('id');
-   if (layerName.substr(0,5) == 'color'){
-       Session.set('selectedType', 'rhyme');
-   }
-   if (layerName.substr(0,4) == 'bold'){
-         Session.set('selectedType', 'bold');
-   }
+//finds the current style and sets the correct session variables
+selectColor = function (colorId){
+    console.log('SELECT COLOR');
+    //not the dom id, the actual id
+    var layerID = Colors.findOne(colorId).layer_id;
+    var layerType = Layers.findOne(layerID).type;
+    var layerName = Layers.findOne(layerID).id;
+    Session.set('curLayer', layerName);
+    Session.set('selectedType', layerType); 
     if(Session.get('selectedType')=='rhyme'){
-        color = $(thing).css('backgroundColor');
+        var color = Colors.findOne(colorId).color_value;
         Session.set('highlightColor', color);
-        $('.colorSquare').each(function(){
-            $(this).removeClass('selectedColorSquare');
-        })
-        $(thing).addClass('selectedColorSquare');
-        console.log('insert');
-        
-        //only add if no style already added
-        if (Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')}) == undefined){
-        console.log("curStyle is undefined");
-        var curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')});
-        }  
-        else{
-            console.log("curStyle is undefined");
-            var curStyle = Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')})._id;
-        }
-        console.log(curStyle);
+        var curStyle = Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), background_color: Session.get('highlightColor')})._id;
         Session.set("curStyle", curStyle);
     }
     else if (Session.get('selectedType')=='bold'){
-        Session.set('boldColor',$(thing).css('backgroundColor'));
-        $('.colorSquare').each(function(){
-            $(this).removeClass('selectedColorSquare');
-        })
-        $(thing).addClass('selectedColorSquare');
-        //only add if no style already added
-        if (Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true}) == undefined){
-        console.log("curStyle is undefined");
-        var curStyle=Styles.insert({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true});
-        }  
-        
+        var color = Colors.findOne(colorId).color_value;
+        Session.set('boldColor', color);
+        var curStyle = Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true})._id;
+        Session.set("curStyle", curStyle);
+        }   
         else{
             var curStyle = Styles.findOne({poem_id: Session.get("currentPoem"), layer_id: Session.get('curLayer'), font_color: Session.get('boldColor'), bold: true})._id;
-        }
         Session.set("curStyle", curStyle);
     }
 };
 
 //how highlighting is stored/removed from Selections Collection
 colorClick = function (thing){
-    console.log('colorClick');
     var flag = true;
     var possibleSelections = Selections.find({poem_id: Session.get('currentPoem'), location: $(thing).attr('id')}).fetch();
     console.log("possible selections:");
@@ -75,46 +48,62 @@ colorClick = function (thing){
     }
 };
 
-// adds a color to the colors collection and assigns it to a layer, then preselects the index for the next color to add
-addColor = function(){
-        var poemID = Session.get('currentPoem');
-        var layerIDHTML = Session.get('curLayer');
-        var layerID = Layers.findOne({poem_id: Session.get('currentPoem'), id:layerIDHTML})._id;
-        var layerArray = Layers.findOne({poem_id: Session.get('currentPoem'), id:layerIDHTML}).layerArray;
-        var colorIndex = ColorIndices.findOne({poem_id: Session.get('currentPoem'), layer:layerID}).index;
-        Colors.insert({
-             poem_id:poemID,
-             layer_id: layerID,
-             color_value: layerArray[colorIndex], 
-             name: 'Editable Color Label'
-        })
-        var newColorIndex = colorIndex + 1;
-        var colorIndexID = ColorIndices.findOne({poem_id: Session.get('currentPoem'), layer:layerID})._id;
-        ColorIndices.update(colorIndexID, {$set: {index: newColorIndex}});
+//same for highlighting and bolding
+//called when addColor/addBoldColor button clicked
+addColor = function(layerID) {
+    //find the next available colorIndex for this layer.
+    //insert a new style with that color
+    //increment the colorIndex
+    
+    var poemID = Session.get('currentPoem');
+    var layerName = Layers.findOne(layerID).id
+    var layerArray = Layers.findOne(layerID).layerArray; 
+    var layerType = Layers.findOne(layerID).type; 
+    
+    var colorIndex = ColorIndices.findOne({poem_id: poemID, layer:layerID}).index;
+    var colorValue = layerArray[colorIndex]
+    var newColorId = Colors.insert({
+         poem_id:poemID,
+         layer_id: layerID,
+         color_value: colorValue, 
+         name: 'Editable Color Label'
+    })
+    var newColorIndex = parseInt(colorIndex) + 1;
+    var colorIndexID = ColorIndices.findOne({poem_id: poemID, layer:layerID})._id;
+    ColorIndices.update(colorIndexID, {$set: {index: newColorIndex}});   
+    
+    if (layerType == 'rhyme'){
+        var curStyle = Styles.insert({poem_id: poemID, layer_id: layerName, background_color: colorValue});
+        Session.set('selectedType','rhyme');
+    }
+    else{
+        var curStyle = Styles.insert({poem_id: poemID, layer_id: layerName, font_color: colorValue, bold: true}); 
+        Session.set('selectedType','bold');
+    }   
+    return curStyle;  
 };
 
-//contains all the events that happen on the poem page
+initializeColors = function(layerId){
+    var newStyleId1 = addColor(layerId)
+    var newStyleId2 = addColor(layerId)
+    Session.set('curStyle', newStyleId1)   
+};
+
+
 Template.poem.events({
     //adds a highlight color to the available colors
     'click .addColor': function(event){
         var poemID = Session.get('currentPoem');
         var layerIDHTML = $(event.currentTarget).closest('.layer').attr('id')
-        Session.set('curLayer', layerIDHTML);
-        var layerIDHTML = Session.get('curLayer');
-        var layerID = Layers.findOne({poem_id: poemID, id:layerIDHTML})._id;
-        var layerArray = Layers.findOne({poem_id: poemID, id:layerIDHTML}).layerArray;
-        var colorIndex = ColorIndices.findOne({poem_id: poemID, layer:layerID}).index;
-        if (colorIndex < layerArray.length){
-            addColor();
-        }
-        if (colorIndex >= layerArray.length - 1){
-            $(event.target).css('display','none');
-        }
+        var layerID = Layers.findOne({id: layerIDHTML})._id;
+        Session.set('selectedType', 'rhyme');
+        var newStyleID = addColor(layerID);
+        Session.set('curStyle', newStyleID) 
     },
     //updates highlighting/bolding color when user clicks a square
     'click .colorSquare':function(event){
-        color = $(event.currentTarget).css('background-color');
-        chooseColor(event.currentTarget);
+        color = $(event.currentTarget).css('background-color'); 
+        selectColor($(event.currentTarget).attr('id'));
         
     },
     //when you change the dropdown menu in a color layer, it updates highlightElement
@@ -166,7 +155,7 @@ Template.poem.events({
         });
         Session.set("curLayer", divLayerID); 
         Session.set('highlightElement','line');
-    }
-    
-    
+
+        initializeColors(layerID);
+    }  
 });
