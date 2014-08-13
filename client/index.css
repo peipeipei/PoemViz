@@ -392,6 +392,7 @@ td{
 .left, .right{
     overflow:auto;
     height: 95vh;
+    margin-bottom: 25px;
 }
 
 .boldtrue{
