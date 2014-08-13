@@ -53,19 +53,28 @@ Template.poem.events({
     var pastConfig = Session.get('breaksOption');
     Session.set('breaksOption',$(event.currentTarget).val());
     if (Session.get('breaksOption') == 'origOption'){
-        switching($('#'+pastConfig), $('#origOption'));
-       $('#origOption').css('visibility','visible');
-        $('#puncOption').css('visibility','hidden');
-        $('#sentOption').css('visibility','hidden');
+//        switching($('#'+pastConfig), $('#origOption'));
+        
+        $('#origOption').css('display','inline');
+        $('#puncOption').css('display','none');
+        $('#sentOption').css('display','none');
+        
+//       $('#origOption').css('visibility','visible');
+//        $('#puncOption').css('visibility','hidden');
+//        $('#sentOption').css('visibility','hidden');
         $('#addLayer').css('display','visible');
         $('.layer').css('display','block');
    //     switching($('#color0'), $('#typing0'));
     }
     if (Session.get('breaksOption') == 'puncOption'){
-        switching($('#'+pastConfig), $('#puncOption'));
-        $('#origOption').css('visibility','hidden');
-        $('#puncOption').css('visibility','visible');
-        $('#sentOption').css('visibility','hidden');
+//        switching($('#'+pastConfig), $('#puncOption'));
+        $('#origOption').css('display','none');
+        $('#puncOption').css('display','inline');
+        $('#sentOption').css('display','none');
+//        
+//        $('#origOption').css('visibility','hidden');
+//        $('#puncOption').css('visibility','visible');
+//        $('#sentOption').css('visibility','hidden');
         $('.layer').css('display','none');
         $('#addLayer').css('visibility','hidden');
         $('#typing0').css('display','block');
@@ -76,10 +85,14 @@ Template.poem.events({
         $('.optionSelect').val(Session.get('breaksOption'));
     }
     if (Session.get('breaksOption') == 'sentOption'){
-        switching($('#'+pastConfig), $('#sentOption'));
-        $('#origOption').css('visibility','hidden');
-        $('#puncOption').css('visibility','hidden');
-        $('#sentOption').css('visibility','visible');
+//        switching($('#'+pastConfig), $('#sentOption'));
+        $('#origOption').css('display','none');
+        $('#puncOption').css('display','none');
+        $('#sentOption').css('display','inline');
+        
+//        $('#origOption').css('visibility','hidden');
+//        $('#puncOption').css('visibility','hidden');
+//        $('#sentOption').css('visibility','visible');
         $('.layer').css('display','none');
         $('#addLayer').css('visibility','hidden');
         $('#typing0').css('display','block');
