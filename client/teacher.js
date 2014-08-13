@@ -37,12 +37,7 @@ Template.teacher.events({
             console.log("key");
             console.log(key);
             console.log(Poems.find().fetch());
-            Layers.insert({
-                name:'Text Options',
-                id:'typing0',
-                poem_id:newPoem,
-                type:'typing'
-            });
+
             var layer1id = Layers.insert({
                 name:'Sound',
                 id:'color0',
