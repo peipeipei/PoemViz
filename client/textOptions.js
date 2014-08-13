@@ -3,13 +3,53 @@ Template.poem.events({
        //function of "Text Options" ('typing') layer
   'click .wordOption': function(event){
     if($('.wordOption').data('active')){
-            $('#leftSide').css('color', 'rgba(0,0,0,1)');
-            $('.word').css('color', 'rgba(0,0,0,1)');
+           // $('#leftSide').css('color', 'rgba(0,0,0,1)');
+           // $('.word').css('color', 'rgba(0,0,0,1)');
+           $('.letter').each(function() {
+               var letterColor = $(this).css('color').trim();
+                console.log(letterColor);
+               if (letterColor.substring(0,4) == "rgb("){
+               var n = letterColor.indexOf(")");
+               var rgba = "rgba"+letterColor.substr(3,n-3);
+               var transparentColor = rgba +', 1)';
+               console.log(transparentColor);
+               $(this).css('color', transparentColor);
+               }
+                else{
+                    var lastIndex = letterColor.lastIndexOf(",");
+                    var substring = letterColor.substr(0, lastIndex+1);
+                    var curRGBA = substring+' ';
+                    var transparentColor = curRGBA+"1"+")";
+                    console.log(transparentColor);
+                    $(this).css('color', transparentColor);
+                }
+                    
+           });
             $('.wordOption').text('Turn Text Off');
             $('.wordOption').data('active', false);
         }else{
-            $('#leftSide').css('color', 'rgba(0,0,0,0)');
-            $('.word').css('color', 'rgba(0,0,0,0)');
+           // $('#leftSide').css('color', 'rgba(0,0,0,0)');
+           // $('.word').css('color', 'rgba(0,0,0,0)');
+            $('.letter').each(function() {
+               var letterColor = $(this).css('color').trim();
+                console.log(letterColor);
+               if (letterColor.substring(0,4) == "rgb("){
+               var n = letterColor.indexOf(")");
+               var rgba = "rgba"+letterColor.substr(3,n-3);
+               var transparentColor = rgba +', 0)';
+               console.log(transparentColor);
+               $(this).css('color', transparentColor);
+               }
+                else{
+                    var lastIndex = letterColor.lastIndexOf(",");
+                    var substring = letterColor.substr(0, lastIndex+1);
+                    var curRGBA = substring+' ';
+                    var transparentColor = curRGBA+"0"+")";
+                    console.log(transparentColor);
+                    $(this).css('color', transparentColor);
+                }
+                    
+           });
             $('.wordOption').text('Turn Text On');
             $('.wordOption').data('active', true);
         }
