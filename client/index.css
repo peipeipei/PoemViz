@@ -1,4 +1,8 @@
 
+#questionWrapper{
+    float:left;
+}
+
 div.selectedLayer{
     background-color: lightblue;   
 }
@@ -7,13 +11,9 @@ div.selectedLayer{
 .helpBox{
     display: inline-block;
 }
-#questionMark{
-   height: 50px;
-   width: 50px;
-/*   font-size: 30pt;    */
-}
 #questionMarkButton{
-    font-size: 25pt;
+    font-size: 50pt;
+    
 }
 
 .word{
