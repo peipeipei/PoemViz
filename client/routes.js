@@ -67,11 +67,8 @@ Router.map(function () {
     });
     this.route('redirect',{
         path: '/:_word/:_index',
-//        path: '/:_word/',
         notFoundTemplate: 'error',
         waitOn: function(){
-            //console.log("id:",this.params.id)
-//          return [Meteor.subscribe('poems', this.params.id), Meteor.subscribe('shoutkeys')]
             return [Meteor.subscribe('poems'), Meteor.subscribe('shoutkeys')]
         },
         data: function(){
@@ -83,22 +80,31 @@ Router.map(function () {
             } 
         }
     });
-//    this.route('redirectDirectory', {
-//        path:'/:_word/',
-//        waitOn: function(){
-//            return [Meteor.subscribe('shoutkeys'), Meteor.subscribe('poemGroups')]
-//        },
-//        data: function(){
-////            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:parseInt(this.params._index)}).poem_id};
-//        },
-//        
-//    });
+    this.route('redirectDirectory', {
+        path:'/:_word',
+        waitOn: function(){
+            return [Meteor.subscribe('shoutkeys'), Meteor.subscribe('poemGroups')]
+        },
+        data: function(){
+            console.log("route");
+            console.log(Shoutkeys.find().fetch())
+            return {"poem_group_id": Shoutkeys.findOne({key:this.params._word}).poem_group_id};
+        },
+        action: function(){
+            if (this.ready()) {
+                this.render();
+            } 
+        }
+        
+    });
 });   
 
 
-//Template.redirect.redirectDirectory = function(){
-//    Router.go('poem', {"id":this.poem_id});
-//}
+Template.redirectDirectory.redirectDirectory = function(){
+    console.log("poem group id");
+    console.log(this.poem_group_id);
+    Router.go('directory', {"id":this.poem_group_id});
+}
 
 
 Template.redirect.redirect = function(){
