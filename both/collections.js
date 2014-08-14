@@ -2,7 +2,7 @@ PoemGroups = new Meteor.Collection('poemGroups');
 /*
 A poem group has these fields:
     _id : identifier
-    numPoems: integer, number of poem sections in a PoemGroup
+    poems: array, contains the ids of all the poems in the group
 
 */
 

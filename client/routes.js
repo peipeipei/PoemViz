@@ -32,13 +32,38 @@ Router.map(function () {
             this.render();
         } 
     }    
-    })
+    });
+    this.route('directory', {
+        path:'/poem_directory/:id',
+        template: 'directory',
+        waitOn: function(){
+            return [Meteor.subscribe('shoutkeys'), Meteor.subscribe('poemGroups')]
+        },  
+        data: function(){
+            var groupID = this.params.id;
+            var includedPoems = PoemGroups.findOne({_id:groupID}).poems;
+            var poemsArray = []
+            for (var i = 0; i < includedPoems.length; i++){
+                poemsArray.push({poemID:includedPoems[i], index:i+1});
+            }
+                
+            return {
+                poems:poemsArray
+            }
+    },
+        action: function(){
+        if (this.ready()) {
+            this.render();
+        } 
+    }    
+    });
   //make sure to subscribe to shoutkeys so that they may be checked to prevent repeats
     this.route('teacher', {
         path:'/create',
         waitOn: function(){
             return [Meteor.subscribe('shoutkeys')]
         },  
+        
     });
     this.route('redirect',{
         path: '/:_word/:_index',
@@ -53,35 +78,30 @@ Router.map(function () {
             return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:parseInt(this.params._index)}).poem_id};
         },
         action: function(){
-        if (this.ready()) {
-            this.render();
-        } 
+            if (this.ready()) {
+                this.render();
+            } 
         }
     });
-    this.route('teacher', {
-        path:'/:_word/',
-        waitOn: function(){
-            return [Meteor.subscribe('shoutkeys'), Meteor.subscribe('poemGroups')]
-        },
-        data: function(){
-//            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:parseInt(this.params._index)}).poem_id};
-        },
-        
-    });
+//    this.route('redirectDirectory', {
+//        path:'/:_word/',
+//        waitOn: function(){
+//            return [Meteor.subscribe('shoutkeys'), Meteor.subscribe('poemGroups')]
+//        },
+//        data: function(){
+////            return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:parseInt(this.params._index)}).poem_id};
+//        },
+//        
+//    });
 });   
 
 
+//Template.redirect.redirectDirectory = function(){
+//    Router.go('poem', {"id":this.poem_id});
+//}
+
+
 Template.redirect.redirect = function(){
-    // New Poem Group Implementation
-    console.log("this:");
-    
-    console.log(this);
-    console.log(this.poem_id);
-//    Router.go('/poem/'+this.poem_id, '_blank');
-//    Router.go('poem', {"id":this});
-//    console.log(this)
-//    console.log("this . poem id");
-//    console.log(this.poem_id);
     Router.go('poem', {"id":this.poem_id});
 }
 
