@@ -68,7 +68,17 @@ td{
     width:18px;
     height:18px;
     margin:3px 3px 0px 3px;
+    display:inline-block;   
+}
+
+.checkSquare{
+    width:20px;
+    height:20px;
+    margin:0px 5px 0px 0px;
+    border: 1px solid gray;
     display:inline-block;
+    text-align:center;
+    font-size: 14pt;
 }
 
 .selectedColorSquare{
@@ -103,6 +113,13 @@ td{
     right:10px;
     color:gray;
     font-style:italic;
+}
+
+.selectVisibility{
+    position:absolute;
+    top:10px;
+    right:10px;
+    
 }
 
 .btn{

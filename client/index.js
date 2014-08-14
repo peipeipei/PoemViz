@@ -52,49 +52,6 @@ Template.layers.layer=function(){
     // for any layers with color options, display the color choices
     // i is a layer
     _.each(poemLayers, function(i){
-        var opacity = i.opacity;
-        switch (opacity){
-                case '1': i.isChecked100 = "checked" 
-                i.isChecked60 = ""
-                i.isChecked20 = ""
-                i.isChecked0 = ""
-                break;
-                case 1: i.isChecked100 = "checked" 
-                i.isChecked60 = ""
-                i.isChecked20 = ""
-                i.isChecked0 = ""
-                break;
-                case '.6': i.isChecked100 = "" 
-                i.isChecked60 = "checked"
-                i.isChecked20 = ""
-                i.isChecked0 = ""
-                break;
-                case .6: i.isChecked100 = "" 
-                i.isChecked60 = "checked"
-                i.isChecked20 = ""
-                i.isChecked0 = ""
-                break;
-                case '.2': i.isChecked100 = "" 
-                i.isChecked60 = ""
-                i.isChecked20 = "checked"
-                i.isChecked0 = ""
-                break;
-                case .2: i.isChecked100 = "" 
-                i.isChecked60 = ""
-                i.isChecked20 = "checked"
-                i.isChecked0 = ""
-                break;
-                case '0': i.isChecked100 = "" 
-                i.isChecked60 = ""
-                i.isChecked20 = ""
-                i.isChecked0 = "checked"
-                break;
-                case 0: i.isChecked100 = "" 
-                i.isChecked60 = ""
-                i.isChecked20 = ""
-                i.isChecked0 = "checked"
-                break;       
-          }
         if (i.type == "rhyme") {
             var layerID = i._id;
             var layerColors = Colors.find({layer_id:layerID}).fetch();
@@ -115,66 +72,6 @@ Template.layers.rendered = function(){
 }
 
 
-/*Template.poem.layer=function(){
-    // array of all the current layers the poem has
-    var poemLayers = Layers.find({poem_id:Session.get('currentPoem')}).fetch();
-    // for any layers with color options, display the color choices
-    // i is a layer
-    _.each(poemLayers, function(i){
-        var opacity = i.opacity;
-        switch (opacity){
-                case '1': i.isChecked100 = "checked" 
-                i.isChecked60 = ""
-                i.isChecked20 = ""
-                i.isChecked0 = ""
-                break;
-                case 1: i.isChecked100 = "checked" 
-                i.isChecked60 = ""
-                i.isChecked20 = ""
-                i.isChecked0 = ""
-                break;
-                case '.6': i.isChecked100 = "" 
-                i.isChecked60 = "checked"
-                i.isChecked20 = ""
-                i.isChecked0 = ""
-                break;
-                case .6: i.isChecked100 = "" 
-                i.isChecked60 = "checked"
-                i.isChecked20 = ""
-                i.isChecked0 = ""
-                break;
-                case '.2': i.isChecked100 = "" 
-                i.isChecked60 = ""
-                i.isChecked20 = "checked"
-                i.isChecked0 = ""
-                break;
-                case .2: i.isChecked100 = "" 
-                i.isChecked60 = ""
-                i.isChecked20 = "checked"
-                i.isChecked0 = ""
-                break;
-                case '0': i.isChecked100 = "" 
-                i.isChecked60 = ""
-                i.isChecked20 = ""
-                i.isChecked0 = "checked"
-                break;
-                case 0: i.isChecked100 = "" 
-                i.isChecked60 = ""
-                i.isChecked20 = ""
-                i.isChecked0 = "checked"
-                break;       
-          }
-        if (i.type == "rhyme") {
-            var layerID = i._id;
-            var layerColors = Colors.find({layer_id:layerID}).fetch();
-            i['colorOptions'] = layerColors
-            
-        }
-    })
-    //return poemLayers;
-}*/
-
-
 Template.poem.events({
     //adds a highlight color to the available colors
     'click .layer': function(event){
@@ -187,6 +84,8 @@ Template.poem.events({
 //called whenever Session.get('curLayer') is changed
 Template.layers.isSelectedLayer = function() {
     console.log(this.id);
+    //now we can do this (when adding a layer)... in added part of layers cursor, dom isn't rendered apparently
+    updateCheckBoxes();
     if (this.id == Session.get('curLayer')){
         console.log("this is selected");
         return "selectedLayer";
@@ -275,6 +174,196 @@ selectLayer = function(layerID) {
     }
 }
 
+setNextBackgroundColor = function(location){
+        var curRGBA = "transparent";
+        var allSelections = Selections.find({poem_id: Session.get('currentPoem'), location: location}).fetch();
+       //will update color to next most recently added selection
+        _.each(allSelections, function(sel){
+          var piece = sel.style_id;  
+          var otherStyle = Styles.findOne({_id: piece});
+           if ((otherStyle !== undefined)){
+                if ((otherStyle.background_color !== undefined)){
+                 var layerSelection = Layers.findOne({id:otherStyle.layer_id})._id;
+                 var visibilityofLayer = (Session.get("layersArray"))[layerSelection];
+                 switch (visibilityofLayer){
+                         case "visible":
+                         var op = 1;
+                         break;
+                         case "dimmed":
+                         var op = 0.5;
+                         break;
+                         case "invisible":
+                         var op = 0;
+                         break;
+                         default:
+                         console.log('oops, missed a case');
+                 }
+                var rgba = otherStyle.background_color;
+                var lastIndex = rgba.lastIndexOf(",");
+                var substring = rgba.substr(0, lastIndex+1);
+                var newRGBA = substring+op+")";
+                 if (op !== 0){
+                     curRGBA = newRGBA;
+                     console.log(curRGBA);
+                  }
+                }
+           }
+        });
+        console.log(curRGBA);
+       $("."+location).css(
+        {
+            "background-color": curRGBA
+        }
+       );
+}
+
+colorSelOpacity = function(op, sel){
+        var thisID = sel.location;
+        if (op !== 0){
+        var thisStyleID = sel.style_id;
+        var thisStyle = Styles.findOne(thisStyleID);
+        var rgba = thisStyle.background_color;
+        var lastIndex = rgba.lastIndexOf(",");
+        var substring = rgba.substr(0, lastIndex+1);
+        //check opacity of layer that made the selection
+        var curRGBA = substring+' ';
+        var newRGBA = curRGBA+op+")";     
+        console.log(newRGBA);
+        $("."+thisID).css( 
+        {
+          "background": newRGBA
+        }
+        );
+        }
+        else{
+          setNextBackgroundColor(thisID);
+        }
+};
+
+updateCheckBoxes = function(){
+    var statuses = Session.get('layersArray');
+    var layers = Layers.find().fetch();
+    _.each(layers, function(layer){
+        var status = statuses[layer._id];
+        switch(status){
+                case "visible":
+                console.log('#checkSquare'+layer._id, "VISIBLE")
+                $('#checkSquare'+layer._id).text("✓");
+                $('#checkSquare'+layer._id).css('color','red');
+                break;
+                case "dimmed":
+                $('#checkSquare'+layer._id).text("✓");
+                $('#checkSquare'+layer._id).css('color','gray');
+                break;
+                case "invisible":
+                $('#checkSquare'+layer._id).text(" ");
+                break;
+                default:
+                //oops
+        }      
+    });
+    
+};
+
+//called whenever selection added or layer visibility changed in session variable "layersArray"
+Deps.autorun(function(){
+    var sessionObj = Session.get('layersArray') 
+    var selections = Selections.find().fetch();
+    updateCheckBoxes();
+    _.each(selections, function(elem) {
+        var layerNodeId = elem.layerNode_id;
+        //console.log(layerNodeId);
+        var layerId = Layers.findOne({id: layerNodeId})._id;
+        var layerType = Layers.findOne(layerId).type;
+        var status = sessionObj[layerId];
+        var possibleBoldClasses = ['boldrgba(0,0,0,1)','boldrgba(0,102,51,1)','boldrgba(0,0,153,1)','boldrgba(85,0,102,1)','boldrgba(102,0,34,1)'];
+        if (status == "visible"){
+        switch(layerType) {
+            case "rhyme":
+                colorSelOpacity(1, elem);
+                break;
+            case "bold":
+                console.log('BOLD');
+                $('.'+elem.location).css('font-weight','bold');
+                _.each(possibleBoldClasses, function(cla) {
+                if ($('.'+elem.location).hasClass(cla)){
+                    console.log(cla.substring(4))
+                    $('.'+elem.location).css('color',cla.substring(4));
+                }  
+                });
+                break;
+            case "typing":
+                //shouldn't have visible/invisible capabilities
+                break;
+            case "stressing":
+                 //do nothing yet
+                break;
+            default:
+                console.log('oops, missed a case');
+        }       
+        }
+        else if (status == "dimmed"){
+            switch(layerType) {
+            case "rhyme":
+                colorSelOpacity(0.5, elem);
+                break;
+            case "bold":
+                //shouldn't have ability to be dimmed
+                break;
+            case "typing":
+                //shouldn't have visible/invisible capabilities
+                break;
+            case "stressing":
+                 //do nothing yet
+                break;
+            default:
+                console.log('oops, missed a case');
+        }  
+            
+        }
+        else {
+            switch(layerType) {
+            case "rhyme":
+                colorSelOpacity(0, elem);
+                break;
+            case "bold":
+                 console.log('BOLD');
+                    console.log(elem.location)
+                 $('.'+elem.location).css('font-weight','normal');
+                 $('.'+elem.location).css('color', 'black');
+                break;
+            case "typing":
+                //shouldn't have visible/invisible capabilities
+                break;
+            case "stressing":
+                //do nothing yet
+                break;
+            default:
+                console.log('oops, missed a case');
+        }  
+        }
+    });
+    var sylLayer = Layers.findOne({id:"syllable0"});
+    if (sylLayer != undefined){
+    if (sessionObj[sylLayer._id] == 'visible'){
+        syllablesOn();
+    }
+    if (sessionObj[sylLayer._id] == 'invisible'){
+        console.log('invisible');
+        syllablesOff();
+    }
+    }
+    var stressLayer = Layers.findOne({id:"stress0"});
+    if (stressLayer != undefined){
+    if (sessionObj[stressLayer._id] == 'visible'){
+        stressOn();
+    }
+    if (sessionObj[stressLayer._id] == 'invisible'){
+        stressOff();
+    } 
+    }
+});
+
 //auto-scrolls to newly created layer
 function scrollForNewLayer(layerId){
     var targetLayer = $('#' + layerID);
@@ -315,15 +404,21 @@ function scrollForNewLayer(layerId){
          $('#origOption').css('display','inline');
         $('#puncOption').css('display','none');
         $('#sentOption').css('display','none');
-//        $('#origOption').css('visibility','visible');
-//        $('#puncOption').css('visibility','hidden');
-//        $('#sentOption').css('visibility','hidden');
          //set the tab name to that of the poem
          document.title = Poems.findOne(Session.get('currentPoem')).title;
          displaySelections();
          syllableCounts();
-        // $( ".line" ).tooltip({ content: Selections.find({layerNode_id });
-        //  $( ".line" ).tooltip({ content: "this is a line!"});
+         //initialize default visibility of all layers
+         var initialArray = {};
+         var initialLayers = Layers.find().fetch();
+         console.log(initialLayers);
+         _.each(initialLayers, function(elem){
+             initialArray[elem._id] = "visible";
+             console.log(elem._id);
+             console.log(initialArray[elem._id]);
+
+         });
+         Session.set("layersArray", initialArray);
      }
      
      //what to do upon rendering of poem
@@ -381,6 +476,7 @@ function scrollForNewLayer(layerId){
                     "font-weight": "bold"
                  }
                 );
+                $("."+location).addClass("bold"+style[0].font_color);
                 }
             }
             //if selection is from stressing style/layer
@@ -408,7 +504,6 @@ function scrollForNewLayer(layerId){
                 //must go through all selections that may have colored line/word/character to check and
                 //see if after one background-color is turned off, there is another (from another layer)
                 //still coloring that line/word/character
-                console.log(location);
                 var curRGBA = "transparent";
                 var allSelections = Selections.find({poem_id: Session.get('currentPoem'), location: location}).fetch();
                 console.log(allSelections);
@@ -431,12 +526,12 @@ function scrollForNewLayer(layerId){
                         }
                    }
                 });
-                console.log(curRGBA);
-               $("."+location).css(
-                {
-                    "background-color": curRGBA
-                }
-               );
+                 $("."+location).css(
+                    {
+                        "background-color": curRGBA
+                    }
+       );
+                
             }
             //if removed selection is bolding
             if ((style[0].font_color !== null)&&(typeof style[0].font_color !== "undefined")) {
@@ -445,6 +540,7 @@ function scrollForNewLayer(layerId){
                     "color": "black"
                 }
                );
+                $("."+location).removeClass("bold"+style[0].font_color);
             }
             //if removed selection is bolding
             if ((style[0].bold !== null)&&(typeof style[0].bold !== "undefined")) {
@@ -598,32 +694,14 @@ function scrollForNewLayer(layerId){
           });
         //handles changes from Layers Collection
         var layersCursor = Layers.find({poem_id:Session.get('currentPoem')});
-        layersCursor.observe({       
-        //when opacity of layer is changed, all highlighting selections made by that layer must be changed
-        changed: function (newLayer, oldLayer) {
-            op = newLayer.opacity;
-            console.log("layer changed", op);
-            if ((op !== null)&&(typeof op !== "undefined")) {
-              var allSelections = Selections.find({poem_id: Session.get('currentPoem'), layerNode_id: newLayer.id}).fetch();  
-                _.each(allSelections, function(sel){
-                    var thisID = sel.location;
-                    console.log(thisID);
-                    var thisStyleID = sel.style_id;
-                    var thisStyle = Styles.findOne(thisStyleID);
-                    var rgba = thisStyle.background_color;
-                    var lastIndex = rgba.lastIndexOf(",");
-                    var substring = rgba.substr(0, lastIndex+1);
-                    //check opacity of layer that made the selection
-                    var curRGBA = substring+' ';
-                    var newRGBA = curRGBA+op+")";     
-                    console.log(newRGBA);
-                    $("."+thisID).css( 
-                    {
-                      "background": newRGBA
-                    }
-                    );
-                    });
-            }
-        } });
+        layersCursor.observe({    
+        added: function (selection, beforeIndex) {
+            console.log('layerAdded');
+            var sessionObj = Session.get("layersArray");
+            //may need to change default or have another session variable... however, if just created, user probably wants to use it
+            sessionObj[selection._id] = "visible";
+            Session.set("layersArray", sessionObj);
+        },
+         });
 
-        };
+};

@@ -90,30 +90,6 @@ Template.poem.events({
       'change .visibility': function(event){
         var idFull = this._id;
         var visible=$(event.currentTarget).is(':checked');
-        if($(event.currentTarget).data('layer') =='syllable'){
-            if(visible){
-                Session.set('syllablesVisible', 'true');
-                $('.syllable').css('min-width', '65px');
-                $('.letter, .space').each(function(){
-                //must make sure we give this data attribute to other users
-                if ($(this).hasClass('syllableStyle')){
-                    console.log('syllable');
-                    $(this).css('border-left', '2px solid black');
-                }
-                });
-                $('.lineCount').css('opacity','1.0');
-                $('.syllableCount').css('color','blue')
-            }
-            else{
-                Session.set('syllablesVisible', 'false');
-                $('.syllableCount').css('color','white')
-                $('.syllable').css('min-width', '0px');
-                $('.letter, .space').each(function(){
-                    $(this).css('border-left', 'none');
-                });
-                $('.lineCount').css('opacity','0.0');
-            }
-        }
         if($(event.currentTarget).data('layer') =='stressing'){
             if(visible){
                 Session.set('stressVisible', 'true');
@@ -168,5 +144,44 @@ Template.poem.events({
     
     }
 });
+
+syllablesOn = function() {
+    $('.syllable').css('min-width', '65px');
+    $('.letter, .space').each(function(){
+    //must make sure we give this data attribute to other users
+    if ($(this).hasClass('syllableStyle')){
+        console.log('syllable');
+        $(this).css('border-left', '2px solid black');
+    }
+    });
+    $('.lineCount').css('opacity','1.0');
+    $('.syllableCount').css('color','blue')
+}
+
+syllablesOff = function() {
+    Session.set('syllablesVisible', 'false');
+    $('.syllableCount').css('color','white')
+    $('.syllable').css('min-width', '0px');
+    $('.letter, .space').each(function(){
+        $(this).css('border-left', 'none');
+    });
+    $('.lineCount').css('opacity','0.0');
+}
+
+stressOn = function(){
+    $('.letter, .word').each(function(){
+    //must make sure we give this data attribute to other users
+    if ($(this).hasClass('stressStyle') === true){
+        $(this).css('vertical-align', 'super');
+    }
+    });  
+};
+
+stressOff = function(){
+    $('.letter, .word').each(function(){
+    $(this).css('vertical-align', 'baseline');
+    });  
+};
+
 
 

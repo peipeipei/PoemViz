@@ -20,11 +20,12 @@ stressClick = function(thing){
     }else{
       getSyllable($(thing).attr('id'));
       for (var i = lastID-1; i >= firstID; i--){
-         Selections.insert({poem_id: Session.get('currentPoem'), style_id: selStyle, location: ('#char'+i)});
+         Selections.insert({poem_id: Session.get('currentPoem'), style_id: selStyle, location: ('#char'+i), layerNode_id: "stress0"});
       }
       if (doLast){
-        Selections.insert({poem_id: Session.get('currentPoem'), style_id: selStyle, location: ('#char'+lastID)});
+        Selections.insert({poem_id: Session.get('currentPoem'), style_id: selStyle, location: ('#char'+lastID), layerNode_id: "stress0"});
       }
+
     }
 }
 

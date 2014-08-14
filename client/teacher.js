@@ -80,6 +80,9 @@ Template.teacher.events({
                 poem_id:newPoem,
                 type:'stressing',
             });
+            var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
+            Layers.update(sel, {$set:{style:selStyle, keyword: key}});
+            
             Layers.insert({
             name:'Text Options',
             id:'typing0',
@@ -87,8 +90,6 @@ Template.teacher.events({
             type:'typing'
         }); 
             
-              var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
-              Layers.update(sel, {$set:{style:selStyle, keyword: key}});
         }
         PoemGroups.update(newPoemGroup, {$set:{poems:poemGroupPoemSectionIDs}});
         console.log("poemGroupPoemSectionIDs");
