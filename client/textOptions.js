@@ -65,13 +65,15 @@ Template.poem.events({
         //automatically remove existing shoutkey
         Meteor.clearTimeout(handleid);
         Shoutkeys.remove(shoutkeyID);
-        var key = getRandomWord()
-        var curPoem = Session.get('currentPoem')
-        var curPoemIndex = Poems.findOne({_id: curPoem}).poemGroupIndex
+        var key = getRandomWord();
+        var curPoem = Session.get('currentPoem');
+        var curPoemIndex = Poems.findOne({_id: curPoem}).poemGroupIndex;
+        var curPoemGroup = Poems.findOne({_id: curPoem}).poemGroup;
         Shoutkeys.insert({
             key:key,
             index: curPoemIndex,
             poem_id: curPoem,
+            poem_group_id: curPoemGroup
         });
         
         var $div = $('<div>'); 

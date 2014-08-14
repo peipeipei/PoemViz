@@ -1,0 +1,14 @@
+<template name = 'redirectDirectory'>
+    {{redirectDirectory}}
+</template>
+
+<template name = 'directory'>
+    <div class = 'row'>
+      <div class='col-md-8 col-md-offset-2' id='directDiv'>
+          <div>Choose the poem section you would like to see.</div>
+          {{# each poems}}
+                <button type="button" class = "btn btn-default poemSectionLink" value = {{this.poemID}}>Section {{this.index}}</button><br>
+          {{/each}}
+      </div>
+    </div>
+</template>

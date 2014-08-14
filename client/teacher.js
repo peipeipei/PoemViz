@@ -19,9 +19,10 @@ Template.teacher.events({
             console.log("raw");
             console.log(raw);
             var poemObjsArray = parseHTML(raw);
+            var poemGroupIndex = i + 1;
             var newPoem = Poems.insert({
                 poemGroup: newPoemGroup,
-                poemGroupIndex: i,
+                poemGroupIndex: poemGroupIndex,
                 title:title,
                 author:author,
                 origObj: poemObjsArray[0],
@@ -30,8 +31,9 @@ Template.teacher.events({
             });
             Shoutkeys.insert({
                 key:key,
-                index: i,
+                index: poemGroupIndex,
                 poem_id:newPoem,
+                poem_group_id:newPoemGroup
             });
             poemGroupPoemSectionIDs.push(newPoem);
             console.log("key");
@@ -108,7 +110,7 @@ Template.teacher.events({
           buttons: {
             "Go": function() {
               $( this).dialog('close');
-               Router.go('/'+key + '/' + '0', '_blank');
+               Router.go('/'+key, '_blank');
             },
             Cancel: function() {
               $( this ).dialog( "close" );
