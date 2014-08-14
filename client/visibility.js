@@ -24,8 +24,7 @@ Template.poem.events({
     
    //only available on color layers
   'click .dimOne': function(event){
-      var layerID = $(event.currentTarget).attr('data-name');
-      console.log(layerID);
+     var layerID = $(event.currentTarget).attr('data-name');
      var sessionObj = Session.get("layersArray");
       sessionObj[layerID] = "dimmed";
       Session.set("layersArray", sessionObj);
@@ -33,7 +32,6 @@ Template.poem.events({
     
   'click .hideOne': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
-      console.log(layerID);
       var sessionObj = Session.get("layersArray");
       sessionObj[layerID] = "invisible";
       Session.set("layersArray", sessionObj);
@@ -42,11 +40,10 @@ Template.poem.events({
     
     'click .showOneDimOthers': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
-      console.log(layerID);
       var sessionObj = Session.get("layersArray");
       var layers = Layers.find().fetch();
       _.each(layers, function(elem){
-         if (elem.type = "rhyme"){
+         if (elem.type == "rhyme"){
              sessionObj[elem._id] = "dimmed";
          }
       });
@@ -56,7 +53,6 @@ Template.poem.events({
     
     'click .showAll': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
-      console.log(layerID);
       var sessionObj = Session.get("layersArray");
       var layers = Layers.find().fetch();
       _.each(layers, function(elem){
@@ -67,13 +63,37 @@ Template.poem.events({
     
     'click .hideAll': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
-      console.log(layerID);
       var sessionObj = Session.get("layersArray");
       var layers = Layers.find().fetch();
       _.each(layers, function(elem){
          sessionObj[elem._id] = "invisible";
       });
       Session.set("layersArray", sessionObj);        
+    },
+    
+    'click .checkSquare': function(event){
+       console.log('wow, that worked'); 
+       var layerID = $(event.currentTarget).attr('id').substring(11);
+       var sessionObj = Session.get("layersArray");
+       switch(sessionObj[layerID]){
+               //same as code for click .hideOne
+                case "visible":
+                  sessionObj[layerID] = "invisible";
+                  Session.set("layersArray", sessionObj);
+                break;
+               //same as code for click .show
+                case "dimmed":
+               sessionObj[layerID] = "visible";
+               Session.set("layersArray", sessionObj);
+                break;
+               //same as code for click .show
+                case "invisible":
+               sessionObj[layerID] = "visible";
+               Session.set("layersArray", sessionObj); 
+                break;
+                default:
+                //oops
+        }  
     }
     
 });

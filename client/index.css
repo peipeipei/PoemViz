@@ -139,9 +139,10 @@ td{
 }
 
 .addBoldColor{
-    height:20px;
-    width:20px;
+    height:25px;
+    width:25px;
     padding:0px;
+    text-align: center;
 }
 
 .lineCount{
@@ -260,6 +261,14 @@ td{
     font-style:italic;
 }
 
+.checkSquare{ 
+    position:absolute;
+    top:12px;
+    right:22px;
+    font-size: 13pt;
+    
+}
+
 .unnaturalLine{
     color: black;
     background: rgb(255, 255, 255) !important;
@@ -291,9 +300,10 @@ td{
 }
 
 .addColor{
-    height:20px;
-    width:20px;
+    height:25px;
+    width:25px;
     padding:0px;
+    text-align: center;
 }
 
 .lineCount{

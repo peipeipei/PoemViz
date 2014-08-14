@@ -61,6 +61,7 @@ addColor = function(layerID) {
     var layerType = Layers.findOne(layerID).type; 
     
     var colorIndex = ColorIndices.findOne({poem_id: poemID, layer:layerID}).index;
+    if (colorIndex < layerArray.length){
     var colorValue = layerArray[colorIndex]
     var newColorId = Colors.insert({
          poem_id:poemID,
@@ -80,7 +81,8 @@ addColor = function(layerID) {
         var curStyle = Styles.insert({poem_id: poemID, layer_id: layerName, font_color: colorValue, bold: true}); 
         Session.set('selectedType','bold');
     }   
-    return curStyle;  
+    return curStyle; 
+    }
 };
 
 initializeColors = function(layerId){
