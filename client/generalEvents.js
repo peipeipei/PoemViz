@@ -40,12 +40,27 @@ Template.poem.events({
         var previousPoemID = poemsArray[previousPoemIndex];
         Router.go('/poem/' + previousPoemID);
     },
+    
+     'keydown .layerName': function(event)
+    {
+        //enter is key 13
+        if(event.which == 13){
+            event.preventDefault();
+            var layerID=$(event.currentTarget).parent().attr('id');
+            var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
+            var newName=$(event.currentTarget).text();
+            console.log("newName:",newName)
+            Layers.update(curL_id, {$set: {name: newName}});
+            $(event.currentTarget).blur()
+        }
+    },   
 
 
     'blur .layerName':function(event){
         var layerID=$(event.currentTarget).parent().attr('id');
         var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
         var newName=$(event.currentTarget).text();
+        console.log("newName:",newName)
         Layers.update(curL_id, {$set: {name: newName}});
     },
     //sync color labels
