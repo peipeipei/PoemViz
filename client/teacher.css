@@ -1,4 +1,13 @@
+/*
 #createDiv, #directDiv {
+    background-color:aliceBlue;
+    text-align:center;
+    padding:80px 0px;
+    height:200%;
+}
+*/
+
+.pageBackground {
     background-color:aliceBlue;
     text-align:center;
     padding:80px 0px;

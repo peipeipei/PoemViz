@@ -34,8 +34,12 @@
                 <div id = 'poemWrapper'>
                 <div id = "questionWrapper"><button type="button" id = questionMarkButton class="btn btn-default instructions" data-active=false>?</button></div>
                 <div class = "helpBox"><span id = 'shoutkey'></span><span><br><button type="button" class="btn btn-default newShoutKey" data-active=false>Get New Shortened URL</button></span><br>
+                    {{# if previousVisible}}
                     <button type="button" id = 'previousPoemSection' class = "btn btn-default">Previous Poem Section</button>
+                    {{/if}}
+                    {{# if nextVisible}}
                     <button type="button" id = 'nextPoemSection' class = "btn btn-default">Next Poem Section</button>
+                    {{/if}}
                 </div>
         
                 <div class = 'poemIdentifiers' id = 'poemTitle'><br>{{poemTitle}}</div>
