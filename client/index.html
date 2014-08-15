@@ -127,13 +127,13 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
-                        <li><a class = "show" data-name = {{this._id}} href="#">Show this layer</a></li>
-                        <li><a class = "dimOne" data-name = {{this._id}} href="#">Dim this layer</a></li>
-                        <li><a class = "hideOne" data-name = {{this._id}} href="#">Hide this layer</a></li>
-                        <li><a class = "showOne" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
-                        <li><a class = "showOneDimOthers" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
-                        <li><a class = "showAll" data-name = {{this._id}} href="#">Show all layers</a></li>
-                        <li><a class = "hideAll" data-name = {{this._id}} href="#">Hide all layers</a></li>
+                        <li><a class = "show dropOp" data-name = {{this._id}} href="#">Show this layer</a></li>
+                        <li><a class = "dimOne dropOp" data-name = {{this._id}} href="#">Dim this layer</a></li>
+                        <li><a class = "hideOne dropOp" data-name = {{this._id}} href="#">Hide this layer</a></li>
+                        <li><a class = "showOne dropOp" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
+                        <li><a class = "showOneDimOthers dropOp" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
+                        <li><a class = "showAll dropOp" data-name = {{this._id}} href="#">Show all layers</a></li>
+                        <li><a class = "hideAll dropOp" data-name = {{this._id}} href="#">Hide all layers</a></li>
                     </ul>
                   </span>
                         Highlight:
@@ -170,12 +170,12 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
-                        <li><a class = "show" data-name = {{this._id}} href="#">Show this layer</a></li>
-                        <li><a class = "hideOne" data-name = {{this._id}} href="#">Hide this layer</a></li>
-                        <li><a class = "showOne" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
-                        <li><a class = "showOneDimOthers" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
-                        <li><a class = "showAll" data-name = {{this._id}} href="#">Show all layers</a></li>
-                        <li><a class = "hideAll" data-name = {{this._id}} href="#">Hide all layers</a></li>
+                        <li><a class = "show dropOp" data-name = {{this._id}} href="#">Show this layer</a></li>
+                        <li><a class = "hideOne dropOp" data-name = {{this._id}} href="#">Hide this layer</a></li>
+                        <li><a class = "showOne dropOp" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
+                        <li><a class = "showOneDimOthers dropOp" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
+                        <li><a class = "showAll dropOp" data-name = {{this._id}} href="#">Show all layers</a></li>
+                        <li><a class = "hideAll dropOp" data-name = {{this._id}} href="#">Hide all layers</a></li>
                     </ul>
                   </span>
                         <div class='info'> <i>Click to show syllable breaks.</i><br>Please click WITHIN words; the breaks between words have already been counted.</div>
@@ -196,12 +196,12 @@
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
-                        <li><a class = "show" data-name = {{this._id}} href="#">Show this layer</a></li>
-                        <li><a class = "hideOne" data-name = {{this._id}} href="#">Hide this layer</a></li>
-                        <li><a class = "showOne" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
-                        <li><a class = "showOneDimOthers" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
-                        <li><a class = "showAll" data-name = {{this._id}} href="#">Show all layers</a></li>
-                        <li><a class = "hideAll" data-name = {{this._id}} href="#">Hide all layers</a></li>
+                        <li><a class = "show dropOp" data-name = {{this._id}} href="#">Show this layer</a></li>
+                        <li><a class = "hideOne dropOp" data-name = {{this._id}} href="#">Hide this layer</a></li>
+                        <li><a class = "showOne dropOp" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
+                        <li><a class = "showOneDimOthers dropOp" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
+                        <li><a class = "showAll dropOp" data-name = {{this._id}} href="#">Show all layers</a></li>
+                        <li><a class = "hideAll dropOp" data-name = {{this._id}} href="#">Hide all layers</a></li>
                     </ul>
                   </span>
                     <div class='info'> <i>Click to show stress.</i></div>
@@ -228,17 +228,17 @@
                     <div class='layer {{isSelectedLayer}}' data-name='bold' id={{this.id}}>
                         <div class="layerName" contenteditable=true>{{this.name}}</div>
                         <span class = 'checkSquare' id = 'checkSquare{{this._id}}'></span>
-                         <span class="dropdown btn-group selectVisibility" id={{this._id}}>
+                        <span class="dropdown btn-group selectVisibility" id={{this._id}}>
                     <a class="{{this._id}}" data-toggle="dropdown" href="#">
                         <span class="caret"></span>
                     </a>
                     <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
-                        <li><a class = "show" data-name = {{this._id}} href="#">Show this layer</a></li>
-                        <li><a class = "hideOne" data-name = {{this._id}} href="#">Hide this layer</a></li>
-                        <li><a class = "showOne" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
-                        <li><a class = "showOneDimOthers" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
-                        <li><a class = "showAll" data-name = {{this._id}} href="#">Show all layers</a></li>
-                        <li><a class = "hideAll" data-name = {{this._id}} href="#">Hide all layers</a></li>
+                        <li><a class = "show dropOp" data-name = {{this._id}} href="#">Show this layer</a></li>
+                        <li><a class = "hideOne dropOp" data-name = {{this._id}} href="#">Hide this layer</a></li>
+                        <li><a class = "showOne dropOp" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
+                        <li><a class = "showOneDimOthers dropOp" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
+                        <li><a class = "showAll dropOp" data-name = {{this._id}} href="#">Show all layers</a></li>
+                        <li><a class = "hideAll dropOp" data-name = {{this._id}} href="#">Hide all layers</a></li>
                     </ul>
                   </span>
                         Bold:
