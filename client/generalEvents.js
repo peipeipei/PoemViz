@@ -42,11 +42,37 @@ Template.poem.events({
         Router.go('/poem/' + previousPoemID);
     },
     
-    //don't let layers have multiple line names 
+    //don't let the layers have multiple line names
      'keydown .layerName': function(event)
     {
         //enter is key 13
         if(event.which == 13){
+            event.preventDefault();
+            var layerID=$(event.currentTarget).parent().attr('id');
+            var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
+            var newName=$(event.currentTarget).text();
+            console.log("newName:",newName)
+            Layers.update(curL_id, {$set: {name: newName}});
+            $(event.currentTarget).blur()
+        }
+    }, 
+    
+    //both actions make color names buggy
+     'keydown .colorName': function(event)
+    {
+        //enter is key 13
+        if(event.which == 13){
+            event.preventDefault();
+            var layerID=$(event.currentTarget).parent().attr('id');
+            var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
+            var newName=$(event.currentTarget).text();
+            console.log("newName:",newName)
+            Layers.update(curL_id, {$set: {name: newName}});
+            $(event.currentTarget).blur()
+        }
+        
+        //tab is key 9
+        if(event.which == 9){
             event.preventDefault();
             var layerID=$(event.currentTarget).parent().attr('id');
             var curL_id=Layers.findOne({poem_id: Session.get('currentPoem'), id:layerID})._id;
