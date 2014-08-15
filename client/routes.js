@@ -1,7 +1,8 @@
-
-Router.map(function () {
+Router.onBeforeAction('dataNotFound'); 
+Router.map(function () {    
   this.route('poem', {
     path: '/poem/:id',
+    notFoundTemplate: 'error',
     template: 'poem',
     waitOn: function(){
       var subscriptions = [Meteor.subscribe('poemGroups', this.params.id), Meteor.subscribe('poems', this.params.id), Meteor.subscribe('selections', this.params.id), Meteor.subscribe('layers', this.params.id), Meteor.subscribe('styles', this.params.id), Meteor.subscribe('syllableMarkers', this.params.id), Meteor.subscribe('shoutkeys'), Meteor.subscribe('colorIndices', this.params.id), Meteor.subscribe('colors', this.params.id)];
@@ -9,8 +10,6 @@ Router.map(function () {
     },
     data: function(){
       var poem_id = this.params.id
-      console.log("poemid: ",poem_id)
-//      console.log( Poems.findOne(poem_id) );
       var poemTitle = Poems.findOne({_id:poem_id}).title;
       var poemAuthor = Poems.findOne({_id:poem_id}).author;
       var lines = Poems.findOne({_id:poem_id}).origObj;
@@ -24,7 +23,9 @@ Router.map(function () {
           poemAuthor: poemAuthor,
           lines: lines,
           lines1: lines1,
-          lines2: lines2
+          lines2: lines2,
+          
+          
       }
     },
     action: function(){
@@ -60,11 +61,19 @@ Router.map(function () {
   //make sure to subscribe to shoutkeys so that they may be checked to prevent repeats
     this.route('teacher', {
         path:'/create',
+        notFoundTemplate: 'error',
         waitOn: function(){
             return [Meteor.subscribe('shoutkeys')]
         },  
         
     });
+//    this.route('error', {
+//        path:'/create',
+//        waitOn: function(){
+//            return [Meteor.subscribe('shoutkeys')]
+//        },  
+//        
+//    });
     this.route('redirect',{
         path: '/:_word/:_index',
         notFoundTemplate: 'error',
@@ -82,6 +91,7 @@ Router.map(function () {
     });
     this.route('redirectDirectory', {
         path:'/:_word',
+        notFoundTemplate: 'error',
         waitOn: function(){
             return [Meteor.subscribe('shoutkeys'), Meteor.subscribe('poemGroups')]
         },
@@ -97,6 +107,7 @@ Router.map(function () {
         }
         
     });
+    
 });   
 
 

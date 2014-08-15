@@ -43,6 +43,22 @@ Template.poem.isReady=function(){
     return checkIsReady();
 }
 
+Template.poem.previousVisible=function(){
+    var poem_id = Session.get('currentPoem');
+    var poem_group_index = Poems.findOne({_id:poem_id}).poemGroupIndex;
+    console.log("LOOK AT ME!");
+    console.log(poem_group_index !=1);
+    return poem_group_index !=1;
+}
+
+Template.poem.nextVisible=function(){
+    var poem_id = Session.get('currentPoem');
+    var poem_group = Poems.findOne({_id:poem_id}).poemGroup;
+    var poem_group_index = Poems.findOne({_id:poem_id}).poemGroupIndex;
+    console.log("LOOK AT ME!");
+    return (poem_group_index < PoemGroups.findOne({_id:poem_group}).poems.length);
+}
+
 //returns all the layers in the database
 //called whenever layer is changed
 //populates 'layer' in html
