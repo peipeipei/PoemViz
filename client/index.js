@@ -31,7 +31,7 @@ Handlebars.registerHelper("equals", function (a, b) {
 });
 
 //when uncommented, nullifies all console.log's by redefining the function itself
-//console.log = function() {}
+console.log = function() {}
 
 //makes sure that all your collections are ready before loading the page
 checkIsReady = function(){
