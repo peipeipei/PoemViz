@@ -105,6 +105,7 @@ grid = function(){
         $('.syllable').css('display', 'inline-block');
         $('.syllable').css('min-width', '60px');
         $('.syllablesGrid').data('gridded',true);
+        $('.syllablesGrid').text('Un-Grid');
     }
     else{
         $('.word').each(function(){
@@ -120,6 +121,7 @@ grid = function(){
         $('.syllable').css('display', 'inline');
         $('.syllable').css('min-width', '0');
         $('.syllablesGrid').data('gridded',false);
+        $('.syllablesGrid').text('Grid');
     }
 }
 
