@@ -92,6 +92,10 @@ Template.poem.events({
     //adds a highlight color to the available colors
     'click .layer': function(event){
         var layerID = Layers.findOne({id: $(event.currentTarget).attr('id')})._id;
+       /* if (sessionObj[layerID] != "dimmed"){
+        sessionObj[layerID] = "visible";
+        Session.set("layersArray", sessionObj);
+        }*/
         selectLayer(layerID);
     }
     
@@ -114,7 +118,7 @@ Template.layers.isSelectedLayer = function() {
 
 //called whenever Session.get('curLayer') is changed
 Template.layers.moreColors = function() {
-    if (Session.get('curLayer') != undefined){
+    if (Session.get('curLayer') != undefined && Layers.findOne({id: Session.get('curLayer')}) != undefined){
         var layerArray = Layers.findOne({id: Session.get('curLayer')}).layerArray;
         var layerID = Layers.findOne({id: Session.get('curLayer')})._id;
         if (ColorIndices.findOne({layer: layerID}) != undefined){
@@ -152,7 +156,7 @@ Template.layers.isColorSquareSelected = function(){
 selectLayer = function(layerID) {
     var layerName = Layers.findOne(layerID).id
     var clickedLayer = $('#' + layerName);
-    
+    var sessionObj = Session.get("layersArray");
     Session.set('curLayer', layerName);
     Session.set('selectedType',Layers.findOne(layerID).type);
 
@@ -208,7 +212,7 @@ setNextBackgroundColor = function(location){
                              var op = 1;
                              break;
                              case "dimmed":
-                             var op = 0.5;
+                             var op = 0.3;
                              break;
                              case "invisible":
                              var op = 0;
@@ -266,7 +270,7 @@ updateCheckBoxes = function(){
         var status = statuses[layer._id];
         switch(status){
                 case "visible":
-                console.log('#checkSquare'+layer._id, "VISIBLE")
+                //console.log('#checkSquare'+layer._id, "VISIBLE")
                 $('#checkSquare'+layer._id).text("✓");
                 $('#checkSquare'+layer._id).css('color','red');
                 break;
@@ -322,7 +326,7 @@ Deps.autorun(function(){
         else if (status == "dimmed"){
             switch(layerType) {
                 case "rhyme":
-                    colorSelOpacity(0.5, elem);
+                    colorSelOpacity(0.3, elem);
                     break;
                 case "bold":
                     //shouldn't have ability to be dimmed
