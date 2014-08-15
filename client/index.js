@@ -417,6 +417,19 @@ function scrollForNewLayer(layerId){
      $('#shoutkey').text("This poem can also be found for an hour at: poemviz.meteor.com/"+shoutkeyKey + '/' + shoutkeyIndex);
      //expire shoutkey after an hour
      handleid = Meteor.setTimeout(function() {Shoutkeys.remove(shoutkeyID); console.log('woohoo!');}, EXPIRATION_TIME);
+     
+    var poem_group = Poems.findOne({_id:curPoem}).poemGroup;
+    var poem_group_index = Poems.findOne({_id:curPoem}).poemGroupIndex;
+
+     if (poem_group_index ==1){
+         $('#previousPoemSection').css('visibility', 'hidden');
+     }
+     if (poem_group_index >= PoemGroups.findOne({_id:poem_group}).poems.length){
+         $('#nextPoemSection').css('visibility', 'hidden');
+     }
+     
+     
+     
      $('#origOption').css('display','inline');
      $('#puncOption').css('display','none');
      $('#sentOption').css('display','none');

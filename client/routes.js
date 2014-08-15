@@ -1,3 +1,4 @@
+var previousPage;
 
 //Router.onBeforeAction('dataNotFound');  
 Router.map(function () {
@@ -69,12 +70,13 @@ Router.map(function () {
         
     });
     this.route('error', {
-        path:'/error/:_badURL',
+        path:'/error',
 //        waitOn: function(){
 //            return [Meteor.subscribe('shoutkeys')]
 //        },  
         data: function(){
-            return _badURL;
+            console.log(previousPage);
+            return {previousURL: previousPage};
         },
         action: function(){
             if (this.ready()) {
@@ -90,6 +92,7 @@ Router.map(function () {
             return [Meteor.subscribe('poems'), Meteor.subscribe('shoutkeys')]
         },
         data: function(){
+            previousPage = window.location.href
             return {"poem_id": Shoutkeys.findOne({key:this.params._word, index:parseInt(this.params._index)}).poem_id};
         },
         action: function(){
@@ -108,7 +111,8 @@ Router.map(function () {
             console.log("route");
             console.log(Shoutkeys.find().fetch())
             console.log("URL");
-            console.log(window.location.href);
+            previousPage = window.location.href
+            console.log(previousPage);
             return {"poem_group_id": Shoutkeys.findOne({key:this.params._word}).poem_group_id};
         },
         action: function(){
