@@ -1,11 +1,8 @@
-//contains all the events that happen on the poem page
 Template.poem.events({
-       //function of "Text Options" ('typing') layer
+  //function of "Text Options" ('typing') layer
   'click .wordOption': function(event){
     if($('.wordOption').data('active')){
-           // $('#leftSide').css('color', 'rgba(0,0,0,1)');
-           // $('.word').css('color', 'rgba(0,0,0,1)');
-           $('.line .word .letter').each(function() {
+           $('.unnaturalLine, .line, .word, .letter').each(function() {
                if ($(this).hasClass('noStyling')){
                     $(this).removeAttr("style"); 
                     $(this).removeClass('noStyling');
@@ -33,9 +30,7 @@ Template.poem.events({
             $('.wordOption').text('Turn Text Off');
             $('.wordOption').data('active', false);
         }else{
-           // $('#leftSide').css('color', 'rgba(0,0,0,0)');
-           // $('.word').css('color', 'rgba(0,0,0,0)');
-            $('.line .word .letter').each(function() {
+            $(' .unnaturalLine, .line, .word, .letter').each(function() {
                 if ($(this).attr('style') != undefined){
                var letterColor = $(this).css('color').trim();
                 console.log(letterColor);
@@ -100,70 +95,44 @@ Template.poem.events({
           }
         })      
     },
+    
 //change how poem lines are displayed
+//'display': 'none' makes divs take up no space
 'change .optionSelect':function(event){
     var pastConfig = Session.get('breaksOption');
     Session.set('breaksOption',$(event.currentTarget).val());
     if (Session.get('breaksOption') == 'origOption'){
-//        switching($('#'+pastConfig), $('#origOption'));
-        
         $('#origOption').css('display','inline');
         $('#puncOption').css('display','none');
         $('#sentOption').css('display','none');
-        
-//       $('#origOption').css('visibility','visible');
-//        $('#puncOption').css('visibility','hidden');
-//        $('#sentOption').css('visibility','hidden');
         $('#addLayer').css('visibility','visible');
         $('.layer').css('display','block');
-   //     switching($('#color0'), $('#typing0'));
     }
     if (Session.get('breaksOption') == 'puncOption'){
-//        switching($('#'+pastConfig), $('#puncOption'));
         $('#origOption').css('display','none');
         $('#puncOption').css('display','inline');
         $('#sentOption').css('display','none');
-//        
-//        $('#origOption').css('visibility','hidden');
-//        $('#puncOption').css('visibility','visible');
-//        $('#sentOption').css('visibility','hidden');
         $('.layer').css('display','none');
         $('#addLayer').css('visibility','hidden');
         $('#typing0').css('display','block');
         if (pastConfig == 'origOption'){
-       // switching($('#color0'), $('#typing0'));
-        $("#layers").animate({ scrollTop: 0}, "fast");
+            $("#layers").animate({ scrollTop: 0}, "fast");
         }
         $('.optionSelect').val(Session.get('breaksOption'));
     }
     if (Session.get('breaksOption') == 'sentOption'){
-//        switching($('#'+pastConfig), $('#sentOption'));
         $('#origOption').css('display','none');
         $('#puncOption').css('display','none');
         $('#sentOption').css('display','inline');
-        
-//        $('#origOption').css('visibility','hidden');
-//        $('#puncOption').css('visibility','hidden');
-//        $('#sentOption').css('visibility','visible');
         $('.layer').css('display','none');
         $('#addLayer').css('visibility','hidden');
         $('#typing0').css('display','block');
         if (pastConfig == 'origOption'){
-       // switching($('#color0'), $('#typing0'));
-        $("#layers").animate({ scrollTop: 0}, "fast");
+            $("#layers").animate({ scrollTop: 0}, "fast");
         }
         $('.optionSelect').val(Session.get('breaksOption'));
     }
 }    
 });
-
-switching = function(div1, div2){
-                tdiv1 = div1.clone();
-                tdiv2 = div2.clone(); 
-                if(!div2.is(':empty')){
-                     div1.replaceWith(tdiv2);
-                      div2.replaceWith(tdiv1);
-                 }               
-}
 
   

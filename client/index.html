@@ -13,12 +13,6 @@
     
 </head>
 
-<!--
-<body>
-</body>
--->
-
-
 
 <template name = 'redirect'>
     {{# if isReady}}
@@ -100,104 +94,7 @@
             </div>
             <div class='col-md-4 right bigCol' id='layers'> 
                {{>layers}}    <br>
-            <!--
-            {{# each layer}}
-                {{# if equals type 'rhyme'}}
-                    <div class='layer' data-name='rhyme' id={{this.id}}>
-                        <div class="layerName" contenteditable=true>{{this.name}}</div>
-                        Highlight:
-                        <select class='rhymeSelect'>
-                            <option value='line'>Line</option>
-                            <option value='word'>Word</option>
-                            <option value='letter'>Letter</option>
-                        </select>
-                        <div class='highlighting'>
-                            <div class='highlightColors'>
-                            {{#each this.colorOptions}}
-                                <div class="colorBlock">
-                                    <span class = 'colorSquare' id = {{this._id}} style = 'background-color: {{this.color_value}}'></span>
-                                    <span class = 'colorName' contenteditable=true>{{this.name}}</span>
-                                </div>
-                            {{/each}}
-
-                            </div>
-                            <br>
-                            <button class='addColor'>
-                                +
-                            </button>
-                        </div>
-                         <span class="opacities">
-                            <form action="">
-                                Opacity:
-                                <input type="radio" class="opacity" name={{this.id}} id="opacity100" data-value=1 {{isChecked100}}>100%
-                                <input type="radio" class="opacity" name={{this.id}} id="opacity60" data-value=.6 {{isChecked60}}>60%
-                                <input type="radio" class="opacity" name={{this.id}} id="opacity20" data-value=.2 {{isChecked20}}>20%
-                                <input type="radio" class="opacity" name={{this.id}} id="opacity20" data-value=0 {{isChecked0}}>0%
-                            </form>    
-                        </span>    
-                    </div>
-                {{/if}}
-                {{# if equals type 'syllable'}}
-                    <div class='layer' data-name='syllable' id={{this.id}}>
-                        <div class="layerName" contenteditable=true>{{this.name}}</div>
-                        <div class='info'> <i>Click to show syllable breaks.</i><br>Please click WITHIN words, the breaks between words have already been counted.</div>
-                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
-                        <div class="btn-group" id="toggle">
-                            <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
-                            <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
-                            
-
-                        </div>
-                    </div>
-                {{/if}}
-                {{# if equals type 'stressing'}}
-                    <div class="layer" data-name="stressing" id={{this.id}}>
-                    <div class="layerName" contenteditable=true>{{this.name}}</div>
-                    <div class='info'> <i>Click to show stress.</i></div>
-                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
-                    <div class="btn-group" id="toggle">
-                            <span><button type="button" class="btn btn-default stressClear">Clear All Stress Marks</button></span>
-                        </div>
-                    </div>
-                {{/if}}
-                {{# if equals type 'typing'}}
-                    <div class="layer" data-name="typing" id={{this.id}}>
-                        <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
-                        <div class="btn-group" id="toggle">
-                           <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span><br>
                        
-                        Line Breaks by: <select class='optionSelect'>
-                            <option value='origOption'>Original</option>
-                            <option value='puncOption'>All Punctuation</option>
-                            <option value='sentOption'>Sentence Punctuation</option>
-                        </select>
-                        </div>
-                    </div>
-                {{/if}}
-                {{# if equals type 'bold'}}
-                    <div class='layer' data-name='bold' id={{this.id}}>
-                        <div class="layerName" contenteditable=true>{{this.name}}</div>
-                        Bold:
-                        <select class='boldSelect'>
-                            <option value='boldLine'>Line</option>
-                            <option value='boldWord'>Word</option>
-                            <option value='boldLetter'>Letter</option>
-                        </select>
-                        <div class='bolding'>
-                            <span class='boldColors'>
-                                <div class='colorSquare' data-color='#000' style='background-color:#000'></div>
-                                <div class='colorSquare' data-color='#063' style='background-color:#063'></div>
-                            </span>
-                            <button class='addBoldColor'>
-                                +
-                            </button>
-                        </div>
-                        
-                    </div>
-                {{/if}}
-            {{/each}}-->
-            
-                
                 <div class="dropdown btn-group" id="addLayer">
                     <a class="btn dropdown-toggle layers-menu" data-toggle="dropdown" href="#">
                         Add Layer
@@ -224,6 +121,21 @@
                 {{# if equals type 'rhyme'}}
                     <div class='layer {{isSelectedLayer}}' data-name='rhyme' id={{this.id}}>
                         <div class="layerName" contenteditable=true>{{this.name}}</div>
+                <span class = 'checkSquare' id = 'checkSquare{{this._id}}'></span>
+                <span class="dropdown btn-group selectVisibility" id={{this._id}}>
+                    <a class="{{this._id}}" data-toggle="dropdown" href="#">
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                        <li><a class = "show" data-name = {{this._id}} href="#">Show this layer</a></li>
+                        <li><a class = "dimOne" data-name = {{this._id}} href="#">Dim this layer</a></li>
+                        <li><a class = "hideOne" data-name = {{this._id}} href="#">Hide this layer</a></li>
+                        <li><a class = "showOne" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
+                        <li><a class = "showOneDimOthers" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
+                        <li><a class = "showAll" data-name = {{this._id}} href="#">Show all layers</a></li>
+                        <li><a class = "hideAll" data-name = {{this._id}} href="#">Hide all layers</a></li>
+                    </ul>
+                  </span>
                         Highlight:
                         <select class='rhymeSelect'>
                             <option value='line'>Line</option>
@@ -247,22 +159,26 @@
                             </button>
                             {{/if}}
                         </div>
-                         <span class="opacities">
-                            <form action="">
-                                Opacity:
-                                <input type="radio" class="opacity" name={{this.id}} id="opacity100" data-value=1 {{isChecked100}}>100%
-                                <input type="radio" class="opacity" name={{this.id}} id="opacity60" data-value=.6 {{isChecked60}}>60%
-                                <input type="radio" class="opacity" name={{this.id}} id="opacity20" data-value=.2 {{isChecked20}}>20%
-                                <input type="radio" class="opacity" name={{this.id}} id="opacity20" data-value=0 {{isChecked0}}>0%
-                            </form>    
-                        </span>    
                     </div>
                 {{/if}}
                 {{# if equals type 'syllable'}}
                     <div class='layer {{isSelectedLayer}}' data-name='syllable' id={{this.id}}>
                         <div class="layerName" contenteditable=true>{{this.name}}</div>
-                        <div class='info'> <i>Click to show syllable breaks.</i><br>Please click WITHIN words, the breaks between words have already been counted.</div>
-                        <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='syllable' class='visibility' checked></span>
+                        <span class = 'checkSquare' id = 'checkSquare{{this._id}}'></span>
+                    <span class="dropdown btn-group selectVisibility" id={{this._id}}>
+                    <a class="{{this._id}}" data-toggle="dropdown" href="#">
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                        <li><a class = "show" data-name = {{this._id}} href="#">Show this layer</a></li>
+                        <li><a class = "hideOne" data-name = {{this._id}} href="#">Hide this layer</a></li>
+                        <li><a class = "showOne" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
+                        <li><a class = "showOneDimOthers" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
+                        <li><a class = "showAll" data-name = {{this._id}} href="#">Show all layers</a></li>
+                        <li><a class = "hideAll" data-name = {{this._id}} href="#">Hide all layers</a></li>
+                    </ul>
+                  </span>
+                        <div class='info'> <i>Click to show syllable breaks.</i><br>Please click WITHIN words; the breaks between words have already been counted.</div>
                         <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default syllablesClear">Clear All Syllable Marks</button></span>
                             <span><button type="button" class="btn btn-default syllablesGrid" data-gridded=false>Grid</button></span>
@@ -274,8 +190,21 @@
                 {{# if equals type 'stressing'}}
                     <div class="layer {{isSelectedLayer}}" data-name="stressing" id={{this.id}}>
                     <div class="layerName" contenteditable=true>{{this.name}}</div>
+                    <span class = 'checkSquare' id = 'checkSquare{{this._id}}'></span>
+                    <span class="dropdown btn-group selectVisibility" id={{this._id}}>
+                    <a class="{{this._id}}" data-toggle="dropdown" href="#">
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                        <li><a class = "show" data-name = {{this._id}} href="#">Show this layer</a></li>
+                        <li><a class = "hideOne" data-name = {{this._id}} href="#">Hide this layer</a></li>
+                        <li><a class = "showOne" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
+                        <li><a class = "showOneDimOthers" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
+                        <li><a class = "showAll" data-name = {{this._id}} href="#">Show all layers</a></li>
+                        <li><a class = "hideAll" data-name = {{this._id}} href="#">Hide all layers</a></li>
+                    </ul>
+                  </span>
                     <div class='info'> <i>Click to show stress.</i></div>
-                    <span class='visibilitySpan'>Visibility: <input type="checkbox" data-layer='stressing' class='visibility' checked></span> 
                     <div class="btn-group" id="toggle">
                             <span><button type="button" class="btn btn-default stressClear">Clear All Stress Marks</button></span>
                         </div>
@@ -298,6 +227,20 @@
                 {{# if equals type 'bold'}}
                     <div class='layer {{isSelectedLayer}}' data-name='bold' id={{this.id}}>
                         <div class="layerName" contenteditable=true>{{this.name}}</div>
+                        <span class = 'checkSquare' id = 'checkSquare{{this._id}}'></span>
+                         <span class="dropdown btn-group selectVisibility" id={{this._id}}>
+                    <a class="{{this._id}}" data-toggle="dropdown" href="#">
+                        <span class="caret"></span>
+                    </a>
+                    <ul class="dropdown-menu dropdown-menu-right" role="menu" aria-labelledby="dLabel">
+                        <li><a class = "show" data-name = {{this._id}} href="#">Show this layer</a></li>
+                        <li><a class = "hideOne" data-name = {{this._id}} href="#">Hide this layer</a></li>
+                        <li><a class = "showOne" data-name = {{this._id}} href="#">Show this layer, hide other layers</a></li>
+                        <li><a class = "showOneDimOthers" data-name = {{this._id}} href="#">Show this layer, dim other color layers</a></li>
+                        <li><a class = "showAll" data-name = {{this._id}} href="#">Show all layers</a></li>
+                        <li><a class = "hideAll" data-name = {{this._id}} href="#">Hide all layers</a></li>
+                    </ul>
+                  </span>
                         Bold:
                         <select class='boldSelect'>
                             <option value='boldLine'>Line</option>

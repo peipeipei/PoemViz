@@ -22,18 +22,14 @@ Meteor.publish('syllableMarkers', function(poemID) {
     return SyllableMarkers.find({poem_id: poemID})
 });
 
-/*Meteor.publish('lineCounts', function() {
-    return LineCounts.find()
-});*/
-
 Meteor.publish('shoutkeys', function() {
     return Shoutkeys.find()
 });
-Meteor.publish('colorIndices', function() {
-    return ColorIndices.find()
+Meteor.publish('colorIndices', function(poemID) {
+    return ColorIndices.find({poem_id: poemID})
 });
-Meteor.publish('colors', function() {
-    return Colors.find()
+Meteor.publish('colors', function(poemID) {
+    return Colors.find({poem_id: poemID})
 });
 
 

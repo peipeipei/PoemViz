@@ -45,7 +45,6 @@ Template.teacher.events({
                 id:'color0',
                 poem_id:newPoem,
                 type:'rhyme',
-                opacity: 1,
                 layerArray: colorsRainbow,
             });
             // starts the "sound" layer with two default colors
@@ -64,7 +63,7 @@ Template.teacher.events({
             Styles.insert({poem_id: newPoem, layer_id: 'color0', background_color: colorsRainbow[0]});
         
             Styles.insert({poem_id: newPoem, layer_id: 'color0', background_color: colorsRainbow[1]});
-            // NOTE: Index only starts at two because two colors have already been assigned to the 'Sound' layer
+            //Index only starts at two because two colors have already been assigned to the 'Sound' layer
             ColorIndices.insert({
                 poem_id:newPoem,
                 index: 2,
@@ -82,6 +81,9 @@ Template.teacher.events({
                 poem_id:newPoem,
                 type:'stressing',
             });
+            var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
+            Layers.update(sel, {$set:{style:selStyle, keyword: key}});
+            
             Layers.insert({
             name:'Text Options',
             id:'typing0',
@@ -89,8 +91,6 @@ Template.teacher.events({
             type:'typing'
         }); 
             
-              var selStyle=Styles.insert({poem_id: newPoem, layer_id: 'stress0', verticalAlign:'super'}); 
-              Layers.update(sel, {$set:{style:selStyle, keyword: key}});
         }
         PoemGroups.update(newPoemGroup, {$set:{poems:poemGroupPoemSectionIDs}});
         console.log("poemGroupPoemSectionIDs");
@@ -132,6 +132,7 @@ Template.teacher.events({
 
 })
 
+//get a random unused shoutkey
 getRandomWord = function(){
     var numshoutkeys = pgpWordList.length;
     //will be an integer between 0 (inclusive) and numshoutkeys (exclusive)

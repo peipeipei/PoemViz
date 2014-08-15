@@ -68,7 +68,17 @@ td{
     width:18px;
     height:18px;
     margin:3px 3px 0px 3px;
+    display:inline-block;   
+}
+
+.checkSquare{
+    width:20px;
+    height:20px;
+    margin:0px 5px 0px 0px;
+    border: 1px solid gray;
     display:inline-block;
+    text-align:center;
+    font-size: 14pt;
 }
 
 .selectedColorSquare{
@@ -84,7 +94,6 @@ td{
 }
 
 #layers{
-    /*margin-top:80px;*/
     opacity: 1.0;
 }
 
@@ -105,6 +114,13 @@ td{
     font-style:italic;
 }
 
+.selectVisibility{
+    position:absolute;
+    top:10px;
+    right:10px;
+    
+}
+
 .btn{
     border: 1px solid gray;
     margin:5px;
@@ -122,9 +138,10 @@ td{
 }
 
 .addBoldColor{
-    height:20px;
-    width:20px;
+    height:25px;
+    width:25px;
     padding:0px;
+    text-align: center;
 }
 
 .lineCount{
@@ -142,19 +159,12 @@ td{
 	background: rgba(200,200,200,0.9);
 }
 
-/* Overlay closing cross */
-/*.overlay .overlay-close {*/
 #overlay-closed{
-	/*width: 80px;*/
-	/*height: 80px;*/
 	position: absolute;
 	right: 20px;
 	top: 20px;
 	overflow: hidden;
 	border: none;
-	/*background: url(cross.png) no-repeat center center;*/
-	/*text-indent: 200%;*/
-	/*color: transparent;*/
 	outline: none;
 	z-index: 100;
 }
@@ -243,6 +253,14 @@ td{
     font-style:italic;
 }
 
+.checkSquare{ 
+    position:absolute;
+    top:12px;
+    right:22px;
+    font-size: 13pt;
+    
+}
+
 .unnaturalLine{
     color: black;
     background: rgb(255, 255, 255) !important;
@@ -274,9 +292,10 @@ td{
 }
 
 .addColor{
-    height:20px;
-    width:20px;
+    height:25px;
+    width:25px;
     padding:0px;
+    text-align: center;
 }
 
 .lineCount{
@@ -303,30 +322,15 @@ td{
 	background: rgba(200,200,200,0.9);
 }
 
-/* Overlay closing cross */
-/*.overlay .overlay-close {*/
 #overlay-closed{
-	/*width: 80px;*/
-	/*height: 80px;*/
 	position: absolute;
 	right: 20px;
 	top: 20px;
 	overflow: hidden;
 	border: none;
-	/*background: url(cross.png) no-repeat center center;*/
-	/*text-indent: 200%;*/
-	/*color: transparent;*/
 	outline: none;
 	z-index: 100;
 }
-
-/*Effects */
-/*.overlay-hugeinc {*/
-/*	opacity: 0;*/
-/*	visibility: hidden;*/
-/*	-webkit-transition: opacity 0.5s, visibility 0s 0.5s;*/
-/*	transition: opacity 0.5s, visibility 0s 0.5s;*/
-/*}*/
 
 .overlay-hugeinc.open {
 	opacity: 1;
@@ -429,10 +433,6 @@ td{
 
 .colorName:hover{
   border: dotted 1px;
-}
-
-
-.colorName{
 }
 
 .layerName{

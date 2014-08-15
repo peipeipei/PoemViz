@@ -62,7 +62,6 @@ Layers = new Meteor.Collection('layers');
     poem_id : string, id of poem that this layer is in
     name : string, user-provided description of the layer, e.g. "Rhyming scheme"
     type: whether it is used for selections, markers, bold, or typing
-    opacity: opacity of background color (OPTIONAL)
     layerArray: the array of colors it is associated with
 */
 

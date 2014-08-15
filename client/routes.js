@@ -1,5 +1,6 @@
-Router.onBeforeAction('dataNotFound'); 
-Router.map(function () {    
+
+//Router.onBeforeAction('dataNotFound');  
+Router.map(function () {
   this.route('poem', {
     path: '/poem/:id',
     notFoundTemplate: 'error',
