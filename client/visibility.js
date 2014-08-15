@@ -1,6 +1,5 @@
-Template.poem.events({
-    
-    //show one layer
+Template.poem.events({  
+  //show one layer
   'click .show': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
       console.log(layerID);
@@ -9,7 +8,7 @@ Template.poem.events({
       Session.set("layersArray", sessionObj);
   }, 
     
-  //show one, hide all others
+  //show one layer, hide all others
   'click .showOne': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
       console.log(layerID);
@@ -29,7 +28,8 @@ Template.poem.events({
       sessionObj[layerID] = "dimmed";
       Session.set("layersArray", sessionObj);
   },
-    
+   
+  //hide one layer
   'click .hideOne': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
       var sessionObj = Session.get("layersArray");
@@ -38,6 +38,7 @@ Template.poem.events({
       
   },
     
+    //show one layer, dim all others
     'click .showOneDimOthers': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
       var sessionObj = Session.get("layersArray");
@@ -51,6 +52,7 @@ Template.poem.events({
       Session.set("layersArray", sessionObj);      
     },
     
+    //show all layers
     'click .showAll': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
       var sessionObj = Session.get("layersArray");
@@ -61,6 +63,7 @@ Template.poem.events({
       Session.set("layersArray", sessionObj);        
     },
     
+    //hide all layers
     'click .hideAll': function(event){
       var layerID = $(event.currentTarget).attr('data-name');
       var sessionObj = Session.get("layersArray");
@@ -71,6 +74,7 @@ Template.poem.events({
       Session.set("layersArray", sessionObj);        
     },
     
+    //user can also change visibilities of layers by clicking on the checkmark icon
     'click .checkSquare': function(event){
        console.log('wow, that worked'); 
        var layerID = $(event.currentTarget).attr('id').substring(11);
@@ -80,25 +84,19 @@ Template.poem.events({
                 case "visible":
                   sessionObj[layerID] = "invisible";
                   Session.set("layersArray", sessionObj);
-                break;
+                  break;
                //same as code for click .show
                 case "dimmed":
-               sessionObj[layerID] = "visible";
-               Session.set("layersArray", sessionObj);
-                break;
+                  sessionObj[layerID] = "visible";
+                  Session.set("layersArray", sessionObj);
+                  break;
                //same as code for click .show
                 case "invisible":
-               sessionObj[layerID] = "visible";
-               Session.set("layersArray", sessionObj); 
-                break;
+                  sessionObj[layerID] = "visible";
+                  Session.set("layersArray", sessionObj); 
+                  break;
                 default:
                 //oops
         }  
-    }
-    
+    }   
 });
-
-//update check boxes function should be here
-    
-    
-    

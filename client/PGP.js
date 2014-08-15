@@ -1,3 +1,4 @@
+//list for the shoutkeys
 pgpWordList = [
     ["aardvark", "adroitness"],
     ["absurd", "adviser"],

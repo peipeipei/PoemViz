@@ -1,4 +1,3 @@
-
 Router.map(function () {
   this.route('poem', {
     path: '/poem/:id',
