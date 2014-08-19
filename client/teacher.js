@@ -85,7 +85,7 @@ Template.teacher.events({
             Layers.update(sel, {$set:{style:selStyle, keyword: key}});
             
             Layers.insert({
-            name:'Text Options',
+            name:'Line Breaks',
             id:'typing0',
             poem_id:newPoem,
             type:'typing'

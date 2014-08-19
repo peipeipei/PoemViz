@@ -43,7 +43,7 @@ div.selectedLayer{
 
 #poemWrapper{
     overflow: auto;
-    height: 600px;
+    height: 100%;
 }
 
 .left{

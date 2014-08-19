@@ -210,12 +210,14 @@
                     <div class="layer {{isSelectedLayer}}" data-name="typing" id={{this.id}}>
                         <div class="layerName" contenteditable=true onfocus="this.value = this.value;">{{this.name}}</div>
                         <div class="btn-group" id="toggle">
+                           <!--
                            <span><button type="button" class="btn btn-default wordOption" data-active=false>Turn Text Off</button></span><br>
-                       
-                        Line Breaks by: <select class='optionSelect'>
-                            <option value='origOption'>Original</option>
-                            <option value='puncOption'>All Punctuation</option>
-                            <option value='sentOption'>Sentence Punctuation</option>
+                            -->
+
+                        Break lines on: <select class='optionSelect'>
+                            <option value='origOption'>original line breaks</option>
+                            <option value='puncOption'>all punctuation</option>
+                            <option value='sentOption'>sentence punctuation</option>
                         </select>
                         </div>
                     </div>
